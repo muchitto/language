@@ -10,8 +10,6 @@ namespace Semantics.Passes;
  */
 public class TypeRefAssignment : SemanticPass, INodeHandler
 {
-    protected SemanticContext SemanticContext;
-
     public void Handle(StructDeclarationNode structDeclarationNode)
     {
         var lookupResult = SemanticContext.Add(structDeclarationNode.Name.Name);

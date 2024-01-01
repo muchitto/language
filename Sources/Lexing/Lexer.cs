@@ -1,10 +1,5 @@
 namespace Lexing;
 
-public class LexerError(PosData posData, string message) : Exception(message)
-{
-    public PosData PosData { get; set; } = posData;
-}
-
 public class Lexer(PosData posData)
 {
     private static readonly Dictionary<string, TokenType> Symbols = new()
@@ -167,7 +162,7 @@ public class Lexer(PosData posData)
 
             if (!Symbols.TryGetValue(str, out var value))
             {
-                throw new LexerError(startPosData, $"Unknown symbol {str}");
+                throw new LexingError(startPosData, $"Unknown symbol {str}");
             }
 
             return new Token(value, startPosData, str);

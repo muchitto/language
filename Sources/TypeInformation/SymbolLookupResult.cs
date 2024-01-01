@@ -11,6 +11,4 @@ public enum SymbolLookupResultType
     IsUnknown
 }
 
-public record struct SymbolLookupResult(TypeRef? TypeRef, SymbolLookupResultType ResultType)
-{
-}
+public record struct SymbolLookupResult(TypeRef? TypeRef, SymbolLookupResultType ResultType);

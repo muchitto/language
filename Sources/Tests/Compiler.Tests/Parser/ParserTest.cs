@@ -8,7 +8,7 @@ public class ParserTest
     public void Parser()
     {
         var posData = new PosData("test", "test");
-        var parser = new Parsing.Parser(new Lexer(posData));
+        var parser = new Parsing.Parser.Parser(new Lexer(posData));
         var ast = parser.Parse();
 
         Assert.NotNull(ast);

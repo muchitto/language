@@ -1,25 +1,9 @@
 using Lexing;
 using Parsing.Nodes;
 
-namespace Parsing;
+namespace Parsing.Parser;
 
-public class ParserError(PosData posData, string message) : Exception(message)
-{
-    public PosData PosData { get; set; } = posData;
-
-    public class UnexpectedToken(Token token, string message) : ParserError(token.PosData, message)
-    {
-        public Token Token { get; set; } = token;
-    }
-
-    public class ExpectedToken(Token expected, Token got, string message) : ParserError(got.PosData, message)
-    {
-        public Token Expected { get; set; } = expected;
-        public Token Got { get; set; } = got;
-    }
-}
-
-public class Parser
+public partial class Parser
 {
     public Parser(Lexer lexer)
     {
@@ -50,7 +34,7 @@ public class Parser
 
         var innerMessage = message ?? $"expected token {token}, got {peekToken}";
 
-        throw new ParserError.ExpectedToken(
+        throw new ParseError.ExpectedToken(
             new Token(token, peekToken.PosData),
             peekToken,
             innerMessage
@@ -68,7 +52,7 @@ public class Parser
 
         var innerMessage = message ?? $"expected token {token} with value {value}, got {peekToken}";
 
-        throw new ParserError.ExpectedToken(
+        throw new ParseError.ExpectedToken(
             new Token(token, peekToken.PosData, value),
             peekToken,
             innerMessage
@@ -86,7 +70,7 @@ public class Parser
 
         var innerMessage = message ?? $"expected identifier, got {peekToken}";
 
-        throw new ParserError.UnexpectedToken(peekToken, innerMessage);
+        throw new ParseError.UnexpectedToken(peekToken, innerMessage);
     }
 
     private void ExpectAndEat(TokenType token, string? message)
@@ -109,7 +93,7 @@ public class Parser
 
         if (!peekToken.Is(TokenType.Newline))
         {
-            throw new ParserError.ExpectedToken(
+            throw new ParseError.ExpectedToken(
                 new Token(TokenType.Newline, peekToken.PosData),
                 peekToken,
                 "expected a newline");
@@ -129,7 +113,7 @@ public class Parser
 
         var innerMessage = message ?? $"expected token {token}, got {peekToken}";
 
-        throw new ParserError.UnexpectedToken(
+        throw new ParseError.UnexpectedToken(
             peekToken,
             innerMessage
         );
@@ -146,7 +130,7 @@ public class Parser
 
         var innerMessage = message ?? $"expected token {token} with value {value}, got {peekToken}";
 
-        throw new ParserError.UnexpectedToken(
+        throw new ParseError.UnexpectedToken(
             peekToken,
             innerMessage
         );
@@ -196,6 +180,11 @@ public class Parser
         {
             Lexer.GetNextToken();
         }
+    }
+    
+    private IdentifierNode? GetIdentifierIfNext(bool acceptSubField)
+    {
+        return IsNext(TokenType.Identifier) ? ParseSingleIdentifier(acceptSubField) : null;
     }
 
     public ProgramContainerNode Parse()
@@ -253,7 +242,7 @@ public class Parser
 
             if (IsEnd)
             {
-                throw new ParserError.ExpectedToken(
+                throw new ParseError.ExpectedToken(
                     new Token(TokenType.Symbol, token.PosData, ")"),
                     token,
                     "expected ')' and not end of file"
@@ -270,6 +259,31 @@ public class Parser
         //return new AnnotationNode(name, annotationArguments, null);
     }
 
+    
+    private InterfaceDeclarationNode ParseInterfaceDeclaration()
+    {
+        throw new NotImplementedException();
+        
+        ExpectAndEat(TokenType.Identifier, "interface", "expected interface");
+
+        var name = ParseSingleIdentifier(false);
+
+        ExpectAndEatNewline();
+
+        var functions = new List<FunctionDeclarationNode>();
+
+        while (!IsNextAndEat(TokenType.Identifier, "end"))
+        {
+            var function = ParseFunctionDeclaration();
+
+            ExpectAndEatNewline();
+
+            functions.Add(function);
+        }
+
+        //return new InterfaceDeclarationNode(name, functions, );
+    }
+    
     private BaseNode ParseStatement()
     {
         var token = Lexer.PeekToken();
@@ -290,6 +304,8 @@ public class Parser
                 return ParseEnum(false);
             case TokenType.Identifier when token.Value == "return":
                 return ParseReturn();
+            case TokenType.Identifier when token.Value == "interface":
+                return ParseInterfaceDeclaration();
             case TokenType.Identifier when token.Value == "do":
                 return ParseDoBlock(false);
             case TokenType.Identifier when token.Value == "type":
@@ -299,7 +315,7 @@ public class Parser
 
                 if (identifier is IdentifierNode)
                 {
-                    throw new ParserError.UnexpectedToken(
+                    throw new ParseError.UnexpectedToken(
                         token,
                         "expected statement, got identifier"
                     );
@@ -307,7 +323,7 @@ public class Parser
 
                 return identifier;
             default:
-                throw new ParserError.UnexpectedToken(
+                throw new ParseError.UnexpectedToken(
                     token,
                     "expected statement"
                 );
@@ -329,7 +345,7 @@ public class Parser
 
             if (isLet)
             {
-                throw new ParserError.UnexpectedToken(
+                throw new ParseError.UnexpectedToken(
                     token,
                     "cannot use dynamic variables with a let statement"
                 );
@@ -349,7 +365,7 @@ public class Parser
 
         if (!isLet && typeName == null && value == null)
         {
-            throw new ParserError.UnexpectedToken(
+            throw new ParseError.UnexpectedToken(
                 token,
                 "the variable declaration does not have a typename or an initial value where the type could be inferred from"
             );
@@ -357,7 +373,7 @@ public class Parser
 
         if (isLet && value == null)
         {
-            throw new ParserError.UnexpectedToken(
+            throw new ParseError.UnexpectedToken(
                 token,
                 "expected value for let statement"
             );
@@ -370,88 +386,6 @@ public class Parser
             typeName,
             isDynamic
         );
-    }
-
-    private StructDeclarationNode ParseStructDeclaration()
-    {
-        ExpectAndEat(TokenType.Identifier, "struct", "expected a struct identifier");
-
-        var name = ParseSingleIdentifier(false);
-
-        IdentifierNode? parent = null;
-
-        if (IsNextAndEat(TokenType.Identifier, "extends"))
-        {
-            parent = ParseSingleIdentifier(false);
-        }
-
-        List<IdentifierNode> interfaces = [];
-        var implOnly = false;
-
-        if (IsNextAndEat(TokenType.Identifier, "impl"))
-        {
-            implOnly = IsNextAndEat(TokenType.Identifier, "only");
-
-            while (!IsNext(TokenType.Newline))
-            {
-                var impl = ParseSingleIdentifier(false);
-
-                interfaces.Add(impl);
-            }
-        }
-
-        ExpectAndEatNewline();
-
-        var fields = new List<StructFieldNode>();
-
-        while (!IsNextAndEat(TokenType.Identifier, "end"))
-        {
-            var field = ParseStructField();
-
-            ExpectAndEatNewline();
-
-            fields.Add(field);
-        }
-
-        return new StructDeclarationNode(name, fields, parent, interfaces, implOnly);
-    }
-
-    private StructFieldNode ParseStructField()
-    {
-        var token = Lexer.PeekToken();
-
-        switch (token.Type)
-        {
-            case TokenType.Identifier when token.Value is "var" or "let":
-            {
-                var variableDeclaration = ParseVariableDeclaration();
-
-                var name = variableDeclaration.Name.Name;
-
-                return new StructVariableNode(token.PosData, name, variableDeclaration);
-            }
-            case TokenType.Identifier when token.Value == "func":
-            {
-                var functionDeclaration = ParseFunctionDeclaration();
-
-                if (functionDeclaration.Name == null)
-                {
-                    throw new ParserError.UnexpectedToken(
-                        token,
-                        "expected function name"
-                    );
-                }
-
-                var name = functionDeclaration.Name?.Name ?? "";
-
-                return new StructFunctionNode(token.PosData, name, functionDeclaration);
-            }
-            default:
-                throw new ParserError.UnexpectedToken(
-                    token,
-                    "expected struct field (var, let, func)"
-                );
-        }
     }
 
     private BodyContainerNode ParseBody(bool isExpr)
@@ -471,149 +405,6 @@ public class Parser
         }
 
         return new BodyContainerNode(token.PosData, statements, isExpr);
-    }
-
-    private EnumNode ParseEnum(bool isExpr)
-    {
-        var startToken = Lexer.PeekToken();
-
-        ExpectAndEat(TokenType.Identifier, "enum", "expected enum");
-
-        var name = ParseSingleIdentifier(false);
-
-        ExpectAndEatNewline();
-
-        var cases = new List<EnumCaseNode>();
-        var funcs = new List<EnumFunctionNode>();
-
-        while (!IsNextAndEat(TokenType.Identifier, "end"))
-        {
-            var token = Lexer.PeekToken();
-            if (IsNext(TokenType.Identifier, "func"))
-            {
-                funcs.Add(new EnumFunctionNode(token.PosData, ParseFunctionDeclaration()));
-
-                ExpectAndEatNewline();
-            }
-            else if (IsNext(TokenType.Identifier))
-            {
-                var identifier = ParseSingleIdentifier(false);
-
-                if (IsNextAndEat(TokenType.Newline))
-                {
-                    cases.Add(new EnumCaseNode(identifier.PosData, identifier, []));
-                }
-                else
-                {
-                    ExpectAndEat(TokenType.Symbol, "(", null);
-
-                    var associatedValues = new List<EnumCaseAssociatedValueNode>();
-
-                    while (!IsNextAndEat(TokenType.Symbol, ")"))
-                    {
-                        var identifierOrType = ParseSingleIdentifier(false);
-                        var type = GetIdentifierIfNext(false);
-
-                        if (type != null)
-                        {
-                            associatedValues.Add(
-                                new EnumCaseAssociatedValueNode(
-                                    identifierOrType.PosData,
-                                    identifierOrType,
-                                    type
-                                )
-                            );
-                        }
-                        else
-                        {
-                            associatedValues.Add(
-                                new EnumCaseAssociatedValueNode(
-                                    identifierOrType.PosData,
-                                    null,
-                                    identifierOrType
-                                )
-                            );
-                        }
-                    }
-
-                    ExpectAndEatNewline();
-
-                    cases.Add(new EnumCaseNode(identifier.PosData, identifier, associatedValues));
-                }
-            }
-            else
-            {
-                throw new ParserError.UnexpectedToken(
-                    token,
-                    "expected enum case (func, identifier)"
-                );
-            }
-        }
-
-        return new EnumNode(name, cases);
-    }
-
-    private FunctionDeclarationNode ParseFunctionDeclaration()
-    {
-        ExpectAndEat(TokenType.Identifier, "func", "expected func");
-
-        var name = ParseSingleIdentifier(false);
-
-        var argumentStartToken = Lexer.PeekToken();
-
-        ExpectAndEat(TokenType.Symbol, "(", null);
-
-        var arguments = new List<FunctionArgumentNode>();
-
-        while (!IsNext(TokenType.Symbol, ")"))
-        {
-            var identifier = ParseSingleIdentifier(false);
-
-            TypeNode? type = null;
-            var isDynamic = IsNext(TokenType.Symbol, "?");
-
-            if (!IsNextAndEat(TokenType.Symbol, "?"))
-            {
-                type = ParseTypeAnnotation();
-            }
-
-            BaseNode? defaultValue = null;
-
-            if (IsNextAndEat(TokenType.Symbol, "="))
-            {
-                defaultValue = ParseExpressionPrimary();
-            }
-
-            arguments.Add(new FunctionArgumentNode(identifier.PosData, identifier, type, defaultValue, isDynamic));
-
-            if (!IsNextAndEat(TokenType.Symbol, ","))
-            {
-                break;
-            }
-        }
-
-        ExpectAndEat(TokenType.Symbol, ")", "expected an ending parenthesis for the arguments");
-
-        var canThrow = IsNextAndEat(TokenType.Identifier, "throws");
-
-        var returnType = GetIdentifierIfNext(false);
-
-        ExpectAndEatNewline();
-
-        var body = ParseBody(true);
-
-        return new FunctionDeclarationNode(
-            name,
-            new FunctionArgumentListNode(argumentStartToken.PosData, arguments),
-            body,
-            canThrow,
-            returnType
-        );
-    }
-
-    private IdentifierNode? GetIdentifierIfNext(bool acceptSubField)
-    {
-        return IsNext(TokenType.Identifier) ? ParseSingleIdentifier(acceptSubField) : null;
     }
 
 
@@ -678,94 +469,11 @@ public class Parser
             TokenType.Identifier when token.Value == "do" => ParseDoBlock(true),
             TokenType.Identifier => ParseIdentifier(),
             TokenType.Symbol when token.Value == "{" => ParseStructLiteral(),
-            _ => throw new ParserError.UnexpectedToken(
+            _ => throw new ParseError.UnexpectedToken(
                 token,
                 "expected expression"
             )
         };
-    }
-
-    private IfStatementNode ParseIf(bool isExpr)
-    {
-        var token = Lexer.PeekToken();
-
-        ExpectAndEat(TokenType.Identifier, "if", "expected if");
-
-        var condition = ParseExpression();
-
-        if (condition is not ExpressionNode)
-        {
-            if (condition is not IdentifierNode or BooleanLiteralNode)
-            {
-                throw new ParserError.UnexpectedToken(
-                    token,
-                    "expected expression"
-                );
-            }
-
-            condition = new BinaryOpNode(
-                condition.PosData,
-                condition,
-                new BooleanLiteralNode(condition.PosData, true),
-                Operator.Equal
-            );
-        }
-
-        ExpectAndEatNewline();
-
-        var body = ParseIfBody();
-
-        IfStatementNode? nextIf = null;
-
-        if (IsNextAndEat(TokenType.Identifier, "else"))
-        {
-            if (IsNext(TokenType.Identifier, "if"))
-            {
-                nextIf = ParseIf(isExpr);
-            }
-            else
-            {
-                var elseBody = ParseIfBody();
-
-                nextIf = new IfStatementNode(token.PosData, null, elseBody);
-            }
-        }
-        else
-        {
-            ExpectAndEat(TokenType.Identifier, "end", "expected an end");
-        }
-
-        return new IfStatementNode(token.PosData, condition as BinaryOpNode, body, nextIf);
-    }
-
-    private BodyContainerNode ParseIfBody()
-    {
-        var token = Lexer.PeekToken();
-        var statements = new List<BaseNode>();
-
-        while (!IsNextAndEat(TokenType.Identifier, "end") && !IsNext(TokenType.Identifier, "else"))
-        {
-            var nextToken = Lexer.PeekToken();
-
-            if (IsEnd)
-            {
-                throw new ParserError.ExpectedToken(
-                    new Token(TokenType.Identifier, nextToken.PosData, "end"),
-                    nextToken,
-                    "expected 'end' and not end of file"
-                );
-            }
-
-            var statement = ParseStatement();
-
-            ExpectNot(TokenType.Symbol, ";", "expected a newline instead of a semicolon as semicolons are not needed");
-
-            ExpectAndEatNewline();
-
-            statements.Add(statement);
-        }
-
-        return new BodyContainerNode(token.PosData, statements, false);
     }
 
     private StringLiteralNode ParseStringLiteral()
@@ -825,7 +533,7 @@ public class Parser
 
             if (fields.Any(f => f.Name.Name == name))
             {
-                throw new ParserError(
+                throw new ParseError(
                     field.PosData,
                     $"field {name} already defined in struct literal"
                 );
@@ -837,7 +545,7 @@ public class Parser
 
                 if (!usesCommas.Value)
                 {
-                    throw new ParserError(
+                    throw new ParseError(
                         field.PosData,
                         "if the struct literal is all on one line, it needs to use commas"
                     );
@@ -857,77 +565,6 @@ public class Parser
         );
 
         return new StructLiteralNode(Lexer.PeekToken().PosData, fields);
-    }
-
-    private TypeNode ParseTypeAnnotation()
-    {
-        if (IsNext(TokenType.Identifier, "func"))
-        {
-            return ParseFunctionType();
-        }
-
-        if (IsNext(TokenType.Symbol, "{"))
-        {
-            return ParseStructType();
-        }
-
-        if (IsNext(TokenType.Symbol, "("))
-        {
-            return ParseTupleType();
-        }
-
-        ExpectIdentifier("expected type annotation");
-
-        return ParseTypeIdentifier();
-    }
-
-    private StructTypeNode ParseStructType()
-    {
-        ExpectAndEat(TokenType.Symbol, "{", "expected an opening curly brace for the struct type");
-
-        var fields = new List<StructTypeFieldNode>();
-
-        while (!IsNextAndEat(TokenType.Symbol, "}"))
-        {
-            var name = ParseSingleIdentifier(false);
-
-            ExpectAndEat(TokenType.Symbol, ":", "expected a colon for the struct type");
-
-            var type = ParseTypeAnnotation();
-
-            fields.Add(new StructTypeFieldNode(name.PosData, name.Name, type));
-
-            if (!IsNextAndEat(TokenType.Symbol, ","))
-            {
-                break;
-            }
-        }
-
-        return new StructTypeNode(Lexer.PeekToken().PosData, fields);
-    }
-
-    private IdentifierTypeNode ParseTypeIdentifier()
-    {
-        Expect(TokenType.Identifier, "expected type identifier");
-
-        var token = Lexer.GetNextToken();
-
-        return new IdentifierTypeNode(token.PosData, token.Value);
-    }
-
-    private TupleTypeNode ParseTupleType()
-    {
-        var types = ParseArgumentsWithOptionalNames()
-            .Select(x =>
-            {
-                return new TupleTypeFieldNode(
-                    x.Item1,
-                    x.Item2?.Name,
-                    x.Item3
-                );
-            }).ToList();
-
-        return new TupleTypeNode(Lexer.PeekToken().PosData, types);
     }
 
     private List<(PosData, IdentifierNode?, TypeNode)> ParseArgumentsWithOptionalNames()
@@ -1084,7 +721,7 @@ public class Parser
                 }
                 else
                 {
-                    throw new ParserError(
+                    throw new ParseError(
                         argumentValue.PosData,
                         "argument name needs to be an identifier"
                     );

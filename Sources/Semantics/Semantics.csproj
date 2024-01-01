@@ -11,8 +11,4 @@
         <ProjectReference Include="..\TypeInformation\TypeInformation.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Helpers\"/>
-    </ItemGroup>
-
 </Project>

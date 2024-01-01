@@ -4,7 +4,7 @@ namespace Semantics;
 
 public class SemanticContext : ISymbolLookup
 {
-    public List<Scope> AllScopes = [];
+    public readonly List<Scope> AllScopes = [];
 
     public Scope CurrentScope { get; private set; }
 
