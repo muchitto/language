@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>Language</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Compiler</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Lexing\Lexing.csproj"/>
+        <ProjectReference Include="..\Parsing\Parsing.csproj"/>
+        <ProjectReference Include="..\Semantics\Semantics.csproj"/>
+    </ItemGroup>
+
+</Project>
