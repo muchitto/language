@@ -26,14 +26,9 @@ public class Scope(Scope? parent) : ISymbolLookup
 
         if (Symbols.TryGetValue(name, out var value))
         {
-            if (value.TypeInfo is not UnknownTypeInfo)
-            {
-                result = new SymbolLookupResult(null, SymbolLookupResultType.AlreadyExists);
-            }
-            else
-            {
-                result = new SymbolLookupResult(value, SymbolLookupResultType.IsUnknown);
-            }
+            result = value.TypeInfo is not UnknownTypeInfo
+                ? new SymbolLookupResult(null, SymbolLookupResultType.AlreadyExists)
+                : new SymbolLookupResult(value, SymbolLookupResultType.IsUnknown);
         }
         else
         {

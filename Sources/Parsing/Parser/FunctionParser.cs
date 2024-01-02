@@ -9,7 +9,7 @@ public partial class Parser
     {
         ExpectAndEat(TokenType.Identifier, "func", "expected func");
 
-        var name = ParseSingleIdentifier(false);
+        var name = ParseSingleIdentifier();
 
         var argumentStartToken = Lexer.PeekToken();
 
@@ -19,7 +19,7 @@ public partial class Parser
 
         while (!IsNext(TokenType.Symbol, ")"))
         {
-            var identifier = ParseSingleIdentifier(false);
+            var identifier = ParseSingleIdentifier();
 
             TypeNode? type = null;
             var isDynamic = IsNext(TokenType.Symbol, "?");
@@ -48,7 +48,7 @@ public partial class Parser
 
         var canThrow = IsNextAndEat(TokenType.Identifier, "throws");
 
-        var returnType = GetIdentifierIfNext(false);
+        var returnType = GetIdentifierIfNext();
 
         ExpectAndEatNewline();
 

@@ -1,17 +1,17 @@
-using Parsing.Nodes;
 using Lexing;
+using Parsing.Nodes;
 
 namespace Parsing.Parser;
 
 public partial class Parser
 {
-    private EnumNode ParseEnum(bool isExpr)
+    private EnumDeclarationNode ParseEnum(bool isExpr)
     {
         var startToken = Lexer.PeekToken();
 
         ExpectAndEat(TokenType.Identifier, "enum", "expected enum");
 
-        var name = ParseSingleIdentifier(false);
+        var name = ParseSingleIdentifier();
 
         ExpectAndEatNewline();
 
@@ -29,7 +29,7 @@ public partial class Parser
             }
             else if (IsNext(TokenType.Identifier))
             {
-                var identifier = ParseSingleIdentifier(false);
+                var identifier = ParseSingleIdentifier();
 
                 if (IsNextAndEat(TokenType.Newline))
                 {
@@ -43,8 +43,8 @@ public partial class Parser
 
                     while (!IsNextAndEat(TokenType.Symbol, ")"))
                     {
-                        var identifierOrType = ParseSingleIdentifier(false);
-                        var type = GetIdentifierIfNext(false);
+                        var identifierOrType = ParseSingleIdentifier();
+                        var type = GetIdentifierIfNext();
 
                         if (type != null)
                         {
@@ -82,7 +82,6 @@ public partial class Parser
             }
         }
 
-        return new EnumNode(name, cases, funcs);
+        return new EnumDeclarationNode(name, cases, funcs);
     }
-
 }

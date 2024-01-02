@@ -9,16 +9,16 @@ public partial class Parser
     {
         ExpectAndEat(TokenType.Identifier, "struct", "expected a struct identifier");
 
-        var name = ParseSingleIdentifier(false);
+        var name = ParseSingleIdentifier();
 
         IdentifierNode? parent = null;
 
         if (IsNextAndEat(TokenType.Identifier, "extends"))
         {
-            parent = ParseSingleIdentifier(false);
+            parent = ParseSingleIdentifier();
         }
 
-        List<IdentifierNode> interfaces = [];
+        List<IdentifierTypeNode> interfaces = [];
         var implOnly = false;
 
         if (IsNextAndEat(TokenType.Identifier, "impl"))
@@ -27,7 +27,7 @@ public partial class Parser
 
             while (!IsNext(TokenType.Newline))
             {
-                var impl = ParseSingleIdentifier(false);
+                var impl = (IdentifierTypeNode)ParseSingleIdentifier();
 
                 interfaces.Add(impl);
             }
@@ -86,5 +86,4 @@ public partial class Parser
                 );
         }
     }
-
 }

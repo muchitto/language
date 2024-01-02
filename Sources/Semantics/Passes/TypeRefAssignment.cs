@@ -10,16 +10,19 @@ namespace Semantics.Passes;
  */
 public class TypeRefAssignment : SemanticPass, INodeHandler
 {
-    public void Handle(StructDeclarationNode structDeclarationNode)
+    public void Handle(ReturnNode returnNode)
     {
-        var lookupResult = SemanticContext.Add(structDeclarationNode.Name.Name);
+        throw new NotImplementedException();
+    }
 
-        if (lookupResult.ResultType == SymbolLookupResultType.AlreadyExists)
-        {
-            throw new Exception($"Struct {structDeclarationNode.Name.Name} already exists");
-        }
+    public void Handle(IdentifierNode identifierNode)
+    {
+        throw new NotImplementedException();
+    }
 
-        structDeclarationNode.TypeRef = lookupResult.TypeRef;
+    public void Handle(ExpressionNode expressionNode)
+    {
+        throw new NotImplementedException();
     }
 
     public void Handle(AnnotationNode annotationNode)
@@ -37,81 +40,62 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(TupleTypeFieldNode tupleTypeFieldNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(TupleTypeNode tupleTypeNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(TupleLiteralNode tupleLiteralNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(TupleLiteralFieldNode tupleLiteralFieldNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(ReturnNode returnNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(TypeNode typeNode)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Handle(TypeAliasDeclarationNode typeAliasDeclarationNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(IdentifierTypeNode identifierTypeNode)
-    {
-        var result = SemanticContext.LookUpOrAdd(identifierTypeNode.Name);
-
-        identifierTypeNode.TypeRef = result.TypeRef;
-    }
-
-    public void Handle(StructTypeNode structTypeNode)
+    public void Handle(VariableDeclarationNode variableDeclarationNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(StructTypeFieldNode structTypeFieldNode)
+    public void Handle(AssignmentNode variableAssignmentNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(FunctionTypeNode functionTypeNode)
+    public void Handle(IfStatementNode ifStatementNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(StatementListContainerNode statementListContainerNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(BodyContainerNode bodyContainerDeclarationNode)
+    {
+        SemanticContext.StartScope();
+
+        bodyContainerDeclarationNode.BodyAccept(this);
+
+        SemanticContext.EndScope();
+    }
+
+    public void Handle(ProgramContainerNode programContainerNode)
+    {
+        SemanticContext.StartScope();
+
+        CreateBaseTypes();
+
+        programContainerNode.BodyAccept(this);
+
+        SemanticContext.EndScope();
+    }
+
+    public void Handle(FieldAccessNode fieldAccessNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(ArrayAccessNode arrayAccessNode)
     {
         throw new NotImplementedException();
     }
 
     public void Handle(LiteralNode literalNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleStart(FunctionArgumentListNode functionArgumentListNode)
-    {
-    }
-
-    public void HandleEnd(FunctionArgumentListNode functionArgumentListNode)
-    {
-    }
-
-    public void Handle(FunctionArgumentNode functionArgumentNode)
-    {
-    }
-
-    public void Handle(VariableDeclarationNode variableDeclarationNode)
     {
         throw new NotImplementedException();
     }
@@ -126,63 +110,14 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
+    public void Handle(TupleLiteralNode tupleLiteralNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(AssignmentNode variableAssignmentNode)
-    {
-        var variableName = variableAssignmentNode.Name.Name;
-        var lookupResult = SemanticContext.LookUpOrAdd(variableName);
-        variableAssignmentNode.TypeRef = lookupResult.TypeRef;
-    }
-
-    public void Handle(IfStatementNode ifStatementNode)
+    public void Handle(TupleLiteralFieldNode tupleLiteralFieldNode)
     {
         throw new NotImplementedException();
-    }
-
-    public void HandleStart(StatementListContainerNode statementListContainerNode)
-    {
-        SemanticContext.NewScope();
-    }
-
-    public void HandleEnd(StatementListContainerNode statementListContainerNode)
-    {
-        SemanticContext.PopScope();
-    }
-
-    public void HandleStart(BodyContainerNode bodyContainerDeclarationNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleEnd(BodyContainerNode bodyContainerDeclarationNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleStart(ProgramContainerNode programContainerNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleEnd(ProgramContainerNode programContainerNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(FunctionCallNode functionCallNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(IdentifierNode identifierNode)
-    {
-        var result = SemanticContext.LookUpOrAdd(identifierNode.Name);
-
-        identifierNode.TypeRef = result.TypeRef;
     }
 
     public void Handle(StringLiteralNode stringLiteralNode)
@@ -210,32 +145,85 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(StructFieldNode structFieldNode)
+    public void Handle(TypeNode typeNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(StructFunctionNode structFunctionNode)
+    public void Handle(StructTypeNode structTypeNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(StructVariableNode structVariableNode)
+    public void Handle(StructTypeFieldNode structTypeFieldNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(ExpressionNode expressionNode)
+    public void Handle(FunctionTypeNode functionTypeNode)
     {
         throw new NotImplementedException();
+    }
+
+    public void Handle(TupleTypeNode tupleTypeNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(TupleTypeFieldNode tupleTypeFieldNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(IdentifierTypeNode identifierTypeNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionTypeArgumentNode functionTypeArgumentNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionDeclarationNode functionDeclarationNode)
+    {
+        SemanticContext.StartScope();
+
+        functionDeclarationNode.BodyAccept(this);
+
+        SemanticContext.EndScope();
+    }
+
+    public void Handle(FunctionArgumentListNode functionArgumentListNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionArgumentNode functionArgumentNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionCallNode functionCallNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(EnumDeclarationNode enumDeclarationNodeDeclaration)
+    {
+        SemanticContext.StartScope();
+
+        enumDeclarationNodeDeclaration.BodyAccept(this);
+
+        SemanticContext.EndScope();
     }
 
     public void Handle(EnumFunctionNode enumFunctionNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(EnumNode enumNodeDeclaration)
     {
         throw new NotImplementedException();
     }
@@ -255,42 +243,28 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(FunctionTypeArgumentNode functionTypeArgumentNode)
+    public void Handle(StructDeclarationNode structDeclarationNode)
+    {
+        SemanticContext.StartScope();
+
+        structDeclarationNode.BodyAccept(this);
+
+        SemanticContext.EndScope();
+    }
+
+    public void Handle(StructFieldNode structFieldNode)
     {
         throw new NotImplementedException();
     }
 
-    public void HandleStart(FunctionDeclarationNode functionDeclarationNode)
+    public void Handle(StructFunctionNode structFunctionNode)
     {
-        var lookupResult = SemanticContext.Add(functionDeclarationNode.Name.Name);
-
-        if (lookupResult.ResultType == SymbolLookupResultType.AlreadyExists)
-        {
-            throw new Exception($"Function {functionDeclarationNode.Name.Name} already exists");
-        }
-
-        functionDeclarationNode.TypeRef = lookupResult.TypeRef;
-
-        SemanticContext.NewScope();
+        throw new NotImplementedException();
     }
 
-    public void HandleEnd(FunctionDeclarationNode functionDeclarationNode)
+    public void Handle(StructVariableNode structVariableNode)
     {
-        SemanticContext.PopScope();
-    }
-
-
-    public void Handle(ProgramContainerNode programContainerNode)
-    {
-        SemanticContext.NewScope();
-
-        CreateBaseTypes();
-
-        SemanticContext.PopScope();
-    }
-
-    public void Handle(BodyContainerNode bodyContainerNode)
-    {
+        throw new NotImplementedException();
     }
 
     private void CreateBaseTypes()

@@ -7,7 +7,7 @@ public abstract class LiteralNode : BaseNode
 {
     protected LiteralNode(PosData posData) : base(posData)
     {
-    }
+    } 
 
     public override void Accept(INodeHandler handler)
     {

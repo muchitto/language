@@ -7,12 +7,7 @@ public class SemanticChecks
 {
     private readonly List<SemanticPass> _passes =
     [
-        new TypeRefAssignment(),
-        new TypeResolutionPass(),
-        new TypePropagationPass(),
-        new TypeCheckPass(),
-        new ExceptionChecker(),
-        new NullHandleChecker()
+        new TypeRefAssignment()
     ];
 
     public void RunPass(ProgramContainerNode ast)

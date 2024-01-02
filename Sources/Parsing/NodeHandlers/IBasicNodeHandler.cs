@@ -24,13 +24,13 @@ public interface IBasicNodeHandler
 
     public void Handle(IfStatementNode ifStatementNode);
 
-    public void HandleStart(StatementListContainerNode statementListContainerNode);
+    public void Handle(StatementListContainerNode statementListContainerNode);
 
-    public void HandleEnd(StatementListContainerNode statementListContainerNode);
+    public void Handle(BodyContainerNode bodyContainerDeclarationNode);
 
-    public void HandleStart(BodyContainerNode bodyContainerDeclarationNode);
-    public void HandleEnd(BodyContainerNode bodyContainerDeclarationNode);
+    public void Handle(ProgramContainerNode programContainerNode);
 
-    public void HandleStart(ProgramContainerNode programContainerNode);
-    public void HandleEnd(ProgramContainerNode programContainerNode);
+    public void Handle(FieldAccessNode fieldAccessNode);
+
+    public void Handle(ArrayAccessNode arrayAccessNode);
 }

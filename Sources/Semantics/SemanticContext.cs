@@ -42,7 +42,7 @@ public class SemanticContext : ISymbolLookup
         return AllScopes.SelectMany(scope => scope.Symbols.ToList().Select(x => x.Value)).ToList();
     }
 
-    public Scope NewScope()
+    public Scope StartScope()
     {
         var newScope = new Scope(CurrentScope);
 
@@ -53,7 +53,7 @@ public class SemanticContext : ISymbolLookup
         return newScope;
     }
 
-    public void PopScope()
+    public void EndScope()
     {
         if (CurrentScope.Parent != null)
         {

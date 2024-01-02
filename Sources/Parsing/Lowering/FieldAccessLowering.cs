@@ -1,9 +1,9 @@
 using Parsing.NodeHandlers;
 using Parsing.Nodes;
 
-namespace Semantics.Passes;
+namespace Parsing.Lowering;
 
-public class TypeCheckPass : SemanticPass, INodeHandler
+public class FieldAccessLowering : INodeHandler
 {
     public void Handle(ReturnNode returnNode)
     {
@@ -55,92 +55,27 @@ public class TypeCheckPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void HandleStart(StatementListContainerNode statementListContainerNode)
+    public void Handle(StatementListContainerNode statementListContainerNode)
     {
         throw new NotImplementedException();
     }
 
-    public void HandleEnd(StatementListContainerNode statementListContainerNode)
+    public void Handle(BodyContainerNode bodyContainerDeclarationNode)
     {
         throw new NotImplementedException();
     }
 
-    public void HandleStart(BodyContainerNode bodyContainerDeclarationNode)
+    public void Handle(ProgramContainerNode programContainerNode)
     {
         throw new NotImplementedException();
     }
 
-    public void HandleEnd(BodyContainerNode bodyContainerDeclarationNode)
+    public void Handle(FieldAccessNode fieldAccessNode)
     {
         throw new NotImplementedException();
     }
 
-    public void HandleStart(ProgramContainerNode programContainerNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleEnd(ProgramContainerNode programContainerNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(EnumNode enumNodeDeclaration)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(EnumFunctionNode enumFunctionNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(EnumCaseAssociatedValueNode enumCaseAssociatedValueNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(EnumCaseNode enumCaseNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleStart(FunctionDeclarationNode functionDeclarationNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleEnd(FunctionDeclarationNode functionDeclarationNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleStart(FunctionArgumentListNode functionArgumentListNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleEnd(FunctionArgumentListNode functionArgumentListNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(FunctionArgumentNode functionArgumentNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(FunctionCallNode functionCallNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(InterfaceDeclarationNode interfaceDeclarationNodeDeclaration)
+    public void Handle(ArrayAccessNode arrayAccessNode)
     {
         throw new NotImplementedException();
     }
@@ -195,26 +130,6 @@ public class TypeCheckPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(StructDeclarationNode structDeclarationNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(StructFieldNode structFieldNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(StructFunctionNode structFunctionNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(StructVariableNode structVariableNode)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Handle(TypeNode typeNode)
     {
         throw new NotImplementedException();
@@ -255,7 +170,72 @@ public class TypeCheckPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public override void Run(ProgramContainerNode ast, SemanticContext semanticContext)
+    public void Handle(FunctionDeclarationNode functionDeclarationNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionArgumentListNode functionArgumentListNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionArgumentNode functionArgumentNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionCallNode functionCallNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(EnumDeclarationNode enumDeclarationNodeDeclaration)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(EnumFunctionNode enumFunctionNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(EnumCaseAssociatedValueNode enumCaseAssociatedValueNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(EnumCaseNode enumCaseNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(InterfaceDeclarationNode interfaceDeclarationNodeDeclaration)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(StructDeclarationNode structDeclarationNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(StructFieldNode structFieldNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(StructFunctionNode structFunctionNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(StructVariableNode structVariableNode)
     {
         throw new NotImplementedException();
     }

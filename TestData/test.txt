@@ -1,13 +1,11 @@
 func test(var1 Test)
+    var1.test()
     var1.a = 1
 end
 
 struct Test
     var a Int
-end
 
-interface ITest
-end
-
-struct Test2 extends Test impl only ITest
+    func test()
+    end
 end

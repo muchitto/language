@@ -3,7 +3,7 @@ using Parsing.Nodes;
 namespace Parsing.NodeHandlers;
 
 public interface ITypeNodeHandler
-{
+{ 
     public void Handle(TypeNode typeNode);
 
     public void Handle(StructTypeNode structTypeNode);

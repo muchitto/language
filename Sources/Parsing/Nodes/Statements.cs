@@ -10,9 +10,9 @@ public abstract class StatementNode : BaseNode
     }
 }
 
-public class AssignmentNode(IdentifierNode name, BaseNode value) : StatementNode(name.PosData)
+public class AssignmentNode(BaseNode name, BaseNode value) : StatementNode(name.PosData)
 {
-    public IdentifierNode Name { get; set; } = name;
+    public BaseNode Name { get; set; } = name;
     public BaseNode Value { get; set; } = value;
 
     public override void Accept(INodeHandler handler)

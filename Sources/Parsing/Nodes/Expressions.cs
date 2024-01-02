@@ -10,17 +10,17 @@ public abstract class ExpressionNode : BaseNode
     }
 }
 
-public class FunctionCallNode(PosData posData, IdentifierNode name, List<FunctionCallArgumentNode> arguments)
-    : ExpressionNode(posData)
+public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> arguments)
+    : ExpressionNode(callee.PosData)
 {
-    public IdentifierNode Name { get; set; } = name;
+    public BaseNode Callee { get; set; } = callee;
     public List<FunctionCallArgumentNode> Arguments { get; set; } = arguments;
 
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
 
-        Name.Accept(handler);
+        Callee.Accept(handler);
 
         foreach (var argument in Arguments)
         {

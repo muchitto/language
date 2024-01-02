@@ -16,46 +16,80 @@ public abstract class BaseNode(PosData posData)
 public abstract class StatementListContainerNode(PosData posData, List<BaseNode> Statements) : BaseNode(posData)
 {
     public List<BaseNode> Statements { get; set; } = Statements;
-
-    public override void Accept(INodeHandler handler)
-    {
-        handler.HandleStart(this);
-
-        foreach (var statement in Statements)
-        {
-            statement.Accept(handler);
-        }
-
-        handler.HandleEnd(this);
-    }
 }
 
-public class ProgramContainerNode(PosData posData, List<BaseNode> statements)
-    : StatementListContainerNode(posData, statements)
+public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.PosData)
 {
-}
-
-public class BodyContainerNode(PosData posData, List<BaseNode> statements, bool canReturn)
-    : StatementListContainerNode(posData, statements)
-{
-    public bool CanReturn { get; set; } = canReturn;
-}
-
-public class IdentifierNode(PosData posData, string name, BaseNode? subField = null)
-    : BaseNode(posData)
-{
-    public string Name { get; set; } = name;
-    public BaseNode? SubField { get; set; } = subField;
-
-    public void PropagateTypes()
-    {
-    }
+    public BaseNode Left { get; set; } = left;
+    public BaseNode Right { get; set; } = right;
 
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
 
-        SubField?.Accept(handler);
+        Left.Accept(handler);
+        Right.Accept(handler);
+    }
+}
+
+public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.PosData)
+{
+    public BaseNode Array { get; set; } = array;
+    public BaseNode AccessExpression { get; set; } = access;
+
+    public override void Accept(INodeHandler handler)
+    {
+        handler.Handle(this);
+
+        Array.Accept(handler);
+        AccessExpression.Accept(handler);
+    }
+}
+
+public class ProgramContainerNode(PosData posData, List<BaseNode> statements)
+    : StatementListContainerNode(posData, statements), IBodyAccept
+{
+    public void BodyAccept(INodeHandler handler)
+    {
+        foreach (var statement in Statements)
+        {
+            statement.Accept(handler);
+        }
+    }
+
+    public override void Accept(INodeHandler handler)
+    {
+        handler.Handle(this);
+    }
+}
+
+public class BodyContainerNode(PosData posData, List<BaseNode> statements, bool canReturn)
+    : StatementListContainerNode(posData, statements), IBodyAccept
+{
+    public bool CanReturn { get; set; } = canReturn;
+
+    public void BodyAccept(INodeHandler handler)
+    {
+        foreach (var statement in Statements)
+        {
+            statement.Accept(handler);
+        }
+    }
+
+    public override void Accept(INodeHandler handler)
+    {
+        handler.Handle(this);
+    }
+}
+
+public class IdentifierNode(PosData posData, string name)
+    : BaseNode(posData)
+{
+    public string Name { get; set; } = name;
+
+    public override void Accept(INodeHandler handler)
+    {
+        handler.Handle(this);
     }
 
     public static explicit operator IdentifierNode(IdentifierTypeNode node)

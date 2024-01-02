@@ -1,6 +1,3 @@
 namespace Parsing.NodeHandlers;
 
-public interface INodeHandler : IBasicNodeHandler, IEnumNodeHandler, IFunctionNodeHandler, IInterfaceNodeHandler,
-    ILiteralNodeHandler, IStructNodeHandler, ITypeNodeHandler
-{
-}
+public interface INodeHandler : IBasicNodeHandler, ILiteralNodeHandler, ITypeNodeHandler, IDeclarationNodeHandler;

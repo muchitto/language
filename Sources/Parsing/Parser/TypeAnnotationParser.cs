@@ -5,7 +5,6 @@ namespace Parsing.Parser;
 
 public partial class Parser
 {
-    
     private StructTypeNode ParseStructType()
     {
         ExpectAndEat(TokenType.Symbol, "{", "expected an opening curly brace for the struct type");
@@ -14,7 +13,7 @@ public partial class Parser
 
         while (!IsNextAndEat(TokenType.Symbol, "}"))
         {
-            var name = ParseSingleIdentifier(false);
+            var name = ParseSingleIdentifier();
 
             ExpectAndEat(TokenType.Symbol, ":", "expected a colon for the struct type");
 
@@ -54,7 +53,7 @@ public partial class Parser
 
         return new TupleTypeNode(Lexer.PeekToken().PosData, types);
     }
-    
+
     private TypeNode ParseTypeAnnotation()
     {
         if (IsNext(TokenType.Identifier, "func"))

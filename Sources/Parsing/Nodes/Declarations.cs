@@ -14,7 +14,7 @@ public class FunctionDeclarationNode(
     BodyContainerNode bodyContainerNode,
     bool canThrow,
     IdentifierNode? returnTypeName = null)
-    : DeclarationNode(name)
+    : DeclarationNode(name), IBodyAccept
 {
     public FunctionArgumentListNode Arguments { get; set; } = arguments;
     public BodyContainerNode BodyContainerNode { get; set; } = bodyContainerNode;
@@ -22,17 +22,18 @@ public class FunctionDeclarationNode(
     public bool CanThrow { get; set; } = canThrow;
     public IdentifierNode? ReturnTypeName { get; set; } = returnTypeName;
 
+    public void BodyAccept(INodeHandler handler)
+    {
+        BodyContainerNode.Accept(handler);
+    }
+
     public override void Accept(INodeHandler handler)
     {
-        handler.HandleStart(this);
+        handler.Handle(this);
 
         Arguments.Accept(handler);
 
-        BodyContainerNode.Accept(handler);
-
         ReturnTypeName?.Accept(handler);
-
-        handler.HandleEnd(this);
     }
 }
 
@@ -42,14 +43,12 @@ public class FunctionArgumentListNode(PosData posData, List<FunctionArgumentNode
 
     public override void Accept(INodeHandler handler)
     {
-        handler.HandleStart(this);
+        handler.Handle(this);
 
         foreach (var argument in Arguments)
         {
             argument.Accept(handler);
         }
-
-        handler.HandleEnd(this);
     }
 }
 
@@ -105,26 +104,36 @@ public class StructDeclarationNode(
     IdentifierNode name,
     List<StructFieldNode> fields,
     IdentifierNode? parent,
-    List<IdentifierNode> interfaces,
+    List<IdentifierTypeNode> interfaces,
     bool implOnly)
-    : DeclarationNode(name)
+    : DeclarationNode(name), IBodyAccept
 {
     public List<StructFieldNode> Fields { get; set; } = fields;
 
     public IdentifierNode? Parent { get; set; } = parent;
 
-    public List<IdentifierNode> Interfaces { get; set; } = interfaces;
+    public List<IdentifierTypeNode> Interfaces { get; set; } = interfaces;
 
     public bool ImplOnly { get; set; } = implOnly;
+
+    public void BodyAccept(INodeHandler handler)
+    {
+        foreach (var field in Fields)
+        {
+            field.Accept(handler);
+        }
+
+        foreach (var @interface in Interfaces)
+        {
+            @interface.Accept(handler);
+        }
+    }
 
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
 
-        foreach (var field in Fields)
-        {
-            field.Accept(handler);
-        }
+        Parent?.Accept(handler);
     }
 }
 
@@ -164,20 +173,26 @@ public class StructFunctionNode(PosData posData, string name, FunctionDeclaratio
     }
 }
 
-public class EnumNode(IdentifierNode name, List<EnumCaseNode> cases, List<EnumFunctionNode> functions) : DeclarationNode(name)
+public class EnumDeclarationNode(IdentifierNode name, List<EnumCaseNode> cases, List<EnumFunctionNode> functions)
+    : DeclarationNode(name), IBodyAccept
 {
     public List<EnumCaseNode> Cases { get; set; } = cases;
-    
+
     public List<EnumFunctionNode> Functions { get; set; } = functions;
+
+    public void BodyAccept(INodeHandler handler)
+    {
+        foreach (var @case in Cases)
+        {
+            @case.Accept(handler);
+        }
+    }
 
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
 
-        foreach (var @case in Cases)
-        {
-            @case.Accept(handler);
-        }
+        Name.Accept(handler);
     }
 }
 
@@ -190,6 +205,8 @@ public class EnumCaseNode(PosData posData, IdentifierNode name, List<EnumCaseAss
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+
+        Name.Accept(handler);
 
         foreach (var associatedValue in AssociatedValues)
         {
@@ -227,15 +244,13 @@ public class EnumFunctionNode(PosData posData, FunctionDeclarationNode function)
 public class InterfaceDeclarationNode(
     IdentifierNode name,
     List<FunctionDeclarationNode> functions,
-    List<VariableDeclarationNode> fields) : DeclarationNode(name)
+    List<VariableDeclarationNode> fields) : DeclarationNode(name), IBodyAccept
 {
     public List<FunctionDeclarationNode> Functions { get; set; } = functions;
     public List<VariableDeclarationNode> Fields { get; set; } = fields;
 
-    public override void Accept(INodeHandler handler)
+    public void BodyAccept(INodeHandler handler)
     {
-        handler.Handle(this);
-
         foreach (var function in Functions)
         {
             function.Accept(handler);
@@ -245,6 +260,13 @@ public class InterfaceDeclarationNode(
         {
             field.Accept(handler);
         }
+    }
+
+    public override void Accept(INodeHandler handler)
+    {
+        handler.Handle(this);
+
+        Name.Accept(handler);
     }
 }
 

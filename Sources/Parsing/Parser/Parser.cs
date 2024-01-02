@@ -181,10 +181,10 @@ public partial class Parser
             Lexer.GetNextToken();
         }
     }
-    
-    private IdentifierNode? GetIdentifierIfNext(bool acceptSubField)
+
+    private IdentifierNode? GetIdentifierIfNext()
     {
-        return IsNext(TokenType.Identifier) ? ParseSingleIdentifier(acceptSubField) : null;
+        return IsNext(TokenType.Identifier) ? ParseSingleIdentifier() : null;
     }
 
     public ProgramContainerNode Parse()
@@ -216,7 +216,7 @@ public partial class Parser
     {
         ExpectAndEat(TokenType.Identifier, "type", "expected type");
 
-        var name = ParseSingleIdentifier(false);
+        var name = ParseSingleIdentifier();
 
         ExpectAndEat(TokenType.Symbol, "=", "expected an equals sign for the type alias");
 
@@ -231,6 +231,7 @@ public partial class Parser
 
         throw new NotImplementedException();
 
+        /*
         var name = ParseSingleIdentifier(false);
 
         ExpectAndEat(TokenType.Symbol, "(", "expected an opening parenthesis for the annotation");
@@ -257,13 +258,15 @@ public partial class Parser
         ExpectAndEat(TokenType.Symbol, ")", "expected an ending parenthesis for the annotation");
 
         //return new AnnotationNode(name, annotationArguments, null);
+        */
     }
 
-    
+
     private InterfaceDeclarationNode ParseInterfaceDeclaration()
     {
         throw new NotImplementedException();
-        
+
+        /*
         ExpectAndEat(TokenType.Identifier, "interface", "expected interface");
 
         var name = ParseSingleIdentifier(false);
@@ -282,8 +285,9 @@ public partial class Parser
         }
 
         //return new InterfaceDeclarationNode(name, functions, );
+        */
     }
-    
+
     private BaseNode ParseStatement()
     {
         var token = Lexer.PeekToken();
@@ -299,7 +303,7 @@ public partial class Parser
             case TokenType.Identifier when token.Value == "struct":
                 return ParseStructDeclaration();
             case TokenType.Identifier when token.Value == "if":
-                return ParseIf(false);
+                return ParseIfStatement();
             case TokenType.Identifier when token.Value == "enum":
                 return ParseEnum(false);
             case TokenType.Identifier when token.Value == "return":
@@ -354,8 +358,8 @@ public partial class Parser
             isDynamic = true;
         }
 
-        var name = ParseSingleIdentifier(false);
-        var typeName = GetIdentifierIfNext(false);
+        var name = ParseSingleIdentifier();
+        var typeName = GetIdentifierIfNext();
 
         BaseNode? value = null;
         if (IsNextAndEat(TokenType.Symbol, "="))
@@ -410,7 +414,7 @@ public partial class Parser
 
     private BaseNode ParseIdentifier()
     {
-        var identifier = ParseSingleIdentifier(true);
+        var identifier = ParseIdentifierOrFieldAccess();
 
         if (IsNext(TokenType.Symbol, "("))
         {
@@ -424,26 +428,50 @@ public partial class Parser
             return new AssignmentNode(identifier, value);
         }
 
+        if (IsNext(TokenType.Symbol, "["))
+        {
+            return ParseArrayAccess(identifier);
+        }
+
         return identifier;
     }
 
-    private IdentifierNode ParseSingleIdentifier(bool acceptSubField)
+    private ArrayAccessNode ParseArrayAccess(BaseNode left)
+    {
+        ExpectAndEat(TokenType.Symbol, "[", "expected an opening square bracket for the array access");
+
+        var right = ParseExpression();
+
+        ExpectAndEat(TokenType.Symbol, "]", "expected a closing square bracket for the array access");
+
+        return new ArrayAccessNode(left, (ExpressionNode)right);
+    }
+
+    private IdentifierNode ParseSingleIdentifier()
     {
         Expect(TokenType.Identifier, "expected identifier");
 
         var name = Lexer.GetNextToken();
         var namePos = name.PosData;
 
-        if (!acceptSubField || !IsNext(TokenType.Symbol, "."))
+        return new IdentifierNode(namePos, name.Value);
+    }
+
+    private BaseNode ParseIdentifierOrFieldAccess()
+    {
+        var identifier = ParseSingleIdentifier();
+
+        if (!IsNextAndEat(TokenType.Symbol, "."))
         {
-            return new IdentifierNode(namePos, name.Value);
+            return identifier;
         }
 
-        Lexer.GetNextToken();
+        var subField = ParseIdentifier();
 
-        var subField = ParseSingleIdentifier(acceptSubField);
-
-        return new IdentifierNode(namePos, name.Value, subField);
+        return new FieldAccessNode(
+            identifier,
+            subField
+        );
     }
 
     private BodyContainerNode ParseDoBlock(bool isExpr)
@@ -465,7 +493,7 @@ public partial class Parser
         {
             TokenType.StringLiteral => ParseStringLiteral(),
             TokenType.NumberLiteral => ParseNumberLiteral(),
-            TokenType.Identifier when token.Value == "if" => ParseIf(true),
+            TokenType.Identifier when token.Value == "if" => ParseIfExpression(),
             TokenType.Identifier when token.Value == "do" => ParseDoBlock(true),
             TokenType.Identifier => ParseIdentifier(),
             TokenType.Symbol when token.Value == "{" => ParseStructLiteral(),
@@ -633,7 +661,7 @@ public partial class Parser
 
     private StructLiteralFieldNode ParseStructLiteralField()
     {
-        var name = ParseSingleIdentifier(false);
+        var name = ParseSingleIdentifier();
 
         ExpectAndEat(
             TokenType.Symbol,
@@ -697,7 +725,7 @@ public partial class Parser
         return lhs;
     }
 
-    private FunctionCallNode ParseFunctionCall(IdentifierNode name)
+    private FunctionCallNode ParseFunctionCall(BaseNode name)
     {
         var arguments = new List<FunctionCallArgumentNode>();
 
@@ -742,6 +770,6 @@ public partial class Parser
             "expected an ending parenthesis for the arguments"
         );
 
-        return new FunctionCallNode(name.PosData, name, arguments);
+        return new FunctionCallNode(name, arguments);
     }
 }
