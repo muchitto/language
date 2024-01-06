@@ -1,4 +1,5 @@
 using Semantics.Passes;
+using Semantics.Passes.DeclarationPass;
 using Syntax.Nodes;
 
 namespace Semantics;

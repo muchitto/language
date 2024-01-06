@@ -12,7 +12,6 @@ using Syntax.Nodes.Type;
 using Syntax.Nodes.Type.Function;
 using Syntax.Nodes.Type.Struct;
 using Syntax.Nodes.Type.Tuple;
-using TypeInformation;
 
 namespace Semantics.Passes;
 
@@ -210,12 +209,7 @@ public class TypeResolution : SemanticPass, INodeHandler
 
     public void Handle(StructDeclarationNode structDeclarationNode)
     {
-        var result = SemanticContext.LookupTypeRef(structDeclarationNode.Name.Name);
-
-        if (result.ResultType == SymbolResultType.NotDeclared)
-        {
-            throw new Exception($"Struct {structDeclarationNode.Name.Name} not found");
-        }
+        throw new NotImplementedException();
     }
 
     public void Handle(StructFunctionNode structFunctionNode)

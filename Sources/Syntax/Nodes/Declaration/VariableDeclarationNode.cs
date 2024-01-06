@@ -6,14 +6,14 @@ public class VariableDeclarationNode(
     IdentifierNode name,
     BaseNode? value,
     bool isLet,
-    IdentifierNode? typeName,
+    TypeNode? typeNode,
     bool isDynamic
 )
     : DeclarationNode(name)
 {
     public BaseNode? Value { get; set; } = value;
     public bool IsLet { get; set; } = isLet;
-    public IdentifierNode? TypeName { get; set; } = typeName;
+    public TypeNode? Type { get; set; } = typeNode;
     public bool IsDynamic { get; set; } = isDynamic;
 
     public override void Accept(INodeHandler handler)
@@ -30,6 +30,6 @@ public class VariableDeclarationNode(
 
         Name.TypeRefAdded();
         Value?.TypeRefAdded();
-        TypeName?.TypeRefAdded();
+        Type?.TypeRefAdded();
     }
 }

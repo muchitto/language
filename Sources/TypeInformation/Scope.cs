@@ -6,7 +6,7 @@ public enum ScopeType
     Declaration
 }
 
-public class Scope : ISymbolLookup
+public class Scope
 {
     public Scope(Scope? parent, ScopeType scopeType)
     {
@@ -42,99 +42,33 @@ public class Scope : ISymbolLookup
         }
     }
 
-    public SymbolResult LookupTypeRef(string name)
+    public TypeRef? LookupSymbolFromCurrentScope(string name)
     {
-        var scope = this;
-
-        while (scope != null)
-        {
-            if (scope.Symbols.TryGetValue(name, out var value))
-            {
-                return new SymbolResult(value, SymbolResultType.Found);
-            }
-
-            scope = scope.Parent;
-        }
-
-        return new SymbolResult(SymbolResultType.NotFound);
+        return Symbols.GetValueOrDefault(name);
     }
 
-    public SymbolResult LookupUntilDeclarationBoundary(string name)
+    public SymbolLookupResult LookupSymbol(string name)
     {
         var scope = this;
 
+        var crossedDeclarationBoundary = false;
         while (scope != null)
         {
-            if (scope.Symbols.TryGetValue(name, out var value))
+            var symbol = scope.LookupSymbolFromCurrentScope(name);
+
+            if (symbol != null)
             {
-                return new SymbolResult(value, SymbolResultType.Found);
+                return new SymbolLookupResult(symbol, crossedDeclarationBoundary);
             }
 
             if (scope.ScopeType == ScopeType.Declaration)
             {
-                return new SymbolResult(SymbolResultType.NotFound);
+                crossedDeclarationBoundary = true;
             }
 
             scope = scope.Parent;
         }
 
-        return new SymbolResult(SymbolResultType.NotFound);
-    }
-
-    public SymbolResult SetupDeclaration(string name, TypeRef typeRef)
-    {
-        var result = LookupUntilDeclarationBoundary(name);
-
-        if (result.ResultType == SymbolResultType.Found)
-        {
-            return new SymbolResult(SymbolResultType.AlreadyDeclared);
-        }
-
-        Symbols.Add(name, typeRef);
-
-        return new SymbolResult(SymbolResultType.Declared);
-    }
-
-    public SymbolResult CollectDeclaration(string name)
-    {
-        return CollectDeclaration(name, TypeRef.Unknown(this));
-    }
-
-    public SymbolResult CollectDeclaration(string name, TypeRef typeRef)
-    {
-        var result = LookupUntilDeclarationBoundary(name);
-
-        if (result.ResultType == SymbolResultType.Found)
-        {
-            return new SymbolResult(SymbolResultType.AlreadyDeclared);
-        }
-
-        Symbols.Add(name, typeRef);
-
-        return new SymbolResult(SymbolResultType.Declared);
-    }
-
-    public SymbolResult CollectVariable(string name)
-    {
-        return CollectVariable(name, TypeRef.Unknown(this));
-    }
-
-    public SymbolResult CollectVariable(string name, TypeRef typeRef)
-    {
-        var scope = this;
-
-        while (scope != null)
-        {
-            if (scope.Symbols.TryGetValue(name, out var value))
-            {
-                return new SymbolResult(value, SymbolResultType.Declared);
-            }
-
-            scope = scope.Parent;
-        }
-
-        Symbols.Add(name, typeRef);
-
-        return new SymbolResult(SymbolResultType.NotDeclared);
+        return new SymbolLookupResult(null, crossedDeclarationBoundary);
     }
 }

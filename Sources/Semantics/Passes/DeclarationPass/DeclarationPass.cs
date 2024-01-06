@@ -14,13 +14,13 @@ using Syntax.Nodes.Type.Struct;
 using Syntax.Nodes.Type.Tuple;
 using TypeInformation;
 
-namespace Semantics.Passes;
+namespace Semantics.Passes.DeclarationPass;
 
 /*
  * Just go through the top level declarations and add them to the symbol table as unknowns
  * so in the next pass, we can fetch them and add them to the symbol table as knowns
  */
-public class DeclarationPass : SemanticPass, INodeHandler
+public partial class DeclarationPass : SemanticPass, INodeHandler
 {
     public void Handle(ReturnNode returnNode)
     {
@@ -29,7 +29,7 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(IdentifierNode identifierNode)
     {
-        throw new NotImplementedException();
+        identifierNode.TypeRef = ReferenceVariable(identifierNode.Name);
     }
 
     public void Handle(ExpressionNode expressionNode)
@@ -59,12 +59,32 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(VariableDeclarationNode variableDeclarationNode)
     {
-        throw new NotImplementedException();
+        if (variableDeclarationNode.Type != null)
+        {
+            variableDeclarationNode.Type.Accept(this);
+
+            variableDeclarationNode.TypeRef = variableDeclarationNode.Type.TypeRef;
+        }
+        else if (variableDeclarationNode.IsDynamic)
+        {
+            variableDeclarationNode.TypeRef = TypeRef.Dynamic(SemanticContext.CurrentScope);
+        }
+        else if (variableDeclarationNode.Value != null)
+        {
+            variableDeclarationNode.Value.Accept(this);
+
+            variableDeclarationNode.TypeRef = variableDeclarationNode.Value.TypeRef;
+        }
+        else
+        {
+            throw new Exception("Variable must have a type");
+        }
     }
 
     public void Handle(AssignmentNode variableAssignmentNode)
     {
-        throw new NotImplementedException();
+        variableAssignmentNode.Name.Accept(this);
+        variableAssignmentNode.Value.Accept(this);
     }
 
     public void Handle(IfStatementNode ifStatementNode)
@@ -94,6 +114,8 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(FieldAccessNode fieldAccessNode)
     {
+        fieldAccessNode.Left.Accept(this);
+        fieldAccessNode.Right.Accept(this);
     }
 
     public void Handle(ArrayAccessNode arrayAccessNode)
@@ -138,7 +160,9 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(NumberLiteralNode numberLiteralNode)
     {
-        throw new NotImplementedException();
+        numberLiteralNode.TypeRef = numberLiteralNode.Value.Contains('.')
+            ? TypeRef.Float(SemanticContext.CurrentScope)
+            : TypeRef.Int(SemanticContext.CurrentScope);
     }
 
     public void Handle(CharLiteralNode charLiteralNode)
@@ -178,7 +202,7 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(IdentifierTypeNode identifierTypeNode)
     {
-        throw new NotImplementedException();
+        identifierTypeNode.TypeRef = ReferenceType(identifierTypeNode.Name);
     }
 
     public void Handle(FunctionTypeArgumentNode functionTypeArgumentNode)
@@ -188,12 +212,53 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(FunctionDeclarationNode functionDeclarationNode)
     {
-        throw new NotImplementedException();
+        functionDeclarationNode.Arguments.ForEach(argument => { argument.TypeName?.Accept(this); });
+
+        SemanticContext.StartScope(ScopeType.Declaration);
+
+        var arguments = functionDeclarationNode
+            .Arguments
+            .ToDictionary(
+                x => x.Name.Name,
+                x =>
+                {
+                    x.Accept(this);
+
+                    return x.TypeRef;
+                }
+            );
+
+        functionDeclarationNode.BodyContainerNode.Accept(this);
+
+        SemanticContext.EndScope();
+
+        functionDeclarationNode.ReturnTypeName?.Accept(this);
+
+        var functionType = new FunctionTypeInfo(
+            functionDeclarationNode.ReturnTypeName?.TypeRef,
+            arguments,
+            functionDeclarationNode.CanThrow
+        );
+
+        functionDeclarationNode.TypeRef = DeclareType(functionDeclarationNode.Name.Name, functionType);
     }
 
     public void Handle(FunctionArgumentNode functionArgumentNode)
     {
-        throw new NotImplementedException();
+        if (functionArgumentNode.TypeName != null)
+        {
+            functionArgumentNode.TypeName.Accept(this);
+
+            functionArgumentNode.TypeRef = functionArgumentNode.TypeName.TypeRef;
+        }
+        else if (functionArgumentNode.IsDynamic)
+        {
+            functionArgumentNode.TypeRef = TypeRef.Dynamic(SemanticContext.CurrentScope);
+        }
+        else
+        {
+            throw new Exception("Function argument must have a type");
+        }
     }
 
     public void Handle(EnumDeclarationNode enumDeclarationNodeDeclaration)
@@ -223,7 +288,25 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(StructDeclarationNode structDeclarationNode)
     {
-        throw new NotImplementedException();
+        SemanticContext.StartScope(ScopeType.Declaration);
+
+        var fields = structDeclarationNode
+            .Fields
+            .ToDictionary(
+                x => x.Name,
+                x =>
+                {
+                    x.Accept(this);
+
+                    return x.TypeRef;
+                }
+            );
+
+        var structType = new StructTypeInfo(fields);
+
+        SemanticContext.EndScope();
+
+        structDeclarationNode.TypeRef = DeclareType(structDeclarationNode.Name.Name, structType);
     }
 
     public void Handle(StructFunctionNode structFunctionNode)
@@ -242,7 +325,11 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(FunctionCallNode functionCallNode)
     {
-        throw new NotImplementedException();
+        functionCallNode.Callee.Accept(this);
+
+        functionCallNode.TypeRef = functionCallNode.Callee.TypeRef;
+
+        functionCallNode.Arguments.ForEach(argument => argument.Accept(this));
     }
 
     public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
@@ -262,22 +349,22 @@ public class DeclarationPass : SemanticPass, INodeHandler
 
     private void CreateBaseTypes()
     {
-        SemanticContext.SetupDeclaration("Int", new TypeRef(SemanticContext.CurrentScope, new IntTypeInfo(32)));
-        SemanticContext.SetupDeclaration("Float", new TypeRef(SemanticContext.CurrentScope, new FloatTypeInfo(64)));
-        SemanticContext.SetupDeclaration("Bool", new TypeRef(SemanticContext.CurrentScope, new BoolTypeInfo()));
-        SemanticContext.SetupDeclaration("String", new TypeRef(SemanticContext.CurrentScope, new StringTypeInfo()));
-        SemanticContext.SetupDeclaration("Char", new TypeRef(SemanticContext.CurrentScope, new CharTypeInfo()));
-        SemanticContext.SetupDeclaration("Void", new TypeRef(SemanticContext.CurrentScope, new VoidTypeInfo()));
-        SemanticContext.SetupDeclaration("Nil", new TypeRef(SemanticContext.CurrentScope, new NilTypeInfo()));
-        SemanticContext.SetupDeclaration("Dynamic", new TypeRef(SemanticContext.CurrentScope, new DynamicTypeInfo()));
+        DeclareType("Int", new IntTypeInfo(32));
+        DeclareType("Float", new FloatTypeInfo(64));
+        DeclareType("Bool", new BoolTypeInfo());
+        DeclareType("String", new StringTypeInfo());
+        DeclareType("Char", new CharTypeInfo());
+        DeclareType("Void", new VoidTypeInfo());
+        DeclareType("Nil", new NilTypeInfo());
+        DeclareType("Dynamic", new DynamicTypeInfo());
 
-        SemanticContext.SetupDeclaration("Int8", new TypeRef(SemanticContext.CurrentScope, new IntTypeInfo(8)));
-        SemanticContext.SetupDeclaration("Int16", new TypeRef(SemanticContext.CurrentScope, new IntTypeInfo(16)));
-        SemanticContext.SetupDeclaration("Int32", new TypeRef(SemanticContext.CurrentScope, new IntTypeInfo(32)));
-        SemanticContext.SetupDeclaration("Int64", new TypeRef(SemanticContext.CurrentScope, new IntTypeInfo(64)));
+        DeclareType("Int8", new IntTypeInfo(8));
+        DeclareType("Int16", new IntTypeInfo(16));
+        DeclareType("Int32", new IntTypeInfo(32));
+        DeclareType("Int64", new IntTypeInfo(64));
 
-        SemanticContext.SetupDeclaration("Float32", new TypeRef(SemanticContext.CurrentScope, new FloatTypeInfo(32)));
-        SemanticContext.SetupDeclaration("Float64", new TypeRef(SemanticContext.CurrentScope, new FloatTypeInfo(64)));
+        DeclareType("Float32", new FloatTypeInfo(32));
+        DeclareType("Float64", new FloatTypeInfo(64));
     }
 
     public override void Run(ProgramContainerNode ast, SemanticContext semanticContext)

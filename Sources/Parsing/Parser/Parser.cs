@@ -365,7 +365,7 @@ public partial class Parser
         }
 
         var name = ParseSingleIdentifier();
-        var typeName = GetIdentifierIfNext();
+        var typeNode = IsNext(TokenType.Identifier) ? ParseTypeAnnotation() : null;
 
         BaseNode? value = null;
         if (IsNextAndEat(TokenType.Symbol, "="))
@@ -373,7 +373,7 @@ public partial class Parser
             value = ParseExpressionPrimary();
         }
 
-        if (!isLet && typeName == null && value == null)
+        if (!isLet && typeNode == null && value == null)
         {
             throw new ParseError.UnexpectedToken(
                 token,
@@ -393,7 +393,7 @@ public partial class Parser
             name,
             value,
             isLet,
-            typeName,
+            typeNode,
             isDynamic
         );
     }
