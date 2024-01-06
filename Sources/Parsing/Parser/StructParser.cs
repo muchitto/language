@@ -67,7 +67,7 @@ public partial class Parser
             }
             case TokenType.Identifier when token.Value == "func":
             {
-                var functionDeclaration = ParseFunctionDeclaration();
+                var functionDeclaration = ParseFunctionDeclaration(true);
 
                 if (functionDeclaration.Name == null)
                 {

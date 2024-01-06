@@ -21,9 +21,12 @@ public partial class DeclarationPass
                 throw new SemanticError($"Type {name} already declared");
             }
 
-            typeRef.TypeInfo = typeInfo;
+            if (!result.CrossedDeclarationBoundary)
+            {
+                typeRef.TypeInfo = typeInfo;
 
-            return typeRef;
+                return typeRef;
+            }
         }
 
         var newTypeRef = new TypeRef(CurrentScope, typeInfo);
@@ -85,8 +88,9 @@ public partial class DeclarationPass
             return typeRef;
         }
 
-        var newTypeRef = new TypeRef(CurrentScope, new UnknownTypeInfo());
-        CurrentScope.Symbols.Add(name, newTypeRef);
+        var scope = CurrentScope.Parent ?? CurrentScope;
+        var newTypeRef = new TypeRef(scope, new UnknownTypeInfo());
+        scope.Symbols.Add(name, newTypeRef);
         return newTypeRef;
     }
 }

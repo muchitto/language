@@ -7,13 +7,15 @@ public class FunctionDeclarationNode(
     List<FunctionArgumentNode> arguments,
     BodyContainerNode bodyContainerNode,
     bool canThrow,
-    IdentifierNode? returnTypeName = null)
+    bool isMethod,
+    IdentifierNode? returnTypeName)
     : DeclarationNode(name)
 {
     public List<FunctionArgumentNode> Arguments { get; set; } = arguments;
     public BodyContainerNode BodyContainerNode { get; set; } = bodyContainerNode;
 
     public bool CanThrow { get; set; } = canThrow;
+    public bool IsMethod { get; set; } = isMethod;
     public IdentifierNode? ReturnTypeName { get; set; } = returnTypeName;
 
     public override void Accept(INodeHandler handler)

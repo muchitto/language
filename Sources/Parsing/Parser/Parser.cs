@@ -303,7 +303,7 @@ public partial class Parser
             case TokenType.Symbol when token.Value == "@":
                 return ParseAnnotation();
             case TokenType.Identifier when token.Value == "func":
-                return ParseFunctionDeclaration();
+                return ParseFunctionDeclaration(false);
             case TokenType.Identifier when token.Value is "let" or "var":
                 return ParseVariableDeclaration();
             case TokenType.Identifier when token.Value == "struct":

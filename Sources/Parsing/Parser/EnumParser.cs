@@ -23,7 +23,7 @@ public partial class Parser
             var token = Lexer.PeekToken();
             if (IsNext(TokenType.Identifier, "func"))
             {
-                funcs.Add(new EnumFunctionNode(token.PosData, ParseFunctionDeclaration()));
+                funcs.Add(new EnumFunctionNode(token.PosData, ParseFunctionDeclaration(true)));
 
                 ExpectAndEatNewline();
             }

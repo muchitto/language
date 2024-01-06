@@ -6,7 +6,7 @@ namespace Parsing.Parser;
 
 public partial class Parser
 {
-    private FunctionDeclarationNode ParseFunctionDeclaration()
+    private FunctionDeclarationNode ParseFunctionDeclaration(bool isMethod)
     {
         ExpectAndEat(TokenType.Identifier, "func", "expected func");
 
@@ -60,6 +60,7 @@ public partial class Parser
             arguments,
             body,
             canThrow,
+            isMethod,
             returnType
         );
     }
