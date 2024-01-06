@@ -1,10 +1,13 @@
+using Parsing.Node;
+using Parsing.Node.Declaration;
+using Parsing.Node.Declaration.Enum;
+using Parsing.Node.Declaration.Function;
+using Parsing.Node.Declaration.Interface;
+using Parsing.Node.Declaration.Struct;
+using Parsing.Node.Expression;
+using Parsing.Node.Literal;
+using Parsing.Node.Statement;
 using Parsing.NodeHandlers;
-using Parsing.Nodes;
-using Parsing.Nodes.Declaration;
-using Parsing.Nodes.Declaration.Enum;
-using Parsing.Nodes.Declaration.Function;
-using Parsing.Nodes.Declaration.Interface;
-using Parsing.Nodes.Declaration.Struct;
 using Parsing.Nodes.Type;
 using Parsing.Nodes.Type.Function;
 using Parsing.Nodes.Type.Struct;
@@ -193,16 +196,6 @@ public class DeclarationPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(FunctionCallNode functionCallNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Handle(EnumDeclarationNode enumDeclarationNodeDeclaration)
     {
         throw new NotImplementedException();
@@ -245,6 +238,16 @@ public class DeclarationPass : SemanticPass, INodeHandler
         structVariableNode.Variable.Accept(this);
 
         structVariableNode.TypeRef = structVariableNode.Variable.TypeRef;
+    }
+
+    public void Handle(FunctionCallNode functionCallNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
+    {
+        throw new NotImplementedException();
     }
 
     public void Handle(StatementListContainerNode statementListContainerNode)

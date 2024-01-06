@@ -1,4 +1,4 @@
-using Parsing.Nodes;
+using Parsing.Node.Literal;
 
 namespace Parsing.NodeHandlers;
 

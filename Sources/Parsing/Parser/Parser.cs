@@ -1,7 +1,10 @@
 using Lexing;
-using Parsing.Nodes;
-using Parsing.Nodes.Declaration;
-using Parsing.Nodes.Declaration.Interface;
+using Parsing.Node;
+using Parsing.Node.Declaration;
+using Parsing.Node.Declaration.Interface;
+using Parsing.Node.Expression;
+using Parsing.Node.Literal;
+using Parsing.Node.Statement;
 using Parsing.Nodes.Type.Function;
 
 namespace Parsing.Parser;

@@ -1,4 +1,4 @@
-using Parsing.Nodes;
+using Parsing.Node;
 using Parsing.Nodes.Type;
 using Parsing.Nodes.Type.Function;
 using Parsing.Nodes.Type.Struct;

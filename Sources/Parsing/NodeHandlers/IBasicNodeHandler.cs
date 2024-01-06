@@ -1,5 +1,7 @@
+using Parsing.Node;
+using Parsing.Node.Declaration;
+using Parsing.Node.Statement;
 using Parsing.Nodes;
-using Parsing.Nodes.Declaration;
 
 namespace Parsing.NodeHandlers;
 

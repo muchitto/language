@@ -1,6 +1,6 @@
 using Lexing;
-using Parsing.Nodes;
-using Parsing.Nodes.Declaration.Struct;
+using Parsing.Node;
+using Parsing.Node.Declaration.Struct;
 using Parsing.Nodes.Type;
 
 namespace Parsing.Parser;

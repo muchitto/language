@@ -1,5 +1,8 @@
 using Lexing;
-using Parsing.Nodes;
+using Parsing.Node;
+using Parsing.Node.Expression;
+using Parsing.Node.Literal;
+using Parsing.Node.Statement;
 
 namespace Parsing.Parser;
 

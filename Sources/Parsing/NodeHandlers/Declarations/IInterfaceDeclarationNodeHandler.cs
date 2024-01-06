@@ -1,4 +1,4 @@
-using Parsing.Nodes.Declaration.Interface;
+using Parsing.Node.Declaration.Interface;
 
 namespace Parsing.NodeHandlers.Declarations;
 
