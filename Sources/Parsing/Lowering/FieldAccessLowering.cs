@@ -1,17 +1,17 @@
-using Parsing.Node;
-using Parsing.Node.Declaration;
-using Parsing.Node.Declaration.Enum;
-using Parsing.Node.Declaration.Function;
-using Parsing.Node.Declaration.Interface;
-using Parsing.Node.Declaration.Struct;
-using Parsing.Node.Expression;
-using Parsing.Node.Literal;
-using Parsing.Node.Statement;
-using Parsing.NodeHandlers;
-using Parsing.Nodes.Type;
-using Parsing.Nodes.Type.Function;
-using Parsing.Nodes.Type.Struct;
-using Parsing.Nodes.Type.Tuple;
+using Syntax.NodeHandlers;
+using Syntax.Nodes;
+using Syntax.Nodes.Declaration;
+using Syntax.Nodes.Declaration.Enum;
+using Syntax.Nodes.Declaration.Function;
+using Syntax.Nodes.Declaration.Interface;
+using Syntax.Nodes.Declaration.Struct;
+using Syntax.Nodes.Expression;
+using Syntax.Nodes.Literal;
+using Syntax.Nodes.Statement;
+using Syntax.Nodes.Type;
+using Syntax.Nodes.Type.Function;
+using Syntax.Nodes.Type.Struct;
+using Syntax.Nodes.Type.Tuple;
 
 namespace Parsing.Lowering;
 

@@ -8,11 +8,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Lexing\Lexing.csproj"/>
+        <ProjectReference Include="..\Syntax\Syntax.csproj"/>
         <ProjectReference Include="..\TypeInformation\TypeInformation.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Node\Basic\"/>
     </ItemGroup>
 
 </Project>

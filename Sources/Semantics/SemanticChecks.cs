@@ -1,5 +1,5 @@
-using Parsing.Node;
 using Semantics.Passes;
+using Syntax.Nodes;
 
 namespace Semantics;
 

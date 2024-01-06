@@ -1,4 +1,4 @@
-using Parsing.Node;
+using Syntax.Nodes;
 
 namespace Semantics;
 

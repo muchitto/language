@@ -1,8 +1,8 @@
 using Lexing;
-using Parsing.Node;
-using Parsing.Nodes.Type;
-using Parsing.Nodes.Type.Struct;
-using Parsing.Nodes.Type.Tuple;
+using Syntax.Nodes;
+using Syntax.Nodes.Type;
+using Syntax.Nodes.Type.Struct;
+using Syntax.Nodes.Type.Tuple;
 
 namespace Parsing.Parser;
 

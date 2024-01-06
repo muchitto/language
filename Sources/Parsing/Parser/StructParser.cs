@@ -1,7 +1,7 @@
 using Lexing;
-using Parsing.Node;
-using Parsing.Node.Declaration.Struct;
-using Parsing.Nodes.Type;
+using Syntax.Nodes;
+using Syntax.Nodes.Declaration.Struct;
+using Syntax.Nodes.Type;
 
 namespace Parsing.Parser;
 
