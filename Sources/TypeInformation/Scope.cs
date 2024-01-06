@@ -72,7 +72,7 @@ public class Scope
         return new SymbolLookupResult(null, crossedDeclarationBoundary, null);
     }
 
-    public Scope? TraverseScope(Func<Scope, bool> predicate)
+    public Scope TraverseScope(Func<Scope, bool> predicate)
     {
         var scope = this;
 
@@ -86,10 +86,10 @@ public class Scope
             scope = scope.Parent;
         }
 
-        return null;
+        return TopScope;
     }
 
-    public Scope? TraverseAfterDeclarationScope()
+    public Scope TraverseAfterDeclarationScope()
     {
         // Return the first scope after the declaration scope
         var shouldReturn = false;
