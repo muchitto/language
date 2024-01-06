@@ -1,5 +1,5 @@
-using Semantics.Passes;
 using Semantics.Passes.DeclarationPass;
+using Semantics.Passes.TypeResolution;
 using Syntax.Nodes;
 
 namespace Semantics;

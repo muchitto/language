@@ -10,7 +10,19 @@ public record SymbolLookupResult(TypeRef? TypeRef, bool CrossedDeclarationBounda
 {
     /// <summary>
     ///     This is true if the type reference is not null and the lookup did not cross a declaration boundary
-    ///     You can use this to check if the type reference can be used as a type.
+    ///     You can use this to check if the type reference can be used as a type again.
+    ///     For example:
+    ///     <code>
+    ///     func test()
+    ///         // ...
+    ///     end
+    /// 
+    ///     struct Test
+    ///         func test()
+    ///         end
+    ///     end
+    ///     </code>
+    ///     Those two functions have the same name, but the first one is a function and the second one is a method.
     /// </summary>
     public bool CanBeUsedAsType => TypeRef is { IsUnknown: true } ||
                                    (CrossedDeclarationBoundary && TypeRef is { IsUnknown: false });

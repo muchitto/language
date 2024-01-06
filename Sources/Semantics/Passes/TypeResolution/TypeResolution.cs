@@ -13,7 +13,7 @@ using Syntax.Nodes.Type.Function;
 using Syntax.Nodes.Type.Struct;
 using Syntax.Nodes.Type.Tuple;
 
-namespace Semantics.Passes;
+namespace Semantics.Passes.TypeResolution;
 
 public class TypeResolution : SemanticPass, INodeHandler
 {

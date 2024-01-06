@@ -1,6 +1,6 @@
 namespace Semantics.Tests;
 
-public class UnitTest1
+public class TypeRefTest
 {
     [Fact]
     public void Test1()
