@@ -212,6 +212,8 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(FunctionDeclarationNode functionDeclarationNode)
     {
+        // This makes sure that we reference the argument types before we declare the function
+        // as then we cross the declaration boundary 
         functionDeclarationNode.Arguments.ForEach(argument => { argument.TypeName?.Accept(this); });
 
         SemanticContext.StartScope(ScopeType.Declaration);
