@@ -1,5 +1,6 @@
 using Lexing;
 using Parsing.Nodes;
+using Parsing.Nodes.Declaration.Function;
 
 namespace Parsing.Parser;
 
@@ -36,7 +37,7 @@ public partial class Parser
                 defaultValue = ParseExpressionPrimary();
             }
 
-            arguments.Add(new FunctionArgumentNode(identifier.PosData, identifier, type, defaultValue, isDynamic));
+            arguments.Add(new FunctionArgumentNode(identifier, type, defaultValue, isDynamic));
 
             if (!IsNextAndEat(TokenType.Symbol, ","))
             {
@@ -56,7 +57,7 @@ public partial class Parser
 
         return new FunctionDeclarationNode(
             name,
-            new FunctionArgumentListNode(argumentStartToken.PosData, arguments),
+            arguments,
             body,
             canThrow,
             returnType

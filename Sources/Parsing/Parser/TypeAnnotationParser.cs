@@ -1,5 +1,8 @@
 using Lexing;
 using Parsing.Nodes;
+using Parsing.Nodes.Type;
+using Parsing.Nodes.Type.Struct;
+using Parsing.Nodes.Type.Tuple;
 
 namespace Parsing.Parser;
 
@@ -45,9 +48,9 @@ public partial class Parser
             .Select(x =>
             {
                 return new TupleTypeFieldNode(
-                    x.Item1,
-                    x.Item2?.Name,
-                    x.Item3
+                    x.PosData,
+                    x.Name?.Name,
+                    x.TypeName
                 );
             }).ToList();
 

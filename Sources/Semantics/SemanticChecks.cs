@@ -7,7 +7,8 @@ public class SemanticChecks
 {
     private readonly List<SemanticPass> _passes =
     [
-        new TypeRefAssignment()
+        new DeclarationPass(),
+        new TypeResolution()
     ];
 
     public void RunPass(ProgramContainerNode ast)
@@ -17,5 +18,7 @@ public class SemanticChecks
         {
             pass.Run(ast, semanticInfo);
         }
+
+        ast.TypeRefAdded();
     }
 }

@@ -2,9 +2,17 @@ namespace TypeInformation;
 
 public interface ISymbolLookup
 {
-    public SymbolLookupResult LookUp(string name);
-    public SymbolLookupResult Add(string name, TypeInfo? typeInfo = null);
-    public SymbolLookupResult LookUpOrAdd(string name, TypeInfo? typeInfo = null);
-    public SymbolLookupResult LookupOrAddOrReplace(string name, TypeInfo? typeInfo = null);
-    public SymbolLookupResult TopScopeLookUpOrAdd(string name, TypeInfo? typeInfo = null);
+    public SymbolResult LookupTypeRef(string name);
+
+    public SymbolResult LookupUntilDeclarationBoundary(string name);
+
+    public SymbolResult CollectDeclaration(string name);
+
+    public SymbolResult CollectDeclaration(string name, TypeRef typeRef);
+
+    public SymbolResult SetupDeclaration(string name, TypeRef typeRef);
+
+    public SymbolResult CollectVariable(string name);
+
+    public SymbolResult CollectVariable(string name, TypeRef typeRef);
 }

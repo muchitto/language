@@ -3,12 +3,7 @@ using Parsing.NodeHandlers;
 
 namespace Parsing.Nodes;
 
-public abstract class ExpressionNode : BaseNode
-{
-    protected ExpressionNode(PosData pos) : base(pos)
-    {
-    }
-}
+public abstract class ExpressionNode(PosData pos) : BaseNode(pos);
 
 public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> arguments)
     : ExpressionNode(callee.PosData)
@@ -19,12 +14,20 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Callee.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Callee.TypeRefAdded();
 
         foreach (var argument in Arguments)
         {
-            argument.Accept(handler);
+            argument.TypeRefAdded();
         }
     }
 }
@@ -37,9 +40,17 @@ public class FunctionCallArgumentNode(PosData posData, IdentifierNode? name, Bas
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Value.Accept(handler);
-        Name?.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Value.TypeRefAdded();
+        Name?.TypeRefAdded();
     }
 }
 
@@ -59,10 +70,18 @@ public class IfExpressionNode(
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Condition?.Accept(handler);
-        Body.Accept(handler);
-        NextIf?.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Condition?.TypeRefAdded();
+        Body.TypeRefAdded();
+        NextIf?.TypeRefAdded();
     }
 }
 
@@ -76,9 +95,17 @@ public class BinaryOpNode(PosData posData, BaseNode lhs, BaseNode rhs, Operator 
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Lhs.Accept(handler);
-        Rhs.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Lhs.TypeRefAdded();
+        Rhs.TypeRefAdded();
     }
 }
 
@@ -89,10 +116,18 @@ public class BodyExpressionNode(PosData posData, List<BaseNode> statements) : Ex
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
 
         foreach (var statement in Statements)
         {
-            statement.Accept(handler);
+            statement.TypeRefAdded();
         }
     }
 }

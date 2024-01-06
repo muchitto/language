@@ -5,7 +5,14 @@ end
 
 struct Test
     var a Int
+    var b Haha
 
     func test()
+        b.t = 1
     end
+end
+
+struct Haha
+    var t Int
+    var p Test
 end

@@ -1,14 +1,19 @@
 using Parsing.NodeHandlers;
 using Parsing.Nodes;
+using Parsing.Nodes.Declaration;
+using Parsing.Nodes.Declaration.Enum;
+using Parsing.Nodes.Declaration.Function;
+using Parsing.Nodes.Declaration.Interface;
+using Parsing.Nodes.Declaration.Struct;
+using Parsing.Nodes.Type;
+using Parsing.Nodes.Type.Function;
+using Parsing.Nodes.Type.Struct;
+using Parsing.Nodes.Type.Tuple;
 using TypeInformation;
 
 namespace Semantics.Passes;
 
-/*
- * Just go through the top level declarations and add them to the symbol table as unknowns
- * so in the next pass, we can fetch them and add them to the symbol table as knowns
- */
-public class TypeRefAssignment : SemanticPass, INodeHandler
+public class TypeResolution : SemanticPass, INodeHandler
 {
     public void Handle(ReturnNode returnNode)
     {
@@ -60,29 +65,14 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(StatementListContainerNode statementListContainerNode)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Handle(BodyContainerNode bodyContainerDeclarationNode)
     {
-        SemanticContext.StartScope();
-
-        bodyContainerDeclarationNode.BodyAccept(this);
-
-        SemanticContext.EndScope();
+        bodyContainerDeclarationNode.Statements.ForEach(statement => statement.Accept(this));
     }
 
     public void Handle(ProgramContainerNode programContainerNode)
     {
-        SemanticContext.StartScope();
-
-        CreateBaseTypes();
-
-        programContainerNode.BodyAccept(this);
-
-        SemanticContext.EndScope();
+        programContainerNode.Statements.ForEach(statement => statement.Accept(this));
     }
 
     public void Handle(FieldAccessNode fieldAccessNode)
@@ -91,11 +81,6 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
     }
 
     public void Handle(ArrayAccessNode arrayAccessNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(LiteralNode literalNode)
     {
         throw new NotImplementedException();
     }
@@ -187,15 +172,6 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
 
     public void Handle(FunctionDeclarationNode functionDeclarationNode)
     {
-        SemanticContext.StartScope();
-
-        functionDeclarationNode.BodyAccept(this);
-
-        SemanticContext.EndScope();
-    }
-
-    public void Handle(FunctionArgumentListNode functionArgumentListNode)
-    {
         throw new NotImplementedException();
     }
 
@@ -216,11 +192,7 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
 
     public void Handle(EnumDeclarationNode enumDeclarationNodeDeclaration)
     {
-        SemanticContext.StartScope();
-
-        enumDeclarationNodeDeclaration.BodyAccept(this);
-
-        SemanticContext.EndScope();
+        throw new NotImplementedException();
     }
 
     public void Handle(EnumFunctionNode enumFunctionNode)
@@ -245,16 +217,12 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
 
     public void Handle(StructDeclarationNode structDeclarationNode)
     {
-        SemanticContext.StartScope();
+        var result = SemanticContext.LookupTypeRef(structDeclarationNode.Name.Name);
 
-        structDeclarationNode.BodyAccept(this);
-
-        SemanticContext.EndScope();
-    }
-
-    public void Handle(StructFieldNode structFieldNode)
-    {
-        throw new NotImplementedException();
+        if (result.ResultType == SymbolResultType.NotDeclared)
+        {
+            throw new Exception($"Struct {structDeclarationNode.Name.Name} not found");
+        }
     }
 
     public void Handle(StructFunctionNode structFunctionNode)
@@ -267,27 +235,19 @@ public class TypeRefAssignment : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    private void CreateBaseTypes()
+    public void Handle(StatementListContainerNode statementListContainerNode)
     {
-        SemanticContext.Add("Int", new IntTypeInfo(32));
-        SemanticContext.Add("Int8", new IntTypeInfo(8));
-        SemanticContext.Add("Int16", new IntTypeInfo(16));
-        SemanticContext.Add("Int32", new IntTypeInfo(32));
-        SemanticContext.Add("Float", new FloatTypeInfo(64));
-        SemanticContext.Add("Float32", new FloatTypeInfo(32));
-        SemanticContext.Add("Float64", new FloatTypeInfo(64));
-        SemanticContext.Add("Bool", new BoolTypeInfo());
-        SemanticContext.Add("String", new StringTypeInfo());
-        SemanticContext.Add("Char", new CharTypeInfo());
-        SemanticContext.Add("Void", new VoidTypeInfo());
-        SemanticContext.Add("Nil", new NilTypeInfo());
-        SemanticContext.Add("Dynamic", new DynamicTypeInfo());
+        throw new NotImplementedException();
+    }
+
+    public void Handle(LiteralNode literalNode)
+    {
+        throw new NotImplementedException();
     }
 
     public override void Run(ProgramContainerNode ast, SemanticContext semanticContext)
     {
         SemanticContext = semanticContext;
-
         ast.Accept(this);
     }
 }

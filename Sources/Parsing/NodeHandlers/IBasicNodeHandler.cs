@@ -1,4 +1,5 @@
 using Parsing.Nodes;
+using Parsing.Nodes.Declaration;
 
 namespace Parsing.NodeHandlers;
 
@@ -23,8 +24,6 @@ public interface IBasicNodeHandler
     public void Handle(AssignmentNode variableAssignmentNode);
 
     public void Handle(IfStatementNode ifStatementNode);
-
-    public void Handle(StatementListContainerNode statementListContainerNode);
 
     public void Handle(BodyContainerNode bodyContainerDeclarationNode);
 

@@ -11,4 +11,10 @@
         <ProjectReference Include="..\TypeInformation\TypeInformation.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Nodes\Basic\"/>
+        <Folder Include="Nodes\Literals\"/>
+        <Folder Include="Nodes\Statements\"/>
+    </ItemGroup>
+
 </Project>

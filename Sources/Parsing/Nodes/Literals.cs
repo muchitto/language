@@ -7,15 +7,10 @@ public abstract class LiteralNode : BaseNode
 {
     protected LiteralNode(PosData posData) : base(posData)
     {
-    } 
-
-    public override void Accept(INodeHandler handler)
-    {
-        handler.Handle(this);
     }
 }
 
-public class StringLiteralNode(PosData posData, string value) : BaseNode(posData)
+public class StringLiteralNode(PosData posData, string value) : LiteralNode(posData)
 {
     public string Value { get; set; } = value;
 
@@ -23,9 +18,17 @@ public class StringLiteralNode(PosData posData, string value) : BaseNode(posData
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+    }
 }
 
-public class NumberLiteralNode(PosData posData, string value) : BaseNode(posData)
+public class NumberLiteralNode(PosData posData, string value) : LiteralNode(posData)
 {
     public string Value { get; set; } = value;
 
@@ -33,9 +36,17 @@ public class NumberLiteralNode(PosData posData, string value) : BaseNode(posData
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+    }
 }
 
-public class CharLiteralNode(PosData posData, char value) : BaseNode(posData)
+public class CharLiteralNode(PosData posData, char value) : LiteralNode(posData)
 {
     public char Value { get; set; } = value;
 
@@ -43,17 +54,33 @@ public class CharLiteralNode(PosData posData, char value) : BaseNode(posData)
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+    }
 }
 
-public class NilLiteralNode(PosData posData) : BaseNode(posData)
+public class NilLiteralNode(PosData posData) : LiteralNode(posData)
 {
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+    }
 }
 
-public class BooleanLiteralNode(PosData posData, bool value) : BaseNode(posData)
+public class BooleanLiteralNode(PosData posData, bool value) : LiteralNode(posData)
 {
     public bool Value { get; set; } = value;
 
@@ -61,9 +88,17 @@ public class BooleanLiteralNode(PosData posData, bool value) : BaseNode(posData)
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+    }
 }
 
-public class StructLiteralNode(PosData posData, List<StructLiteralFieldNode> fields) : BaseNode(posData)
+public class StructLiteralNode(PosData posData, List<StructLiteralFieldNode> fields) : LiteralNode(posData)
 {
     public List<StructLiteralFieldNode> Fields { get; set; } = fields;
 
@@ -71,9 +106,22 @@ public class StructLiteralNode(PosData posData, List<StructLiteralFieldNode> fie
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        foreach (var field in Fields)
+        {
+            field.TypeRefAdded();
+        }
+    }
 }
 
-public class StructLiteralFieldNode(PosData posData, IdentifierNode name, BaseNode value) : BaseNode(posData)
+public class StructLiteralFieldNode(PosData posData, IdentifierNode name, BaseNode value) : LiteralNode(posData)
 {
     public IdentifierNode Name { get; set; } = name;
     public BaseNode Value { get; set; } = value;
@@ -81,6 +129,17 @@ public class StructLiteralFieldNode(PosData posData, IdentifierNode name, BaseNo
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Name.TypeRefAdded();
+        Value.TypeRefAdded();
     }
 }
 
@@ -91,15 +150,23 @@ public class TupleLiteralNode(PosData posData, List<BaseNode> values) : LiteralN
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
 
         foreach (var value in Values)
         {
-            value.Accept(handler);
+            value.TypeRefAdded();
         }
     }
 }
 
-public class TupleLiteralFieldNode(PosData posData, string? name, BaseNode value) : ExpressionNode(posData)
+public class TupleLiteralFieldNode(PosData posData, string? name, BaseNode value) : LiteralNode(posData)
 {
     public BaseNode Value { get; set; } = value;
     public string? Name { get; set; } = name;
@@ -107,7 +174,15 @@ public class TupleLiteralFieldNode(PosData posData, string? name, BaseNode value
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Value.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Value.TypeRefAdded();
     }
 }

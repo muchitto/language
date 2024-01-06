@@ -1,5 +1,6 @@
 using Lexing;
 using Parsing.NodeHandlers;
+using Parsing.Nodes.Type;
 using TypeInformation;
 
 namespace Parsing.Nodes;
@@ -11,6 +12,8 @@ public abstract class BaseNode(PosData posData)
     public TypeRef TypeRef { get; set; }
 
     public abstract void Accept(INodeHandler handler);
+
+    public abstract void TypeRefAdded();
 }
 
 public abstract class StatementListContainerNode(PosData posData, List<BaseNode> Statements) : BaseNode(posData)
@@ -26,9 +29,17 @@ public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.PosD
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Left.Accept(handler);
-        Right.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Left.TypeRefAdded();
+        Right.TypeRefAdded();
     }
 }
 
@@ -40,45 +51,59 @@ public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.P
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Array.Accept(handler);
-        AccessExpression.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Array.TypeRefAdded();
+        AccessExpression.TypeRefAdded();
     }
 }
 
 public class ProgramContainerNode(PosData posData, List<BaseNode> statements)
-    : StatementListContainerNode(posData, statements), IBodyAccept
+    : StatementListContainerNode(posData, statements)
 {
-    public void BodyAccept(INodeHandler handler)
-    {
-        foreach (var statement in Statements)
-        {
-            statement.Accept(handler);
-        }
-    }
-
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
+
+    public override void TypeRefAdded()
+    {
+        foreach (var statement in Statements)
+        {
+            statement.TypeRefAdded();
+        }
     }
 }
 
 public class BodyContainerNode(PosData posData, List<BaseNode> statements, bool canReturn)
-    : StatementListContainerNode(posData, statements), IBodyAccept
+    : StatementListContainerNode(posData, statements)
 {
     public bool CanReturn { get; set; } = canReturn;
 
-    public void BodyAccept(INodeHandler handler)
-    {
-        foreach (var statement in Statements)
-        {
-            statement.Accept(handler);
-        }
-    }
 
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        foreach (var statement in Statements)
+        {
+            statement.TypeRefAdded();
+        }
     }
 }
 
@@ -96,6 +121,14 @@ public class IdentifierNode(PosData posData, string name)
     {
         return new IdentifierNode(node.PosData, node.Name);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+    }
 }
 
 public class AnnotationNode(
@@ -111,10 +144,18 @@ public class AnnotationNode(
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Name.Accept(handler);
-        Arguments.Accept(handler);
-        AttachedNode.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Name.TypeRefAdded();
+        Arguments.TypeRefAdded();
+        AttachedNode.TypeRefAdded();
     }
 }
 
@@ -125,10 +166,18 @@ public class AnnotationArgumentListNode(PosData posData, List<AnnotationArgument
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
 
         foreach (var argument in Arguments)
         {
-            argument.Accept(handler);
+            argument.TypeRefAdded();
         }
     }
 }
@@ -142,8 +191,16 @@ public class AnnotationArgumentNode(PosData posData, IdentifierNode name, Expres
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
 
-        Name.Accept(handler);
-        Value.Accept(handler);
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Name.TypeRefAdded();
+        Value.TypeRefAdded();
     }
 }

@@ -1,5 +1,8 @@
 using Lexing;
 using Parsing.Nodes;
+using Parsing.Nodes.Declaration;
+using Parsing.Nodes.Declaration.Interface;
+using Parsing.Nodes.Type.Function;
 
 namespace Parsing.Parser;
 
@@ -595,18 +598,17 @@ public partial class Parser
         return new StructLiteralNode(Lexer.PeekToken().PosData, fields);
     }
 
-    private List<(PosData, IdentifierNode?, TypeNode)> ParseArgumentsWithOptionalNames()
+    private List<(PosData PosData, IdentifierNode? Name, TypeNode TypeName)> ParseArgumentsWithOptionalNames()
     {
         ExpectAndEat(TokenType.Symbol, "(", null);
 
-        var arguments = new List<(PosData, IdentifierNode?, TypeNode)>();
+        var arguments = new List<(PosData PosData, IdentifierNode? Name, TypeNode TypeName)>();
 
         while (!IsNext(TokenType.Symbol, ")"))
         {
             var typeName = ParseTypeAnnotation();
             IdentifierNode? name = null;
             var posData = typeName.PosData;
-
             if (!IsNext(TokenType.Symbol, ")") && !IsNext(TokenType.Symbol, ","))
             {
                 name = (IdentifierNode)typeName;
@@ -634,9 +636,8 @@ public partial class Parser
             .Select(a =>
             {
                 return new FunctionTypeArgumentNode(
-                    a.Item1,
-                    a.Item2?.Name,
-                    a.Item3
+                    a.Name,
+                    a.TypeName
                 );
             }).ToList();
 

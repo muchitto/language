@@ -1,8 +1,30 @@
 namespace TypeInformation;
 
-public class Scope(Scope? parent) : ISymbolLookup
+public enum ScopeType
 {
-    public Scope? Parent { get; init; } = parent;
+    Regular,
+    Declaration
+}
+
+public class Scope : ISymbolLookup
+{
+    public Scope(Scope? parent, ScopeType scopeType)
+    {
+        Parent = parent;
+        ScopeType = scopeType;
+        Parent?.Children.Add(this);
+    }
+
+    public Scope(ScopeType scopeType) : this(null, scopeType)
+    {
+    }
+
+    public ScopeType ScopeType { get; init; }
+
+    public Scope? Parent { get; init; }
+
+    public List<Scope> Children { get; } = new();
+
     public Dictionary<string, TypeRef> Symbols { get; } = new();
 
     public Scope TopScope
@@ -20,84 +42,99 @@ public class Scope(Scope? parent) : ISymbolLookup
         }
     }
 
-    public SymbolLookupResult Add(string name, TypeInfo? typeInfo = null)
+    public SymbolResult LookupTypeRef(string name)
     {
-        SymbolLookupResult result;
+        var scope = this;
 
-        if (Symbols.TryGetValue(name, out var value))
+        while (scope != null)
         {
-            result = value.TypeInfo is not UnknownTypeInfo
-                ? new SymbolLookupResult(null, SymbolLookupResultType.AlreadyExists)
-                : new SymbolLookupResult(value, SymbolLookupResultType.IsUnknown);
-        }
-        else
-        {
-            var typeRef = new TypeRef(typeInfo ?? new UnknownTypeInfo(), this);
-
-            Symbols.Add(name, typeRef);
-
-            result = new SymbolLookupResult(typeRef, SymbolLookupResultType.New);
-        }
-
-        return result;
-    }
-
-    public SymbolLookupResult LookUpOrAdd(string name, TypeInfo? typeInfo = null)
-    {
-        var result = LookUp(name);
-
-        if (result.ResultType == SymbolLookupResultType.CouldNotFind)
-        {
-            result = Add(name, typeInfo);
-        }
-
-        return result;
-    }
-
-    public SymbolLookupResult LookupOrAddOrReplace(string name, TypeInfo? typeInfo = null)
-    {
-        var result = LookUp(name);
-
-        if (result.ResultType == SymbolLookupResultType.CouldNotFind)
-        {
-            result = Add(name, typeInfo);
-        }
-        else if (result.ResultType == SymbolLookupResultType.Found)
-        {
-            result = result with { ResultType = SymbolLookupResultType.Replaced };
-
-            if (result.TypeRef != null)
+            if (scope.Symbols.TryGetValue(name, out var value))
             {
-                result.TypeRef.TypeInfo = typeInfo ?? new UnknownTypeInfo();
+                return new SymbolResult(value, SymbolResultType.Found);
             }
-            else
+
+            scope = scope.Parent;
+        }
+
+        return new SymbolResult(SymbolResultType.NotFound);
+    }
+
+    public SymbolResult LookupUntilDeclarationBoundary(string name)
+    {
+        var scope = this;
+
+        while (scope != null)
+        {
+            if (scope.Symbols.TryGetValue(name, out var value))
             {
-                result = new SymbolLookupResult(null, SymbolLookupResultType.TypeRefIsNull);
+                return new SymbolResult(value, SymbolResultType.Found);
             }
+
+            if (scope.ScopeType == ScopeType.Declaration)
+            {
+                return new SymbolResult(SymbolResultType.NotFound);
+            }
+
+            scope = scope.Parent;
         }
 
-        return result;
+        return new SymbolResult(SymbolResultType.NotFound);
     }
 
-    public SymbolLookupResult TopScopeLookUpOrAdd(string name, TypeInfo? typeInfo = null)
+    public SymbolResult SetupDeclaration(string name, TypeRef typeRef)
     {
-        var result = TopScope.LookUp(name);
+        var result = LookupUntilDeclarationBoundary(name);
 
-        if (result.ResultType == SymbolLookupResultType.CouldNotFind)
+        if (result.ResultType == SymbolResultType.Found)
         {
-            result = TopScope.Add(name, typeInfo);
+            return new SymbolResult(SymbolResultType.AlreadyDeclared);
         }
 
-        return result;
+        Symbols.Add(name, typeRef);
+
+        return new SymbolResult(SymbolResultType.Declared);
     }
 
-    public SymbolLookupResult LookUp(string name)
+    public SymbolResult CollectDeclaration(string name)
     {
-        if (Symbols.TryGetValue(name, out var typeRef))
+        return CollectDeclaration(name, TypeRef.Unknown(this));
+    }
+
+    public SymbolResult CollectDeclaration(string name, TypeRef typeRef)
+    {
+        var result = LookupUntilDeclarationBoundary(name);
+
+        if (result.ResultType == SymbolResultType.Found)
         {
-            return new SymbolLookupResult(typeRef, SymbolLookupResultType.Found);
+            return new SymbolResult(SymbolResultType.AlreadyDeclared);
         }
 
-        return Parent?.LookUp(name) ?? new SymbolLookupResult(null, SymbolLookupResultType.CouldNotFind);
+        Symbols.Add(name, typeRef);
+
+        return new SymbolResult(SymbolResultType.Declared);
+    }
+
+    public SymbolResult CollectVariable(string name)
+    {
+        return CollectVariable(name, TypeRef.Unknown(this));
+    }
+
+    public SymbolResult CollectVariable(string name, TypeRef typeRef)
+    {
+        var scope = this;
+
+        while (scope != null)
+        {
+            if (scope.Symbols.TryGetValue(name, out var value))
+            {
+                return new SymbolResult(value, SymbolResultType.Declared);
+            }
+
+            scope = scope.Parent;
+        }
+
+        Symbols.Add(name, typeRef);
+
+        return new SymbolResult(SymbolResultType.NotDeclared);
     }
 }

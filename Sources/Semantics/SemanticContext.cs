@@ -12,39 +12,44 @@ public class SemanticContext : ISymbolLookup
 
     public bool IsCurrentScopeTopScope => CurrentScope == TopScope;
 
-    public SymbolLookupResult LookUp(string name)
+    public SymbolResult LookupTypeRef(string name)
     {
-        return CurrentScope.LookUp(name);
+        return CurrentScope.LookupTypeRef(name);
     }
 
-    public SymbolLookupResult Add(string name, TypeInfo? typeInfo = null)
+    public SymbolResult LookupUntilDeclarationBoundary(string name)
     {
-        return CurrentScope.Add(name, typeInfo);
+        return CurrentScope.LookupUntilDeclarationBoundary(name);
     }
 
-    public SymbolLookupResult LookUpOrAdd(string name, TypeInfo? typeInfo = null)
+    public SymbolResult CollectDeclaration(string name)
     {
-        return CurrentScope.LookUpOrAdd(name, typeInfo);
+        return CurrentScope.CollectDeclaration(name);
     }
 
-    public SymbolLookupResult LookupOrAddOrReplace(string name, TypeInfo? typeInfo = null)
+    public SymbolResult CollectDeclaration(string name, TypeRef typeRef)
     {
-        return CurrentScope.LookupOrAddOrReplace(name, typeInfo);
+        return CurrentScope.CollectDeclaration(name, typeRef);
     }
 
-    public SymbolLookupResult TopScopeLookUpOrAdd(string name, TypeInfo? typeInfo = null)
+    public SymbolResult CollectVariable(string name)
     {
-        return TopScope.LookUpOrAdd(name, typeInfo);
+        return CurrentScope.CollectVariable(name);
     }
 
-    public List<TypeRef> TypeRefsFromAllScopes()
+    public SymbolResult CollectVariable(string name, TypeRef typeRef)
     {
-        return AllScopes.SelectMany(scope => scope.Symbols.ToList().Select(x => x.Value)).ToList();
+        return CurrentScope.CollectVariable(name, typeRef);
     }
 
-    public Scope StartScope()
+    public SymbolResult SetupDeclaration(string name, TypeRef typeRef)
     {
-        var newScope = new Scope(CurrentScope);
+        return CurrentScope.SetupDeclaration(name, typeRef);
+    }
+
+    public Scope StartScope(ScopeType scopeType)
+    {
+        var newScope = new Scope(CurrentScope, scopeType);
 
         AllScopes.Add(newScope);
 

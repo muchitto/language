@@ -1,19 +1,16 @@
 namespace TypeInformation;
 
-public class TypeRef
+public class TypeRef(Scope scope, TypeInfo typeInfo)
 {
     private static int _id;
 
-    public TypeRef(TypeInfo typeInfo, Scope scope)
+    public TypeInfo TypeInfo { get; set; } = typeInfo;
+
+    public int TypeId { get; init; } = _id++;
+    public Scope Scope { get; init; } = scope;
+
+    public static TypeRef Unknown(Scope? scope = null)
     {
-        TypeInfo = typeInfo;
-        Scope = scope;
-
-        _id++;
+        return new TypeRef(scope, new UnknownTypeInfo());
     }
-
-    public int TypeId { get; } = _id;
-
-    public TypeInfo TypeInfo { get; set; }
-    public Scope Scope { get; }
 }

@@ -1,5 +1,7 @@
 using Lexing;
 using Parsing.Nodes;
+using Parsing.Nodes.Declaration.Struct;
+using Parsing.Nodes.Type;
 
 namespace Parsing.Parser;
 

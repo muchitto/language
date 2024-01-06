@@ -1,5 +1,5 @@
 using Lexing;
-using Parsing.Nodes;
+using Parsing.Nodes.Declaration.Enum;
 
 namespace Parsing.Parser;
 

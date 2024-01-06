@@ -1,9 +1,13 @@
 using Parsing.Nodes;
+using Parsing.Nodes.Type;
+using Parsing.Nodes.Type.Function;
+using Parsing.Nodes.Type.Struct;
+using Parsing.Nodes.Type.Tuple;
 
 namespace Parsing.NodeHandlers;
 
 public interface ITypeNodeHandler
-{ 
+{
     public void Handle(TypeNode typeNode);
 
     public void Handle(StructTypeNode structTypeNode);

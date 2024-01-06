@@ -19,6 +19,17 @@ public class AssignmentNode(BaseNode name, BaseNode value) : StatementNode(name.
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Name.TypeRefAdded();
+        Value.TypeRefAdded();
+    }
 }
 
 public class IfStatementNode(
@@ -36,6 +47,18 @@ public class IfStatementNode(
     {
         handler.Handle(this);
     }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Condition?.TypeRefAdded();
+        BodyContainerNode.TypeRefAdded();
+        NextIf?.TypeRefAdded();
+    }
 }
 
 public class ReturnNode(PosData posData, BaseNode? value) : StatementNode(posData)
@@ -45,5 +68,15 @@ public class ReturnNode(PosData posData, BaseNode? value) : StatementNode(posDat
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
+    }
+
+    public override void TypeRefAdded()
+    {
+        if (TypeRef == null)
+        {
+            throw new Exception("TypeRef is null");
+        }
+
+        Value?.TypeRefAdded();
     }
 }
