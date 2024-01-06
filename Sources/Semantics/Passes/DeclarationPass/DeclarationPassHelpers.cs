@@ -89,4 +89,28 @@ public partial class DeclarationPass
         CurrentScope.Symbols.Add(name, newTypeRef);
         return newTypeRef;
     }
+
+    public TypeRef ReferenceTypeAfterLastDeclaration(string name)
+    {
+        var scope = CurrentScope.TraverseAfterDeclarationScope();
+
+        if (scope == null)
+        {
+            throw new SemanticError($"Type {name} not declared");
+        }
+
+        var result = scope.LookupSymbol(name);
+        var typeRef = result.TypeRef;
+
+        if (typeRef != null)
+        {
+            return typeRef;
+        }
+
+        var newTypeRef = new TypeRef(CurrentScope, new UnknownTypeInfo());
+
+        scope.Symbols.Add(name, newTypeRef);
+
+        return newTypeRef;
+    }
 }

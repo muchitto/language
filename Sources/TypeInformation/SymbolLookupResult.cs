@@ -6,7 +6,8 @@ namespace TypeInformation;
 /// </summary>
 /// <param name="TypeRef">The type reference that was returned, can be null</param>
 /// <param name="CrossedDeclarationBoundary">This is true if the type fetching crossed a declaration boundary</param>
-public record SymbolLookupResult(TypeRef? TypeRef, bool CrossedDeclarationBoundary)
+/// <param name="Scope">The scope in which the type reference was found</param>
+public record SymbolLookupResult(TypeRef? TypeRef, bool CrossedDeclarationBoundary, Scope Scope)
 {
     /// <summary>
     ///     This is true if the type reference is not null and the lookup did not cross a declaration boundary

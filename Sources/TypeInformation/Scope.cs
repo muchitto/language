@@ -58,7 +58,7 @@ public class Scope
 
             if (symbol != null)
             {
-                return new SymbolLookupResult(symbol, crossedDeclarationBoundary);
+                return new SymbolLookupResult(symbol, crossedDeclarationBoundary, scope);
             }
 
             if (scope.ScopeType == ScopeType.Declaration)
@@ -69,6 +69,44 @@ public class Scope
             scope = scope.Parent;
         }
 
-        return new SymbolLookupResult(null, crossedDeclarationBoundary);
+        return new SymbolLookupResult(null, crossedDeclarationBoundary, null);
+    }
+
+    public Scope? TraverseScope(Func<Scope, bool> predicate)
+    {
+        var scope = this;
+
+        while (scope != null)
+        {
+            if (predicate(scope))
+            {
+                return scope;
+            }
+
+            scope = scope.Parent;
+        }
+
+        return null;
+    }
+
+    public Scope? TraverseAfterDeclarationScope()
+    {
+        // Return the first scope after the declaration scope
+        var shouldReturn = false;
+
+        return TraverseScope(scope =>
+        {
+            if (shouldReturn)
+            {
+                return true;
+            }
+
+            if (scope.ScopeType == ScopeType.Declaration)
+            {
+                shouldReturn = true;
+            }
+
+            return false;
+        });
     }
 }
