@@ -43,11 +43,17 @@ public partial class DeclarationPass
         {
             functionArgumentNode.TypeName.Accept(this);
 
-            functionArgumentNode.TypeRef = functionArgumentNode.TypeName.TypeRef;
+            var typeRef = functionArgumentNode.TypeName.TypeRef;
+            DeclareVariable(functionArgumentNode.Name.Name, typeRef);
+            functionArgumentNode.TypeRef = typeRef;
         }
         else if (functionArgumentNode.IsDynamic)
         {
-            functionArgumentNode.TypeRef = TypeRef.Dynamic(SemanticContext.CurrentScope);
+            var typeRef = TypeRef.Dynamic(SemanticContext.CurrentScope);
+
+            functionArgumentNode.TypeRef = typeRef;
+
+            DeclareVariable(functionArgumentNode.Name.Name, typeRef);
         }
         else
         {
