@@ -1,16 +1,16 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Declaration.Function;
 
 namespace Syntax.Nodes.Declaration.Struct;
 
-public abstract class StructFieldNode(PosData posData, string name) : BaseNode(posData)
+public abstract class StructFieldNode(PositionData positionData, string name) : BaseNode(positionData)
 {
     public string Name { get; set; } = name;
 }
 
-public class StructVariableNode(PosData posData, string name, VariableDeclarationNode variable)
-    : StructFieldNode(posData, name)
+public class StructVariableNode(PositionData positionData, string name, VariableDeclarationNode variable)
+    : StructFieldNode(positionData, name)
 {
     public VariableDeclarationNode Variable { get; set; } = variable;
 
@@ -30,8 +30,8 @@ public class StructVariableNode(PosData posData, string name, VariableDeclaratio
     }
 }
 
-public class StructFunctionNode(PosData posData, string name, FunctionDeclarationNode function)
-    : StructFieldNode(posData, name)
+public class StructFunctionNode(PositionData positionData, string name, FunctionDeclarationNode function)
+    : StructFieldNode(positionData, name)
 {
     public FunctionDeclarationNode Function { get; set; } = function;
 

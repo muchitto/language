@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Literal;
 
-public class CharLiteralNode(PosData posData, char value) : LiteralNode(posData)
+public class CharLiteralNode(PositionData positionData, char value) : LiteralNode(positionData)
 {
     public char Value { get; set; } = value;
 

@@ -120,24 +120,24 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    private void CreateBaseTypes()
+    private void CreateBaseTypes(ProgramContainerNode ast)
     {
-        DeclareType("Int", new IntTypeInfo(32));
-        DeclareType("Float", new FloatTypeInfo(64));
-        DeclareType("Bool", new BoolTypeInfo());
-        DeclareType("String", new StringTypeInfo());
-        DeclareType("Char", new CharTypeInfo());
-        DeclareType("Void", new VoidTypeInfo());
-        DeclareType("Nil", new NilTypeInfo());
-        DeclareType("Dynamic", new DynamicTypeInfo());
+        DeclareType(ast.PositionData, "Int", new IntTypeInfo(32));
+        DeclareType(ast.PositionData, "Float", new FloatTypeInfo(64));
+        DeclareType(ast.PositionData, "Bool", new BoolTypeInfo());
+        DeclareType(ast.PositionData, "String", new StringTypeInfo());
+        DeclareType(ast.PositionData, "Char", new CharTypeInfo());
+        DeclareType(ast.PositionData, "Void", new VoidTypeInfo());
+        DeclareType(ast.PositionData, "Nil", new NilTypeInfo());
+        DeclareType(ast.PositionData, "Dynamic", new DynamicTypeInfo());
 
-        DeclareType("Int8", new IntTypeInfo(8));
-        DeclareType("Int16", new IntTypeInfo(16));
-        DeclareType("Int32", new IntTypeInfo(32));
-        DeclareType("Int64", new IntTypeInfo(64));
+        DeclareType(ast.PositionData, "Int8", new IntTypeInfo(8));
+        DeclareType(ast.PositionData, "Int16", new IntTypeInfo(16));
+        DeclareType(ast.PositionData, "Int32", new IntTypeInfo(32));
+        DeclareType(ast.PositionData, "Int64", new IntTypeInfo(64));
 
-        DeclareType("Float32", new FloatTypeInfo(32));
-        DeclareType("Float64", new FloatTypeInfo(64));
+        DeclareType(ast.PositionData, "Float32", new FloatTypeInfo(32));
+        DeclareType(ast.PositionData, "Float64", new FloatTypeInfo(64));
     }
 
     public override void Run(ProgramContainerNode ast, SemanticContext semanticContext)

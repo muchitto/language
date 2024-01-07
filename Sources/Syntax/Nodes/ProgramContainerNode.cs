@@ -1,10 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes;
 
-public class ProgramContainerNode(PosData posData, List<BaseNode> statements)
-    : StatementListContainerNode(posData, statements)
+public class ProgramContainerNode(PositionData positionData, List<BaseNode> statements)
+    : StatementListContainerNode(positionData, statements)
 {
     public override void Accept(INodeHandler handler)
     {

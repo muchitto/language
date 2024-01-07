@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Literal;
 
-public class BooleanLiteralNode(PosData posData, bool value) : LiteralNode(posData)
+public class BooleanLiteralNode(PositionData positionData, bool value) : LiteralNode(positionData)
 {
     public bool Value { get; set; } = value;
 

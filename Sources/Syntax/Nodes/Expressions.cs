@@ -1,5 +1,5 @@
-using Lexing;
+using ErrorReporting;
 
 namespace Syntax.Nodes;
 
-public abstract class ExpressionNode(PosData pos) : BaseNode(pos);
+public abstract class ExpressionNode(PositionData position) : BaseNode(position);

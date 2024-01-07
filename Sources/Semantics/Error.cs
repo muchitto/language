@@ -1,8 +1,5 @@
+using ErrorReporting;
+
 namespace Semantics;
 
-public class SemanticError : Exception
-{
-    public SemanticError(string message) : base(message)
-    {
-    }
-} 
+public class SemanticError(PositionData positionData, string message) : CompileError(positionData, message);

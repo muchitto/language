@@ -63,7 +63,7 @@ public partial class Parser
 
                 var name = variableDeclaration.Name.Name;
 
-                return new StructVariableNode(token.PosData, name, variableDeclaration);
+                return new StructVariableNode(token.PositionData, name, variableDeclaration);
             }
             case TokenType.Identifier when token.Value == "func":
             {
@@ -79,7 +79,7 @@ public partial class Parser
 
                 var name = functionDeclaration.Name?.Name ?? "";
 
-                return new StructFunctionNode(token.PosData, name, functionDeclaration);
+                return new StructFunctionNode(token.PositionData, name, functionDeclaration);
             }
             default:
                 throw new ParseError.UnexpectedToken(

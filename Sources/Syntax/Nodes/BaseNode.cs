@@ -1,12 +1,12 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 using TypeInformation;
 
 namespace Syntax.Nodes;
 
-public abstract class BaseNode(PosData posData)
+public abstract class BaseNode(PositionData positionData)
 {
-    public PosData PosData { get; set; } = posData;
+    public PositionData PositionData { get; set; } = positionData;
 
     public TypeRef TypeRef { get; set; }
 

@@ -1,9 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Literal;
 
-public class StructLiteralFieldNode(PosData posData, IdentifierNode name, BaseNode value) : LiteralNode(posData)
+public class StructLiteralFieldNode(PositionData positionData, IdentifierNode name, BaseNode value)
+    : LiteralNode(positionData)
 {
     public IdentifierNode Name { get; set; } = name;
     public BaseNode Value { get; set; } = value;

@@ -2,7 +2,7 @@ using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Statement;
 
-public class AssignmentNode(BaseNode name, BaseNode value) : StatementNode(name.PosData)
+public class AssignmentNode(BaseNode name, BaseNode value) : StatementNode(name.PositionData)
 {
     public BaseNode Name { get; set; } = name;
     public BaseNode Value { get; set; } = value;

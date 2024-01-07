@@ -2,7 +2,7 @@ using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes;
 
-public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.PosData)
+public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.PositionData)
 {
     public BaseNode Left { get; set; } = left;
     public BaseNode Right { get; set; } = right;

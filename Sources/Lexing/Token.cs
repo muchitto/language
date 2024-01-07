@@ -1,3 +1,5 @@
+using ErrorReporting;
+
 namespace Lexing;
 
 public enum TokenType
@@ -11,7 +13,7 @@ public enum TokenType
     EndOfFile
 }
 
-public record struct Token(TokenType Type, PosData PosData, string Value = "")
+public record struct Token(TokenType Type, PositionData PositionData, string Value = "")
 {
     public bool Is(params TokenType[] types)
     {

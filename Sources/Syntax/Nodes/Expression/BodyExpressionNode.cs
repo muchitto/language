@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Expression;
 
-public class BodyExpressionNode(PosData posData, List<BaseNode> statements) : ExpressionNode(posData)
+public class BodyExpressionNode(PositionData positionData, List<BaseNode> statements) : ExpressionNode(positionData)
 {
     public List<BaseNode> Statements { get; set; } = statements;
 

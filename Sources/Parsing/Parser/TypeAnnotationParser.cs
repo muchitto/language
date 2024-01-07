@@ -22,7 +22,7 @@ public partial class Parser
 
             var type = ParseTypeAnnotation();
 
-            fields.Add(new StructTypeFieldNode(name.PosData, name.Name, type));
+            fields.Add(new StructTypeFieldNode(name.PositionData, name.Name, type));
 
             if (!IsNextAndEat(TokenType.Symbol, ","))
             {
@@ -30,7 +30,7 @@ public partial class Parser
             }
         }
 
-        return new StructTypeNode(Lexer.PeekToken().PosData, fields);
+        return new StructTypeNode(Lexer.PeekToken().PositionData, fields);
     }
 
     private IdentifierTypeNode ParseTypeIdentifier()
@@ -39,7 +39,7 @@ public partial class Parser
 
         var token = Lexer.GetNextToken();
 
-        return new IdentifierTypeNode(token.PosData, token.Value);
+        return new IdentifierTypeNode(token.PositionData, token.Value);
     }
 
     private TupleTypeNode ParseTupleType()
@@ -54,7 +54,7 @@ public partial class Parser
                 );
             }).ToList();
 
-        return new TupleTypeNode(Lexer.PeekToken().PosData, types);
+        return new TupleTypeNode(Lexer.PeekToken().PositionData, types);
     }
 
     private TypeNode ParseTypeAnnotation()

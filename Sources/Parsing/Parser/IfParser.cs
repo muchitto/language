@@ -27,9 +27,9 @@ public partial class Parser
             }
 
             condition = new BinaryOpNode(
-                condition.PosData,
+                condition.PositionData,
                 condition,
-                new BooleanLiteralNode(condition.PosData, true),
+                new BooleanLiteralNode(condition.PositionData, true),
                 Operator.Equal
             );
         }
@@ -50,7 +50,7 @@ public partial class Parser
             {
                 var elseBody = ParseIfBody();
 
-                nextIf = new IfStatementNode(token.PosData, null, elseBody);
+                nextIf = new IfStatementNode(token.PositionData, null, elseBody);
             }
         }
         else
@@ -58,7 +58,7 @@ public partial class Parser
             ExpectAndEat(TokenType.Identifier, "end", "expected an end");
         }
 
-        return new IfStatementNode(token.PosData, condition as BinaryOpNode, body, nextIf);
+        return new IfStatementNode(token.PositionData, condition as BinaryOpNode, body, nextIf);
     }
 
     private BodyContainerNode ParseIfBody()
@@ -73,7 +73,7 @@ public partial class Parser
             if (IsEnd)
             {
                 throw new ParseError.ExpectedToken(
-                    new Token(TokenType.Identifier, nextToken.PosData, "end"),
+                    new Token(TokenType.Identifier, nextToken.PositionData, "end"),
                     nextToken,
                     "expected 'end' and not end of file"
                 );
@@ -88,7 +88,7 @@ public partial class Parser
             statements.Add(statement);
         }
 
-        return new BodyContainerNode(token.PosData, statements, false);
+        return new BodyContainerNode(token.PositionData, statements, false);
     }
 
     private IfExpressionNode ParseIfExpression()
@@ -112,9 +112,9 @@ public partial class Parser
             }
 
             condition = new BinaryOpNode(
-                condition.PosData,
+                condition.PositionData,
                 condition,
-                new BooleanLiteralNode(condition.PosData, true),
+                new BooleanLiteralNode(condition.PositionData, true),
                 Operator.Equal
             );
         }
@@ -135,7 +135,7 @@ public partial class Parser
             {
                 var elseBody = ParseIfBodyExpression();
 
-                nextIf = new IfExpressionNode(token.PosData, null, elseBody, null);
+                nextIf = new IfExpressionNode(token.PositionData, null, elseBody, null);
             }
         }
         else
@@ -143,7 +143,7 @@ public partial class Parser
             ExpectAndEat(TokenType.Identifier, "end", "expected an end");
         }
 
-        return new IfExpressionNode(token.PosData, condition as BinaryOpNode, body, nextIf);
+        return new IfExpressionNode(token.PositionData, condition as BinaryOpNode, body, nextIf);
     }
 
     private BodyExpressionNode ParseIfBodyExpression()
@@ -158,7 +158,7 @@ public partial class Parser
             if (IsEnd)
             {
                 throw new ParseError.ExpectedToken(
-                    new Token(TokenType.Identifier, nextToken.PosData, "end"),
+                    new Token(TokenType.Identifier, nextToken.PositionData, "end"),
                     nextToken,
                     "expected 'end' and not end of file"
                 );
@@ -173,6 +173,6 @@ public partial class Parser
             statements.Add(statement);
         }
 
-        return new BodyExpressionNode(token.PosData, statements);
+        return new BodyExpressionNode(token.PositionData, statements);
     }
 }

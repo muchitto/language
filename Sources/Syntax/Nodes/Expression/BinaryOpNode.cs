@@ -1,10 +1,11 @@
+using ErrorReporting;
 using Lexing;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Expression;
 
-public class BinaryOpNode(PosData posData, BaseNode lhs, BaseNode rhs, Operator @operator)
-    : ExpressionNode(posData)
+public class BinaryOpNode(PositionData positionData, BaseNode lhs, BaseNode rhs, Operator @operator)
+    : ExpressionNode(positionData)
 {
     public BaseNode Lhs { get; set; } = lhs;
     public BaseNode Rhs { get; set; } = rhs;

@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Statement;
 
-public class ReturnNode(PosData posData, BaseNode? value) : StatementNode(posData)
+public class ReturnNode(PositionData positionData, BaseNode? value) : StatementNode(positionData)
 {
     public BaseNode? Value { get; set; } = value;
 

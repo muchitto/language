@@ -1,3 +1,4 @@
+using Syntax.Nodes;
 using TypeInformation;
 
 namespace Semantics;
@@ -5,6 +6,7 @@ namespace Semantics;
 public class SemanticContext
 {
     public readonly List<Scope> AllScopes = [];
+    public Dictionary<BaseNode, Scope> NodeToScope = new();
 
     public Scope CurrentScope { get; private set; }
 

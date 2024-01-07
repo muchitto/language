@@ -1,14 +1,14 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Expression;
 
 public class IfExpressionNode(
-    PosData posData,
+    PositionData positionData,
     BinaryOpNode? condition,
     ExpressionNode body,
     IfExpressionNode nextIf)
-    : ExpressionNode(posData)
+    : ExpressionNode(positionData)
 {
     public BinaryOpNode? Condition { get; set; } = condition;
 

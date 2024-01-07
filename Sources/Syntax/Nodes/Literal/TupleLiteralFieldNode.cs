@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Literal;
 
-public class TupleLiteralFieldNode(PosData posData, string? name, BaseNode value) : LiteralNode(posData)
+public class TupleLiteralFieldNode(PositionData positionData, string? name, BaseNode value) : LiteralNode(positionData)
 {
     public BaseNode Value { get; set; } = value;
     public string? Name { get; set; } = name;

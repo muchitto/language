@@ -1,10 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes;
 
-public class BodyContainerNode(PosData posData, List<BaseNode> statements, bool canReturn)
-    : StatementListContainerNode(posData, statements)
+public class BodyContainerNode(PositionData positionData, List<BaseNode> statements, bool canReturn)
+    : StatementListContainerNode(positionData, statements)
 {
     public bool CanReturn { get; set; } = canReturn;
 

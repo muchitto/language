@@ -40,6 +40,8 @@ partial class DeclarationPass
 
     public void Handle(IdentifierTypeNode identifierTypeNode)
     {
+        AddNodeToScope(identifierTypeNode);
+
         identifierTypeNode.TypeRef = ReferenceType(identifierTypeNode.Name);
     }
 

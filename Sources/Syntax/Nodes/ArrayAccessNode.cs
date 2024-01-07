@@ -2,7 +2,7 @@ using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes;
 
-public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.PosData)
+public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.PositionData)
 {
     public BaseNode Array { get; set; } = array;
     public BaseNode AccessExpression { get; set; } = access;

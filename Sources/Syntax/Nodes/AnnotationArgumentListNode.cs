@@ -1,9 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes;
 
-public class AnnotationArgumentListNode(PosData posData, List<AnnotationArgumentNode> arguments) : BaseNode(posData)
+public class AnnotationArgumentListNode(PositionData positionData, List<AnnotationArgumentNode> arguments)
+    : BaseNode(positionData)
 {
     public List<AnnotationArgumentNode> Arguments { get; set; } = arguments;
 

@@ -3,7 +3,7 @@ using Syntax.NodeHandlers;
 namespace Syntax.Nodes.Type.Function;
 
 public class FunctionTypeArgumentNode(IdentifierNode? name, TypeNode typeName)
-    : TypeNode(name?.PosData ?? typeName.PosData)
+    : TypeNode(name?.PositionData ?? typeName.PositionData)
 {
     public IdentifierNode? Name { get; set; } = name;
     public TypeNode TypeName { get; set; } = typeName;

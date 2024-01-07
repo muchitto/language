@@ -32,6 +32,8 @@ public partial class DeclarationPass
 
     public void Handle(NumberLiteralNode numberLiteralNode)
     {
+        AddNodeToScope(numberLiteralNode);
+
         numberLiteralNode.TypeRef = numberLiteralNode.Value.Contains('.')
             ? TypeRef.Float(SemanticContext.CurrentScope)
             : TypeRef.Int(SemanticContext.CurrentScope);

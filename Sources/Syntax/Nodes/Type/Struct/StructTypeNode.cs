@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Type.Struct;
 
-public class StructTypeNode(PosData posData, List<StructTypeFieldNode> fields) : TypeNode(posData)
+public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode> fields) : TypeNode(positionData)
 {
     public List<StructTypeFieldNode> Fields { get; set; } = fields;
 

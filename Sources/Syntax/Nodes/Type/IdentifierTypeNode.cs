@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Type;
 
-public class IdentifierTypeNode(PosData posData, string name) : TypeNode(posData)
+public class IdentifierTypeNode(PositionData positionData, string name) : TypeNode(positionData)
 {
     public string Name { get; set; } = name;
 
@@ -14,7 +14,7 @@ public class IdentifierTypeNode(PosData posData, string name) : TypeNode(posData
 
     public static explicit operator IdentifierTypeNode(IdentifierNode node)
     {
-        return new IdentifierTypeNode(node.PosData, node.Name);
+        return new IdentifierTypeNode(node.PositionData, node.Name);
     }
 
     public override void TypeRefAdded()

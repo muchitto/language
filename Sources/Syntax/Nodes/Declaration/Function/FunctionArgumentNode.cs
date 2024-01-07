@@ -7,7 +7,7 @@ public class FunctionArgumentNode(
     TypeNode? typeName,
     BaseNode? defaultValue,
     bool isDynamic)
-    : BaseNode(name.PosData)
+    : BaseNode(name.PositionData)
 {
     public IdentifierNode Name { get; set; } = name;
     public TypeNode? TypeName { get; set; } = typeName;

@@ -6,7 +6,7 @@ public class AnnotationNode(
     IdentifierNode name,
     AnnotationArgumentListNode arguments,
     BaseNode attachedNode)
-    : BaseNode(name.PosData)
+    : BaseNode(name.PositionData)
 {
     public IdentifierNode Name { get; set; } = name;
     public AnnotationArgumentListNode Arguments { get; set; } = arguments;

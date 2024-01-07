@@ -1,10 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Type.Function;
 
-public class FunctionTypeNode(PosData posData, List<FunctionTypeArgumentNode> parameters, TypeNode returnType)
-    : TypeNode(posData)
+public class FunctionTypeNode(PositionData positionData, List<FunctionTypeArgumentNode> parameters, TypeNode returnType)
+    : TypeNode(positionData)
 {
     public List<FunctionTypeArgumentNode> Parameters { get; set; } = parameters;
     public TypeNode ReturnType { get; set; } = returnType;

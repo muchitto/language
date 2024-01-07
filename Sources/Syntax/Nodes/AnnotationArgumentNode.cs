@@ -1,10 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes;
 
-public class AnnotationArgumentNode(PosData posData, IdentifierNode name, ExpressionNode value)
-    : BaseNode(posData)
+public class AnnotationArgumentNode(PositionData positionData, IdentifierNode name, ExpressionNode value)
+    : BaseNode(positionData)
 {
     public IdentifierNode Name { get; set; } = name;
     public ExpressionNode Value { get; set; } = value;

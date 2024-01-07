@@ -1,6 +1,5 @@
+using ErrorReporting;
+
 namespace Lexing;
 
-public class LexingError(PosData posData, string message) : Exception(message)
-{
-    public PosData PosData { get; set; } = posData;
-}
+public class LexingError(PositionData positionData, string message) : CompileError(positionData, message);

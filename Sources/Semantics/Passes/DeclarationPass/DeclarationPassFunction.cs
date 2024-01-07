@@ -10,6 +10,8 @@ public partial class DeclarationPass
     {
         SemanticContext.StartScope(ScopeType.Declaration);
 
+        AddNodeToScope(functionDeclarationNode);
+
         var arguments = functionDeclarationNode
             .Arguments
             .ToDictionary(
@@ -34,17 +36,23 @@ public partial class DeclarationPass
             functionDeclarationNode.CanThrow
         );
 
-        functionDeclarationNode.TypeRef = DeclareType(functionDeclarationNode.Name.Name, functionType);
+        functionDeclarationNode.TypeRef = DeclareType(
+            functionDeclarationNode.Name.PositionData,
+            functionDeclarationNode.Name.Name,
+            functionType
+        );
     }
 
     public void Handle(FunctionArgumentNode functionArgumentNode)
     {
+        AddNodeToScope(functionArgumentNode);
+
         if (functionArgumentNode.TypeName != null)
         {
             functionArgumentNode.TypeName.Accept(this);
 
             var typeRef = functionArgumentNode.TypeName.TypeRef;
-            DeclareVariable(functionArgumentNode.Name.Name, typeRef);
+            DeclareVariable(functionArgumentNode.PositionData, functionArgumentNode.Name.Name, typeRef);
             functionArgumentNode.TypeRef = typeRef;
         }
         else if (functionArgumentNode.IsDynamic)
@@ -53,7 +61,7 @@ public partial class DeclarationPass
 
             functionArgumentNode.TypeRef = typeRef;
 
-            DeclareVariable(functionArgumentNode.Name.Name, typeRef);
+            DeclareVariable(functionArgumentNode.PositionData, functionArgumentNode.Name.Name, typeRef);
         }
         else
         {
@@ -63,6 +71,8 @@ public partial class DeclarationPass
 
     public void Handle(FunctionCallNode functionCallNode)
     {
+        AddNodeToScope(functionCallNode);
+
         functionCallNode.Callee.Accept(this);
 
         functionCallNode.TypeRef = functionCallNode.Callee.TypeRef;

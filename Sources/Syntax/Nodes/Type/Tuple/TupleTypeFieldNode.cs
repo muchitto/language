@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Type.Tuple;
 
-public class TupleTypeFieldNode(PosData posData, string? name, TypeNode? type) : TypeNode(posData)
+public class TupleTypeFieldNode(PositionData positionData, string? name, TypeNode? type) : TypeNode(positionData)
 {
     public string? Name { get; set; } = name;
     public TypeNode Type { get; set; } = type;

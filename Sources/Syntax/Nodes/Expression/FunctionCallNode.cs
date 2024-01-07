@@ -3,7 +3,7 @@ using Syntax.NodeHandlers;
 namespace Syntax.Nodes.Expression;
 
 public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> arguments)
-    : ExpressionNode(callee.PosData)
+    : ExpressionNode(callee.PositionData)
 {
     public BaseNode Callee { get; set; } = callee;
     public List<FunctionCallArgumentNode> Arguments { get; set; } = arguments;

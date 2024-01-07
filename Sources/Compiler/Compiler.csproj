@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\ErrorReporting\ErrorReporting.csproj"/>
         <ProjectReference Include="..\Lexing\Lexing.csproj"/>
         <ProjectReference Include="..\Parsing\Parsing.csproj"/>
         <ProjectReference Include="..\Semantics\Semantics.csproj"/>

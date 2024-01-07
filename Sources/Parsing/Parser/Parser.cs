@@ -1,3 +1,4 @@
+using ErrorReporting;
 using Lexing;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
@@ -22,7 +23,7 @@ public partial class Parser
 
     public static ProgramContainerNode Parse(string filename, string source)
     {
-        var posData = new PosData(filename, source);
+        var posData = new PositionData(filename, source);
         var lexer = new Lexer(posData);
         var parser = new Parser(lexer);
 
@@ -41,7 +42,7 @@ public partial class Parser
         var innerMessage = message ?? $"expected token {token}, got {peekToken}";
 
         throw new ParseError.ExpectedToken(
-            new Token(token, peekToken.PosData),
+            new Token(token, peekToken.PositionData),
             peekToken,
             innerMessage
         );
@@ -59,7 +60,7 @@ public partial class Parser
         var innerMessage = message ?? $"expected token {token} with value {value}, got {peekToken}";
 
         throw new ParseError.ExpectedToken(
-            new Token(token, peekToken.PosData, value),
+            new Token(token, peekToken.PositionData, value),
             peekToken,
             innerMessage
         );
@@ -100,7 +101,7 @@ public partial class Parser
         if (!peekToken.Is(TokenType.Newline))
         {
             throw new ParseError.ExpectedToken(
-                new Token(TokenType.Newline, peekToken.PosData),
+                new Token(TokenType.Newline, peekToken.PositionData),
                 peekToken,
                 "expected a newline");
         }
@@ -215,7 +216,7 @@ public partial class Parser
             ExpectAndEatNewline();
         }
 
-        return new ProgramContainerNode(token.PosData, body);
+        return new ProgramContainerNode(token.PositionData, body);
     }
 
     private TypeAliasDeclarationNode ParseTypeAlias()
@@ -375,16 +376,16 @@ public partial class Parser
 
         if (!isLet && typeNode == null && value == null)
         {
-            throw new ParseError.UnexpectedToken(
-                token,
+            throw new ParseError(
+                name.PositionData,
                 "the variable declaration does not have a typename or an initial value where the type could be inferred from"
             );
         }
 
         if (isLet && value == null)
         {
-            throw new ParseError.UnexpectedToken(
-                token,
+            throw new ParseError(
+                name.PositionData,
                 "expected value for let statement"
             );
         }
@@ -414,7 +415,7 @@ public partial class Parser
             statements.Add(statement);
         }
 
-        return new BodyContainerNode(token.PosData, statements, isExpr);
+        return new BodyContainerNode(token.PositionData, statements, isExpr);
     }
 
 
@@ -458,7 +459,7 @@ public partial class Parser
         Expect(TokenType.Identifier, "expected identifier");
 
         var name = Lexer.GetNextToken();
-        var namePos = name.PosData;
+        var namePos = name.PositionData;
 
         return new IdentifierNode(namePos, name.Value);
     }
@@ -516,7 +517,7 @@ public partial class Parser
 
         var token = Lexer.GetNextToken();
 
-        return new StringLiteralNode(token.PosData, token.Value);
+        return new StringLiteralNode(token.PositionData, token.Value);
     }
 
     private NumberLiteralNode ParseNumberLiteral()
@@ -525,7 +526,7 @@ public partial class Parser
 
         var token = Lexer.GetNextToken();
 
-        return new NumberLiteralNode(token.PosData, token.Value);
+        return new NumberLiteralNode(token.PositionData, token.Value);
     }
 
     private StructLiteralNode ParseStructLiteral()
@@ -568,7 +569,7 @@ public partial class Parser
             if (fields.Any(f => f.Name.Name == name))
             {
                 throw new ParseError(
-                    field.PosData,
+                    field.PositionData,
                     $"field {name} already defined in struct literal"
                 );
             }
@@ -580,7 +581,7 @@ public partial class Parser
                 if (!usesCommas.Value)
                 {
                     throw new ParseError(
-                        field.PosData,
+                        field.PositionData,
                         "if the struct literal is all on one line, it needs to use commas"
                     );
                 }
@@ -598,25 +599,25 @@ public partial class Parser
             "expected an ending curly brace for the struct declaration"
         );
 
-        return new StructLiteralNode(Lexer.PeekToken().PosData, fields);
+        return new StructLiteralNode(Lexer.PeekToken().PositionData, fields);
     }
 
-    private List<(PosData PosData, IdentifierNode? Name, TypeNode TypeName)> ParseArgumentsWithOptionalNames()
+    private List<(PositionData PosData, IdentifierNode? Name, TypeNode TypeName)> ParseArgumentsWithOptionalNames()
     {
         ExpectAndEat(TokenType.Symbol, "(", null);
 
-        var arguments = new List<(PosData PosData, IdentifierNode? Name, TypeNode TypeName)>();
+        var arguments = new List<(PositionData PosData, IdentifierNode? Name, TypeNode TypeName)>();
 
         while (!IsNext(TokenType.Symbol, ")"))
         {
             var typeName = ParseTypeAnnotation();
             IdentifierNode? name = null;
-            var posData = typeName.PosData;
+            var posData = typeName.PositionData;
             if (!IsNext(TokenType.Symbol, ")") && !IsNext(TokenType.Symbol, ","))
             {
                 name = (IdentifierNode)typeName;
                 typeName = ParseTypeAnnotation();
-                posData = name.PosData;
+                posData = name.PositionData;
             }
 
             arguments.Add((posData, name, typeName));
@@ -646,7 +647,7 @@ public partial class Parser
 
         var returnType = ParseTypeAnnotation();
 
-        return new FunctionTypeNode(Lexer.PeekToken().PosData, arguments, returnType);
+        return new FunctionTypeNode(Lexer.PeekToken().PositionData, arguments, returnType);
     }
 
     private ReturnNode ParseReturn()
@@ -660,7 +661,7 @@ public partial class Parser
             value = ParseExpression();
         }
 
-        return new ReturnNode(Lexer.PeekToken().PosData, value);
+        return new ReturnNode(Lexer.PeekToken().PositionData, value);
     }
 
     private StructLiteralFieldNode ParseStructLiteralField()
@@ -675,7 +676,7 @@ public partial class Parser
 
         var value = ParseExpressionPrimary();
 
-        return new StructLiteralFieldNode(name.PosData, name, value);
+        return new StructLiteralFieldNode(name.PositionData, name, value);
     }
 
     private BaseNode ParseExpression()
@@ -720,7 +721,7 @@ public partial class Parser
                 }
             }
 
-            var posData = lhs.PosData;
+            var posData = lhs.PositionData;
 
             lhs = new BinaryOpNode(posData, lhs, rhs, nextOp);
             nextToken = Lexer.PeekToken();
@@ -754,13 +755,13 @@ public partial class Parser
                 else
                 {
                     throw new ParseError(
-                        argumentValue.PosData,
+                        argumentValue.PositionData,
                         "argument name needs to be an identifier"
                     );
                 }
             }
 
-            arguments.Add(new FunctionCallArgumentNode(argumentValue.PosData, argumentName, argumentValue));
+            arguments.Add(new FunctionCallArgumentNode(argumentValue.PositionData, argumentName, argumentValue));
 
             if (!IsNextAndEat(TokenType.Symbol, ","))
             {

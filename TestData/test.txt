@@ -5,7 +5,7 @@ end
 
 struct Test
     var a Int
-    var b Haha
+    var b 
 
     func test()
         b.t = 1

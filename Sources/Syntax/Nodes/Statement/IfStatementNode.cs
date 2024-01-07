@@ -1,15 +1,15 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Expression;
 
 namespace Syntax.Nodes.Statement;
 
 public class IfStatementNode(
-    PosData posData,
+    PositionData positionData,
     BinaryOpNode? condition,
     BodyContainerNode bodyContainerNode,
     IfStatementNode? nextIf = null)
-    : StatementNode(posData)
+    : StatementNode(positionData)
 {
     public BinaryOpNode? Condition { get; set; } = condition;
     public BodyContainerNode BodyContainerNode { get; set; } = bodyContainerNode;

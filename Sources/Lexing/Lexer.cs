@@ -1,6 +1,8 @@
+using ErrorReporting;
+
 namespace Lexing;
 
-public class Lexer(PosData posData)
+public class Lexer(PositionData positionData)
 {
     private static readonly Dictionary<string, TokenType> Symbols = new()
     {
@@ -42,7 +44,7 @@ public class Lexer(PosData posData)
     private Token? _lastToken;
     private bool _lastWasNewLine = true;
 
-    public bool IsEnd => posData.IsEnd;
+    public bool IsEnd => positionData.IsEnd();
 
     public Token PeekToken()
     {
@@ -71,31 +73,31 @@ public class Lexer(PosData posData)
 
         while (true)
         {
-            if (char.IsWhiteSpace(posData.PeekChar()))
+            if (char.IsWhiteSpace(positionData.PeekChar()))
             {
-                var chr = posData.GetChar();
+                var chr = positionData.GetChar();
 
                 if (!_lastWasNewLine && chr == '\n')
                 {
                     _lastWasNewLine = true;
 
-                    return new Token(TokenType.Newline, posData);
+                    return new Token(TokenType.Newline, positionData with { To = positionData.From });
                 }
             }
-            else if (posData.IsNext("//", true))
+            else if (positionData.IsNext("//", true))
             {
-                posData.GetUntil("\n");
+                positionData.GetUntil("\n");
             }
-            else if (posData.IsNext("/*"))
+            else if (positionData.IsNext("/*"))
             {
                 var nestedCommentCount = 0;
                 while (true)
                 {
-                    if (posData.IsNext("/*", true))
+                    if (positionData.IsNext("/*", true))
                     {
                         nestedCommentCount++;
                     }
-                    else if (posData.IsNext("*/", true))
+                    else if (positionData.IsNext("*/", true))
                     {
                         nestedCommentCount--;
 
@@ -106,7 +108,7 @@ public class Lexer(PosData posData)
                     }
                     else
                     {
-                        posData.GetChar();
+                        positionData.GetChar();
                     }
                 }
             }
@@ -116,46 +118,54 @@ public class Lexer(PosData posData)
             }
         }
 
-        if (posData.IsEnd)
+        if (positionData.IsEnd())
         {
-            return new Token(TokenType.EndOfFile, posData);
+            return new Token(TokenType.EndOfFile, positionData with { To = positionData.From });
         }
 
         _lastWasNewLine = false;
 
-        if (posData.PeekChar() == '"')
+        if (positionData.PeekChar() == '"')
         {
-            posData.GetChar();
+            positionData.GetChar();
 
-            var startPosData = posData;
+            var startPosData = positionData;
 
-            var str = posData.GetUntil("\"", true);
+            var str = positionData.GetUntil("\"", true);
 
-            return new Token(TokenType.StringLiteral, startPosData, str);
+            return new Token(
+                TokenType.StringLiteral,
+                startPosData with { To = startPosData.From + str.Length - 1 },
+                str
+            );
         }
 
-        if (char.IsNumber(posData.PeekChar()))
+        if (char.IsNumber(positionData.PeekChar()))
         {
-            var startPosData = posData;
+            var startPosData = positionData;
 
-            var str = posData.GetWhile((chr, _, _) => char.IsNumber(chr) || chr == '.');
+            var str = positionData.GetWhile((chr, _, _) => char.IsNumber(chr) || chr == '.');
 
-            return new Token(TokenType.NumberLiteral, startPosData, str);
+            return new Token(
+                TokenType.NumberLiteral,
+                startPosData with { To = startPosData.From + str.Length - 1 },
+                str
+            );
         }
 
-        if (char.IsLetter(posData.PeekChar()) || posData.PeekChar() == '_')
+        if (char.IsLetter(positionData.PeekChar()) || positionData.PeekChar() == '_')
         {
-            var startPosData = posData;
+            var startPosData = positionData;
 
-            var str = posData.GetWhile((chr, _, _) => char.IsLetterOrDigit(chr) || chr == '_');
+            var str = positionData.GetWhile((chr, _, _) => char.IsLetterOrDigit(chr) || chr == '_');
 
-            return new Token(TokenType.Identifier, startPosData, str);
+            return new Token(TokenType.Identifier, startPosData with { To = startPosData.From + str.Length - 1 }, str);
         }
 
         {
-            var startPosData = posData;
+            var startPosData = positionData;
 
-            var str = posData.GetWhile((chr, _, str) =>
+            var str = positionData.GetWhile((chr, _, str) =>
             {
                 return Symbols.Keys.Any(symbol => symbol.StartsWith(str + chr));
             });
@@ -165,7 +175,7 @@ public class Lexer(PosData posData)
                 throw new LexingError(startPosData, $"Unknown symbol {str}");
             }
 
-            return new Token(value, startPosData, str);
+            return new Token(value, startPosData with { To = startPosData.From + str.Length - 1 }, str);
         }
     }
 }

@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Type.Struct;
 
-public class StructTypeFieldNode(PosData posData, string name, TypeNode type) : BaseNode(posData)
+public class StructTypeFieldNode(PositionData positionData, string name, TypeNode type) : BaseNode(positionData)
 {
     public string Name { get; set; } = name;
     public TypeNode Type { get; set; } = type;

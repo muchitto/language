@@ -9,6 +9,8 @@ public partial class DeclarationPass
     {
         SemanticContext.StartScope(ScopeType.Regular);
 
+        AddNodeToScope(bodyContainerDeclarationNode);
+
         bodyContainerDeclarationNode.Statements.ForEach(statement => statement.Accept(this));
 
         SemanticContext.EndScope();
@@ -18,7 +20,9 @@ public partial class DeclarationPass
     {
         SemanticContext.StartScope(ScopeType.Regular);
 
-        CreateBaseTypes();
+        AddNodeToScope(programContainerNode);
+
+        CreateBaseTypes(programContainerNode);
 
         programContainerNode.Statements.ForEach(statement => statement.Accept(this));
 

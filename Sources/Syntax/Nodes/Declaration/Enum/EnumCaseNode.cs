@@ -1,10 +1,13 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
-public class EnumCaseNode(PosData posData, IdentifierNode name, List<EnumCaseAssociatedValueNode> associatedValues)
-    : BaseNode(posData)
+public class EnumCaseNode(
+    PositionData positionData,
+    IdentifierNode name,
+    List<EnumCaseAssociatedValueNode> associatedValues)
+    : BaseNode(positionData)
 {
     public IdentifierNode Name { get; set; } = name;
     public List<EnumCaseAssociatedValueNode> AssociatedValues { get; set; } = associatedValues;

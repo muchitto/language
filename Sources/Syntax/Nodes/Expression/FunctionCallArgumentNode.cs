@@ -1,9 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Expression;
 
-public class FunctionCallArgumentNode(PosData posData, IdentifierNode? name, BaseNode value) : BaseNode(posData)
+public class FunctionCallArgumentNode(PositionData positionData, IdentifierNode? name, BaseNode value)
+    : BaseNode(positionData)
 {
     public IdentifierNode? Name { get; set; } = name;
     public BaseNode Value { get; set; } = value;

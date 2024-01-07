@@ -23,7 +23,7 @@ public partial class Parser
             var token = Lexer.PeekToken();
             if (IsNext(TokenType.Identifier, "func"))
             {
-                funcs.Add(new EnumFunctionNode(token.PosData, ParseFunctionDeclaration(true)));
+                funcs.Add(new EnumFunctionNode(token.PositionData, ParseFunctionDeclaration(true)));
 
                 ExpectAndEatNewline();
             }
@@ -33,7 +33,7 @@ public partial class Parser
 
                 if (IsNextAndEat(TokenType.Newline))
                 {
-                    cases.Add(new EnumCaseNode(identifier.PosData, identifier, []));
+                    cases.Add(new EnumCaseNode(identifier.PositionData, identifier, []));
                 }
                 else
                 {
@@ -50,7 +50,7 @@ public partial class Parser
                         {
                             associatedValues.Add(
                                 new EnumCaseAssociatedValueNode(
-                                    identifierOrType.PosData,
+                                    identifierOrType.PositionData,
                                     identifierOrType,
                                     type
                                 )
@@ -60,7 +60,7 @@ public partial class Parser
                         {
                             associatedValues.Add(
                                 new EnumCaseAssociatedValueNode(
-                                    identifierOrType.PosData,
+                                    identifierOrType.PositionData,
                                     null,
                                     identifierOrType
                                 )
@@ -70,7 +70,7 @@ public partial class Parser
 
                     ExpectAndEatNewline();
 
-                    cases.Add(new EnumCaseNode(identifier.PosData, identifier, associatedValues));
+                    cases.Add(new EnumCaseNode(identifier.PositionData, identifier, associatedValues));
                 }
             }
             else

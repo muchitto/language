@@ -1,10 +1,10 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Declaration.Function;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
-public class EnumFunctionNode(PosData posData, FunctionDeclarationNode function) : BaseNode(posData)
+public class EnumFunctionNode(PositionData positionData, FunctionDeclarationNode function) : BaseNode(positionData)
 {
     public FunctionDeclarationNode Function { get; set; } = function;
 

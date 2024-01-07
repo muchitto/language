@@ -1,9 +1,9 @@
-using Lexing;
+using ErrorReporting;
 using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Literal;
 
-public class NilLiteralNode(PosData posData) : LiteralNode(posData)
+public class NilLiteralNode(PositionData positionData) : LiteralNode(positionData)
 {
     public override void Accept(INodeHandler handler)
     {
