@@ -20,15 +20,7 @@ public class IdentifierNode(PositionData positionData, string name)
         return new IdentifierNode(node.PositionData, node.Name);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

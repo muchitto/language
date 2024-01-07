@@ -12,15 +12,7 @@ public class ProgramContainerNode(PositionData positionData, List<BaseNode> stat
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        foreach (var statement in Statements)
-        {
-            statement.TypeRefAdded();
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

@@ -14,19 +14,10 @@ public class StructTypeFieldNode(PositionData positionData, string name, TypeNod
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
 
-        Type.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Type.SetTypeRef(typeRef);
+        Type.SetTypeInfoFromTypeRef(typeRef);
     }
 }

@@ -15,22 +15,8 @@ public class FunctionTypeNode(PositionData positionData, List<FunctionTypeArgume
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
 
-        foreach (var parameter in Parameters)
-        {
-            parameter.TypeRefAdded();
-        }
-
-        ReturnType.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

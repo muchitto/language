@@ -13,20 +13,9 @@ public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.P
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        Array.TypeRefAdded();
-        AccessExpression.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Array.SetTypeRef(typeRef);
+        Array.SetTypeInfoFromTypeRef(typeRef);
     }
 }

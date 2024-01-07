@@ -21,19 +21,7 @@ public class IfStatementNode(
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        Condition?.TypeRefAdded();
-        BodyContainerNode.TypeRefAdded();
-        NextIf?.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

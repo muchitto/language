@@ -17,20 +17,10 @@ public class BinaryOpNode(PositionData positionData, BaseNode lhs, BaseNode rhs,
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
 
-        Lhs.TypeRefAdded();
-        Rhs.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Lhs.SetTypeRef(typeRef);
+        Lhs.SetTypeInfoFromTypeRef(typeRef);
     }
 }

@@ -12,20 +12,9 @@ public class TypeAliasDeclarationNode(IdentifierNode name, TypeNode type) : Decl
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        Name.TypeRefAdded();
-        Type.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeRef(typeRef);
+        Name.SetTypeInfoFromTypeRef(typeRef);
     }
 }

@@ -13,20 +13,8 @@ public class BodyExpressionNode(PositionData positionData, List<BaseNode> statem
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
 
-        foreach (var statement in Statements)
-        {
-            statement.TypeRefAdded();
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

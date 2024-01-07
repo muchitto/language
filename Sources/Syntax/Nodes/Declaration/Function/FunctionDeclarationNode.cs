@@ -24,27 +24,10 @@ public class FunctionDeclarationNode(
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
 
-        Name.TypeRefAdded();
-
-        foreach (var argument in Arguments)
-        {
-            argument.TypeRefAdded();
-        }
-
-        BodyContainerNode.TypeRefAdded();
-        ReturnTypeName?.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeRef(typeRef);
+        Name.SetTypeInfoFromTypeRef(typeRef);
     }
 }

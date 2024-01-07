@@ -22,22 +22,11 @@ public class FunctionArgumentNode(
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
 
-        Name.TypeRefAdded();
-        TypeName?.TypeRefAdded();
-        DefaultValue?.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeRef(typeRef);
-        TypeName?.SetTypeRef(typeRef);
+        Name.SetTypeInfoFromTypeRef(typeRef);
+        TypeName?.SetTypeInfoFromTypeRef(typeRef);
     }
 }

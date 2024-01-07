@@ -13,20 +13,9 @@ public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.Posi
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        Left.TypeRefAdded();
-        Right.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Left.SetTypeRef(typeRef);
+        Left.SetTypeInfoFromTypeRef(typeRef);
     }
 }

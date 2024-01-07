@@ -17,29 +17,9 @@ public class InterfaceDeclarationNode(
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        Name.TypeRefAdded();
-
-        foreach (var function in Functions)
-        {
-            function.TypeRefAdded();
-        }
-
-        foreach (var field in Fields)
-        {
-            field.TypeRefAdded();
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeRef(typeRef);
+        Name.SetTypeInfoFromTypeRef(typeRef);
     }
 }

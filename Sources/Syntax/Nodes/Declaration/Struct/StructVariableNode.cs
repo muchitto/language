@@ -14,19 +14,10 @@ public class StructVariableNode(PositionData positionData, string name, Variable
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
 
-        Variable.TypeRefAdded();
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Variable.SetTypeRef(typeRef);
+        Variable.SetTypeInfoFromTypeRef(typeRef);
     }
 }

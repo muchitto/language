@@ -13,20 +13,7 @@ public class TupleLiteralNode(PositionData positionData, List<BaseNode> values) 
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        foreach (var value in Values)
-        {
-            value.TypeRefAdded();
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

@@ -15,25 +15,13 @@ public class BodyContainerNode(PositionData positionData, List<BaseNode> stateme
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        foreach (var statement in Statements)
-        {
-            statement.TypeRefAdded();
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
+
         foreach (var statement in Statements)
         {
-            statement.SetTypeRef(typeRef);
+            statement.SetTypeInfoFromTypeRef(typeRef);
         }
     }
 }

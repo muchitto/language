@@ -10,7 +10,7 @@ public partial class DeclarationPass
         AddNodeToScope(structFunctionNode);
 
         structFunctionNode.Function.Accept(this);
-        structFunctionNode.SetTypeRef(structFunctionNode.Function.TypeRef);
+        structFunctionNode.SetTypeInfoFromTypeRef(structFunctionNode.Function.TypeRef);
     }
 
     public void Handle(StructVariableNode structVariableNode)
@@ -18,7 +18,7 @@ public partial class DeclarationPass
         AddNodeToScope(structVariableNode);
 
         structVariableNode.Variable.Accept(this);
-        structVariableNode.SetTypeRef(structVariableNode.Variable.TypeRef);
+        structVariableNode.SetTypeInfoFromTypeRef(structVariableNode.Variable.TypeRef);
     }
 
     public void Handle(StructDeclarationNode structDeclarationNode)
@@ -41,7 +41,7 @@ public partial class DeclarationPass
 
         EndScope();
 
-        structDeclarationNode.SetTypeRef(
+        structDeclarationNode.SetTypeInfoFromTypeRef(
             DeclareType(
                 structDeclarationNode.Name.PositionData,
                 structDeclarationNode.Name.Name,

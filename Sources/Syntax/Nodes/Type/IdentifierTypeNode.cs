@@ -18,15 +18,7 @@ public class IdentifierTypeNode(PositionData positionData, string name) : TypeNo
         return new IdentifierTypeNode(node.PositionData, node.Name);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

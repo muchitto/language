@@ -42,7 +42,7 @@ partial class DeclarationPass
     {
         AddNodeToScope(identifierTypeNode);
 
-        identifierTypeNode.SetTypeRef(ReferenceType(identifierTypeNode.Name));
+        identifierTypeNode.SetTypeInfoFromTypeRef(ReferenceType(identifierTypeNode.Name));
     }
 
     public void Handle(FunctionTypeArgumentNode functionTypeArgumentNode)

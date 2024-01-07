@@ -25,24 +25,9 @@ public class StructDeclarationNode(
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        Name.TypeRefAdded();
-        Parent?.TypeRefAdded();
-        foreach (var @interface in Interfaces)
-        {
-            @interface.TypeRefAdded();
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeRef(typeRef);
+        Name.SetTypeInfoFromTypeRef(typeRef);
     }
 }

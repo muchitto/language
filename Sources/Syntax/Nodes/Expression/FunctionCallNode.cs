@@ -14,24 +14,9 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
         handler.Handle(this);
     }
 
-    public override void TypeRefAdded()
-    {
-        if (TypeRef == null)
-        {
-            throw new Exception("TypeRef is null");
-        }
-
-        Callee.TypeRefAdded();
-
-        foreach (var argument in Arguments)
-        {
-            argument.TypeRefAdded();
-        }
-    }
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Callee.SetTypeRef(typeRef);
+        Callee.SetTypeInfoFromTypeRef(typeRef);
     }
 }
