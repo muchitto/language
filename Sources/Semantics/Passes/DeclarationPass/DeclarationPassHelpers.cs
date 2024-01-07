@@ -44,40 +44,30 @@ public partial class DeclarationPass
 
     public TypeRef DeclareVariable(PositionData positionData, string name, TypeInfo typeInfo)
     {
-        var result = CurrentScope.LookupSymbol(name);
-
-        if (result.TypeRef != null)
-        {
-            if (!result.TypeRef.IsUnknown)
-            {
-                throw new SemanticError(positionData, $"Variable {name} already declared");
-            }
-
-            result.Scope.Symbols[name].TypeInfo = typeInfo;
-
-            return result.Scope.Symbols[name];
-        }
-
-        var newTypeRef = new TypeRef(CurrentScope, typeInfo);
-        CurrentScope.Symbols.Add(name, newTypeRef);
-
-        return newTypeRef;
+        return DeclareVariable(positionData, name, new TypeRef(CurrentScope, typeInfo));
     }
 
     public TypeRef DeclareVariable(PositionData positionData, string name, TypeRef typeRef)
     {
         var result = CurrentScope.LookupSymbol(name);
+        var resultTypeRef = result.TypeRef;
 
-        if (result.TypeRef != null)
+        if (resultTypeRef != null)
         {
-            if (!typeRef.IsUnknown)
+            if (!result.CanBeUsedAsVariable)
             {
                 throw new SemanticError(positionData, $"Variable {name} already declared");
             }
 
-            result.Scope.Symbols[name] = typeRef;
+            if (!result.CrossedDeclarationBoundary)
+            {
+                if (resultTypeRef.IsUnknown)
+                {
+                    resultTypeRef.TypeInfo = typeRef.TypeInfo;
+                }
 
-            return typeRef;
+                return resultTypeRef;
+            }
         }
 
         CurrentScope.Symbols.Add(name, typeRef);

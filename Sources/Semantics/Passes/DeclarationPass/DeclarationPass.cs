@@ -21,6 +21,8 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(IdentifierNode identifierNode)
     {
+        AddNodeToScope(identifierNode);
+
         identifierNode.SetTypeRef(ReferenceVariable(identifierNode.Name));
     }
 
@@ -51,30 +53,43 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(VariableDeclarationNode variableDeclarationNode)
     {
+        AddNodeToScope(variableDeclarationNode);
+
+        TypeRef? typeRef = null;
         if (variableDeclarationNode.Type != null)
         {
             variableDeclarationNode.Type.Accept(this);
 
-            variableDeclarationNode.SetTypeRef(variableDeclarationNode.Type.TypeRef);
+            typeRef = variableDeclarationNode.Type.TypeRef;
         }
         else if (variableDeclarationNode.IsDynamic)
         {
-            variableDeclarationNode.SetTypeRef(SemanticContext.DynamicType());
+            typeRef = SemanticContext.DynamicType();
         }
         else if (variableDeclarationNode.Value != null)
         {
             variableDeclarationNode.Value.Accept(this);
 
-            variableDeclarationNode.SetTypeRef(variableDeclarationNode.Value.TypeRef);
+            typeRef = variableDeclarationNode.Value.TypeRef;
         }
         else
         {
-            variableDeclarationNode.SetTypeRef(TypeRef.Unknown(SemanticContext.CurrentScope));
+            typeRef = TypeRef.Unknown(SemanticContext.CurrentScope);
         }
+
+        variableDeclarationNode.SetTypeRef(typeRef);
+
+        DeclareVariable(
+            variableDeclarationNode.PositionData,
+            variableDeclarationNode.Name.Name,
+            typeRef
+        );
     }
 
     public void Handle(AssignmentNode variableAssignmentNode)
     {
+        AddNodeToScope(variableAssignmentNode);
+
         variableAssignmentNode.Name.Accept(this);
         variableAssignmentNode.Value.Accept(this);
 
@@ -98,8 +113,12 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(FieldAccessNode fieldAccessNode)
     {
+        AddNodeToScope(fieldAccessNode);
+
         fieldAccessNode.Left.Accept(this);
         fieldAccessNode.Right.Accept(this);
+
+        fieldAccessNode.SetTypeRef(fieldAccessNode.Right.TypeRef);
     }
 
     public void Handle(ArrayAccessNode arrayAccessNode)

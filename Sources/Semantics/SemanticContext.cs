@@ -33,6 +33,11 @@ public class SemanticContext
         }
     }
 
+    public void SetCurrentScope(Scope scope)
+    {
+        CurrentScope = scope;
+    }
+
     public TypeRef VoidType()
     {
         var result = CurrentScope.LookupSymbol("Void");

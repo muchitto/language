@@ -27,4 +27,10 @@ public record SymbolLookupResult(TypeRef? TypeRef, bool CrossedDeclarationBounda
     /// </summary>
     public bool CanBeUsedAsType => TypeRef is { IsUnknown: true } ||
                                    (CrossedDeclarationBoundary && TypeRef is { IsUnknown: false });
+
+    /// <summary>
+    ///     This is true if the type reference is not null and the lookup did not cross a declaration boundary
+    ///     You can use this to check if the type reference can be used as a variable again.
+    /// </summary>
+    public bool CanBeUsedAsVariable => CanBeUsedAsType;
 }

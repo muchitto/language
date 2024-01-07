@@ -18,8 +18,6 @@ public class SemanticChecks
         foreach (var pass in _passes)
         {
             pass.Run(ast, semanticInfo);
-
-            Console.WriteLine("Pass: " + pass.GetType().Name);
         }
 
         ast.TypeRefAdded();

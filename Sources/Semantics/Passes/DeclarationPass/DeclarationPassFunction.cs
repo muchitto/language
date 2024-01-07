@@ -8,7 +8,7 @@ public partial class DeclarationPass
 {
     public void Handle(FunctionDeclarationNode functionDeclarationNode)
     {
-        SemanticContext.StartScope(ScopeType.Declaration);
+        StartScope(ScopeType.Declaration);
 
         AddNodeToScope(functionDeclarationNode);
 
@@ -26,7 +26,7 @@ public partial class DeclarationPass
 
         functionDeclarationNode.BodyContainerNode.Accept(this);
 
-        SemanticContext.EndScope();
+        EndScope();
 
         functionDeclarationNode.ReturnTypeName?.Accept(this);
 

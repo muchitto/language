@@ -7,18 +7,18 @@ public partial class DeclarationPass
 {
     public void Handle(BodyContainerNode bodyContainerDeclarationNode)
     {
-        SemanticContext.StartScope(ScopeType.Regular);
+        StartScope(ScopeType.Regular);
 
         AddNodeToScope(bodyContainerDeclarationNode);
 
         bodyContainerDeclarationNode.Statements.ForEach(statement => statement.Accept(this));
 
-        SemanticContext.EndScope();
+        EndScope();
     }
 
     public void Handle(ProgramContainerNode programContainerNode)
     {
-        SemanticContext.StartScope(ScopeType.Regular);
+        StartScope(ScopeType.Regular);
 
         AddNodeToScope(programContainerNode);
 
@@ -26,6 +26,6 @@ public partial class DeclarationPass
 
         programContainerNode.Statements.ForEach(statement => statement.Accept(this));
 
-        SemanticContext.EndScope();
+        EndScope();
     }
 }

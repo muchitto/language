@@ -23,7 +23,7 @@ public partial class DeclarationPass
 
     public void Handle(StructDeclarationNode structDeclarationNode)
     {
-        SemanticContext.StartScope(ScopeType.Declaration);
+        StartScope(ScopeType.Declaration);
 
         AddNodeToScope(structDeclarationNode);
 
@@ -39,7 +39,7 @@ public partial class DeclarationPass
 
         var structType = new StructTypeInfo(fields);
 
-        SemanticContext.EndScope();
+        EndScope();
 
         structDeclarationNode.SetTypeRef(
             DeclareType(
