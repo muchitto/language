@@ -18,7 +18,7 @@ public class IdentifierTypeNode(PositionData positionData, string name) : TypeNo
         return new IdentifierTypeNode(node.PositionData, node.Name);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

@@ -15,9 +15,9 @@ public class StructFunctionNode(PositionData positionData, string name, Function
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Function.SetTypeInfoFromTypeRef(typeRef);
+        Function.SetTypeRef(typeRef);
     }
 }

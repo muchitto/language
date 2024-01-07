@@ -15,13 +15,13 @@ public class BodyContainerNode(PositionData positionData, List<BaseNode> stateme
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
 
         foreach (var statement in Statements)
         {
-            statement.SetTypeInfoFromTypeRef(typeRef);
+            statement.SetTypeRef(typeRef);
         }
     }
 }

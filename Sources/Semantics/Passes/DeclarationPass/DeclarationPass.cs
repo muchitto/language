@@ -23,7 +23,7 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
     {
         AddNodeToScope(identifierNode);
 
-        identifierNode.SetTypeInfoFromTypeRef(ReferenceVariable(identifierNode.Name));
+        identifierNode.SetTypeRef(ReferenceVariable(identifierNode.Name));
     }
 
     public void Handle(ExpressionNode expressionNode)
@@ -77,7 +77,7 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
             typeRef = TypeRef.Unknown(SemanticContext.CurrentScope);
         }
 
-        variableDeclarationNode.SetTypeInfoFromTypeRef(typeRef);
+        variableDeclarationNode.SetTypeRef(typeRef);
 
         DeclareVariable(
             variableDeclarationNode.PositionData,
@@ -93,9 +93,11 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         variableAssignmentNode.Name.Accept(this);
         variableAssignmentNode.Value.Accept(this);
 
+        variableAssignmentNode.SetTypeRef(variableAssignmentNode.Name.TypeRef);
+
         if (variableAssignmentNode.Name.TypeRef.IsUnknown && !variableAssignmentNode.Value.TypeRef.IsUnknown)
         {
-            variableAssignmentNode.SetTypeInfoFromTypeRef(variableAssignmentNode.Value.TypeRef);
+            variableAssignmentNode.TypeRef.TypeInfo = variableAssignmentNode.Value.TypeRef.TypeInfo;
         }
         else if (!variableAssignmentNode.Name.TypeRef.IsUnknown && !variableAssignmentNode.Value.TypeRef.IsUnknown)
         {
@@ -118,7 +120,7 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         fieldAccessNode.Left.Accept(this);
         fieldAccessNode.Right.Accept(this);
 
-        fieldAccessNode.SetTypeInfoFromTypeRef(fieldAccessNode.Right.TypeRef);
+        fieldAccessNode.SetTypeRef(fieldAccessNode.Right.TypeRef);
     }
 
     public void Handle(ArrayAccessNode arrayAccessNode)

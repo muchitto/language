@@ -25,9 +25,9 @@ public class StructDeclarationNode(
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeInfoFromTypeRef(typeRef);
+        Name.SetTypeRef(typeRef);
     }
 }

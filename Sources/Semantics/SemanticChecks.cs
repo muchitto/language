@@ -19,7 +19,5 @@ public class SemanticChecks
         {
             pass.Run(ast, semanticInfo);
         }
-
-        ast.TypeRefAdded();
     }
 }

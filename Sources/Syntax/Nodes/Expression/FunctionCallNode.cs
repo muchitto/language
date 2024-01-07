@@ -14,9 +14,9 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Callee.SetTypeInfoFromTypeRef(typeRef);
+        Callee.SetTypeRef(typeRef);
     }
 }

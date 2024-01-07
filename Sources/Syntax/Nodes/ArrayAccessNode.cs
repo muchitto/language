@@ -13,9 +13,9 @@ public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.P
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Array.SetTypeInfoFromTypeRef(typeRef);
+        Array.SetTypeRef(typeRef);
     }
 }

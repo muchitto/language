@@ -15,9 +15,9 @@ public class StructTypeFieldNode(PositionData positionData, string name, TypeNod
     }
 
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Type.SetTypeInfoFromTypeRef(typeRef);
+        Type.SetTypeRef(typeRef);
     }
 }

@@ -16,7 +16,7 @@ public class FunctionTypeNode(PositionData positionData, List<FunctionTypeArgume
     }
 
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

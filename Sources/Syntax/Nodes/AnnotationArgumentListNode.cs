@@ -14,12 +14,12 @@ public class AnnotationArgumentListNode(PositionData positionData, List<Annotati
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
         foreach (var argument in Arguments)
         {
-            argument.SetTypeInfoFromTypeRef(typeRef);
+            argument.SetTypeRef(typeRef);
         }
     }
 }

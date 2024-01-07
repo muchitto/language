@@ -14,17 +14,17 @@ public class FunctionTypeArgumentNode(IdentifierNode? name, TypeNode typeName)
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
 
         if (Name != null)
         {
-            Name.SetTypeInfoFromTypeRef(typeRef);
+            Name.SetTypeRef(typeRef);
         }
         else
         {
-            TypeName.SetTypeInfoFromTypeRef(typeRef);
+            TypeName.SetTypeRef(typeRef);
         }
     }
 }

@@ -15,9 +15,9 @@ public class EnumFunctionNode(PositionData positionData, FunctionDeclarationNode
     }
 
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Function.SetTypeInfoFromTypeRef(typeRef);
+        Function.SetTypeRef(typeRef);
     }
 }

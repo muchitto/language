@@ -23,10 +23,10 @@ public class FunctionArgumentNode(
     }
 
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeInfoFromTypeRef(typeRef);
-        TypeName?.SetTypeInfoFromTypeRef(typeRef);
+        Name.SetTypeRef(typeRef);
+        TypeName?.SetTypeRef(typeRef);
     }
 }

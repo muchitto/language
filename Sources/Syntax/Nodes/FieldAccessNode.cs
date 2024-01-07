@@ -13,9 +13,9 @@ public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.Posi
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Left.SetTypeInfoFromTypeRef(typeRef);
+        Left.SetTypeRef(typeRef);
     }
 }

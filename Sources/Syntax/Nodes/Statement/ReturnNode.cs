@@ -13,9 +13,9 @@ public class ReturnNode(PositionData positionData, BaseNode? value) : StatementN
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Value?.SetTypeInfoFromTypeRef(typeRef);
+        Value?.SetTypeRef(typeRef);
     }
 }

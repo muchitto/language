@@ -12,7 +12,7 @@ public class ProgramContainerNode(PositionData positionData, List<BaseNode> stat
         handler.Handle(this);
     }
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

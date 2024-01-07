@@ -14,7 +14,7 @@ public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> t
     }
 
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

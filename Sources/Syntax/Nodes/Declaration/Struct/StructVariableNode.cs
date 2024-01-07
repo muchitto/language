@@ -15,9 +15,9 @@ public class StructVariableNode(PositionData positionData, string name, Variable
     }
 
 
-    public override void SetTypeInfoFromTypeRef(TypeRef typeRef)
+    public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Variable.SetTypeInfoFromTypeRef(typeRef);
+        Variable.SetTypeRef(typeRef);
     }
 }
