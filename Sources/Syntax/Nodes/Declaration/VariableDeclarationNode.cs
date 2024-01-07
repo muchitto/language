@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration;
 
@@ -31,5 +32,12 @@ public class VariableDeclarationNode(
         Name.TypeRefAdded();
         Value?.TypeRefAdded();
         Type?.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
+        Type?.SetTypeRef(typeRef);
     }
 }

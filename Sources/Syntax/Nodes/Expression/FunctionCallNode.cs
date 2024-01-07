@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Expression;
 
@@ -26,5 +27,11 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
         {
             argument.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Callee.SetTypeRef(typeRef);
     }
 }

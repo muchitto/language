@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes;
 
@@ -24,6 +25,15 @@ public class BodyContainerNode(PositionData positionData, List<BaseNode> stateme
         foreach (var statement in Statements)
         {
             statement.TypeRefAdded();
+        }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        foreach (var statement in Statements)
+        {
+            statement.SetTypeRef(typeRef);
         }
     }
 }

@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Expression;
 
@@ -23,5 +24,11 @@ public class FunctionCallArgumentNode(PositionData positionData, IdentifierNode?
 
         Value.TypeRefAdded();
         Name?.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name?.SetTypeRef(typeRef);
     }
 }

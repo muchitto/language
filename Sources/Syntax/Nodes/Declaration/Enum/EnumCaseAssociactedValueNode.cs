@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
@@ -23,5 +24,12 @@ public class EnumCaseAssociatedValueNode(PositionData positionData, IdentifierNo
 
         Name?.TypeRefAdded();
         Type.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name?.SetTypeRef(typeRef);
+        Type.SetTypeRef(typeRef);
     }
 }

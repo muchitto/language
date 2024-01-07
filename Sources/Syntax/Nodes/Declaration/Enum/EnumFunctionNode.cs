@@ -1,6 +1,7 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Declaration.Function;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
@@ -21,5 +22,11 @@ public class EnumFunctionNode(PositionData positionData, FunctionDeclarationNode
         }
 
         Function.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Function.SetTypeRef(typeRef);
     }
 }

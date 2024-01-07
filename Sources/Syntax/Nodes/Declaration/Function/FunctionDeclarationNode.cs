@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Function;
 
@@ -39,5 +40,11 @@ public class FunctionDeclarationNode(
 
         BodyContainerNode.TypeRefAdded();
         ReturnTypeName?.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

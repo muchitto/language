@@ -1,5 +1,6 @@
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Declaration.Function;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Interface;
 
@@ -34,5 +35,11 @@ public class InterfaceDeclarationNode(
         {
             field.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

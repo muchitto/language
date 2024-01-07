@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Literal;
 
@@ -18,5 +19,10 @@ public class BooleanLiteralNode(PositionData positionData, bool value) : Literal
         {
             throw new Exception("TypeRef is null");
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

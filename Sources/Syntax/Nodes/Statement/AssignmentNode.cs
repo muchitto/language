@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Statement;
 
@@ -21,5 +22,11 @@ public class AssignmentNode(BaseNode name, BaseNode value) : StatementNode(name.
 
         Name.TypeRefAdded();
         Value.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

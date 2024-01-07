@@ -36,11 +36,11 @@ public partial class DeclarationPass
             functionDeclarationNode.CanThrow
         );
 
-        functionDeclarationNode.TypeRef = DeclareType(
+        functionDeclarationNode.SetTypeRef(DeclareType(
             functionDeclarationNode.Name.PositionData,
             functionDeclarationNode.Name.Name,
             functionType
-        );
+        ));
     }
 
     public void Handle(FunctionArgumentNode functionArgumentNode)
@@ -53,13 +53,13 @@ public partial class DeclarationPass
 
             var typeRef = functionArgumentNode.TypeName.TypeRef;
             DeclareVariable(functionArgumentNode.PositionData, functionArgumentNode.Name.Name, typeRef);
-            functionArgumentNode.TypeRef = typeRef;
+            functionArgumentNode.SetTypeRef(typeRef);
         }
         else if (functionArgumentNode.IsDynamic)
         {
-            var typeRef = TypeRef.Dynamic(SemanticContext.CurrentScope);
+            var typeRef = SemanticContext.DynamicType();
 
-            functionArgumentNode.TypeRef = typeRef;
+            functionArgumentNode.SetTypeRef(typeRef);
 
             DeclareVariable(functionArgumentNode.PositionData, functionArgumentNode.Name.Name, typeRef);
         }
@@ -75,7 +75,7 @@ public partial class DeclarationPass
 
         functionCallNode.Callee.Accept(this);
 
-        functionCallNode.TypeRef = functionCallNode.Callee.TypeRef;
+        functionCallNode.SetTypeRef(functionCallNode.Callee.TypeRef);
 
         functionCallNode.Arguments.ForEach(argument => argument.Accept(this));
     }

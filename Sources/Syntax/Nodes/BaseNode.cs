@@ -8,9 +8,11 @@ public abstract class BaseNode(PositionData positionData)
 {
     public PositionData PositionData { get; set; } = positionData;
 
-    public TypeRef TypeRef { get; set; }
+    public TypeRef TypeRef { get; protected set; }
 
     public abstract void Accept(INodeHandler handler);
 
     public abstract void TypeRefAdded();
+
+    public abstract void SetTypeRef(TypeRef typeRef);
 }

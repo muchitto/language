@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Literal;
 
@@ -23,5 +24,10 @@ public class TupleLiteralNode(PositionData positionData, List<BaseNode> values) 
         {
             value.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

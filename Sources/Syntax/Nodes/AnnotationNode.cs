@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes;
 
@@ -27,5 +28,11 @@ public class AnnotationNode(
         Name.TypeRefAdded();
         Arguments.TypeRefAdded();
         AttachedNode.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

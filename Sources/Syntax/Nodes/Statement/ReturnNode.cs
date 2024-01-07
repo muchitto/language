@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Statement;
 
@@ -20,5 +21,11 @@ public class ReturnNode(PositionData positionData, BaseNode? value) : StatementN
         }
 
         Value?.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Value?.SetTypeRef(typeRef);
     }
 }

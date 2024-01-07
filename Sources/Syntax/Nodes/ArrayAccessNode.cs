@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes;
 
@@ -21,5 +22,11 @@ public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.P
 
         Array.TypeRefAdded();
         AccessExpression.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Array.SetTypeRef(typeRef);
     }
 }

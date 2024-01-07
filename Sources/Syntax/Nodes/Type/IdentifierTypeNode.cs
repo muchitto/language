@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Type;
 
@@ -23,5 +24,10 @@ public class IdentifierTypeNode(PositionData positionData, string name) : TypeNo
         {
             throw new Exception("TypeRef is null");
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

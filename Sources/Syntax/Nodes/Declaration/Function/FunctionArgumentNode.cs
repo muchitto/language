@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Function;
 
@@ -31,5 +32,12 @@ public class FunctionArgumentNode(
         Name.TypeRefAdded();
         TypeName?.TypeRefAdded();
         DefaultValue?.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
+        TypeName?.SetTypeRef(typeRef);
     }
 }

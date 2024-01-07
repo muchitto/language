@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes;
 
@@ -21,5 +22,11 @@ public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.Posi
 
         Left.TypeRefAdded();
         Right.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Left.SetTypeRef(typeRef);
     }
 }

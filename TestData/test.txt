@@ -1,3 +1,7 @@
+var a
+
+a = "gheahea"
+
 func test(var1 Test)
     var1.test()
     var1.a = 1
@@ -5,7 +9,7 @@ end
 
 struct Test
     var a Int
-    var b 
+    var b Haha
 
     func test()
         b.t = 1

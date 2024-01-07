@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes;
 
@@ -23,5 +24,11 @@ public class AnnotationArgumentNode(PositionData positionData, IdentifierNode na
 
         Name.TypeRefAdded();
         Value.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

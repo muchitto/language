@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Literal;
 
@@ -24,5 +25,10 @@ public class StructLiteralNode(PositionData positionData, List<StructLiteralFiel
         {
             field.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

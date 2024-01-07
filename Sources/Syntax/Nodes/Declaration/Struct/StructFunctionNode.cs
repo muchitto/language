@@ -1,23 +1,18 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using Syntax.Nodes.Type;
+using Syntax.Nodes.Declaration.Function;
 using TypeInformation;
 
-namespace Syntax.Nodes;
+namespace Syntax.Nodes.Declaration.Struct;
 
-public class IdentifierNode(PositionData positionData, string name)
-    : BaseNode(positionData)
+public class StructFunctionNode(PositionData positionData, string name, FunctionDeclarationNode function)
+    : StructFieldNode(positionData, name)
 {
-    public string Name { get; set; } = name;
+    public FunctionDeclarationNode Function { get; set; } = function;
 
     public override void Accept(INodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public static explicit operator IdentifierNode(IdentifierTypeNode node)
-    {
-        return new IdentifierNode(node.PositionData, node.Name);
     }
 
     public override void TypeRefAdded()
@@ -26,10 +21,13 @@ public class IdentifierNode(PositionData positionData, string name)
         {
             throw new Exception("TypeRef is null");
         }
+
+        Function.TypeRefAdded();
     }
 
     public override void SetTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
+        Function.SetTypeRef(typeRef);
     }
 }

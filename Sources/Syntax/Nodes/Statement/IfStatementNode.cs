@@ -1,6 +1,7 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Expression;
+using TypeInformation;
 
 namespace Syntax.Nodes.Statement;
 
@@ -30,5 +31,10 @@ public class IfStatementNode(
         Condition?.TypeRefAdded();
         BodyContainerNode.TypeRefAdded();
         NextIf?.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

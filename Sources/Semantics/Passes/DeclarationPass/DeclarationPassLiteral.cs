@@ -1,5 +1,4 @@
 using Syntax.Nodes.Literal;
-using TypeInformation;
 
 namespace Semantics.Passes.DeclarationPass;
 
@@ -17,7 +16,9 @@ public partial class DeclarationPass
 
     public void Handle(StringLiteralNode stringLiteralNode)
     {
-        throw new NotImplementedException();
+        AddNodeToScope(stringLiteralNode);
+
+        stringLiteralNode.SetTypeRef(SemanticContext.StringType());
     }
 
     public void Handle(NilLiteralNode nullLiteralNode)
@@ -34,9 +35,11 @@ public partial class DeclarationPass
     {
         AddNodeToScope(numberLiteralNode);
 
-        numberLiteralNode.TypeRef = numberLiteralNode.Value.Contains('.')
-            ? TypeRef.Float(SemanticContext.CurrentScope)
-            : TypeRef.Int(SemanticContext.CurrentScope);
+        numberLiteralNode.SetTypeRef(
+            numberLiteralNode.Value.Contains('.')
+                ? SemanticContext.FloatType()
+                : SemanticContext.IntType()
+        );
     }
 
     public void Handle(CharLiteralNode charLiteralNode)

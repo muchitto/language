@@ -374,14 +374,6 @@ public partial class Parser
             value = ParseExpressionPrimary();
         }
 
-        if (!isLet && typeNode == null && value == null)
-        {
-            throw new ParseError(
-                name.PositionData,
-                "the variable declaration does not have a typename or an initial value where the type could be inferred from"
-            );
-        }
-
         if (isLet && value == null)
         {
             throw new ParseError(

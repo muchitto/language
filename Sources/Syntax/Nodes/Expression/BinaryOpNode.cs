@@ -1,6 +1,7 @@
 using ErrorReporting;
 using Lexing;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Expression;
 
@@ -25,5 +26,11 @@ public class BinaryOpNode(PositionData positionData, BaseNode lhs, BaseNode rhs,
 
         Lhs.TypeRefAdded();
         Rhs.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Lhs.SetTypeRef(typeRef);
     }
 }

@@ -21,7 +21,7 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
 
     public void Handle(IdentifierNode identifierNode)
     {
-        identifierNode.TypeRef = ReferenceVariable(identifierNode.Name);
+        identifierNode.SetTypeRef(ReferenceVariable(identifierNode.Name));
     }
 
     public void Handle(ExpressionNode expressionNode)
@@ -55,21 +55,21 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         {
             variableDeclarationNode.Type.Accept(this);
 
-            variableDeclarationNode.TypeRef = variableDeclarationNode.Type.TypeRef;
+            variableDeclarationNode.SetTypeRef(variableDeclarationNode.Type.TypeRef);
         }
         else if (variableDeclarationNode.IsDynamic)
         {
-            variableDeclarationNode.TypeRef = TypeRef.Dynamic(SemanticContext.CurrentScope);
+            variableDeclarationNode.SetTypeRef(SemanticContext.DynamicType());
         }
         else if (variableDeclarationNode.Value != null)
         {
             variableDeclarationNode.Value.Accept(this);
 
-            variableDeclarationNode.TypeRef = variableDeclarationNode.Value.TypeRef;
+            variableDeclarationNode.SetTypeRef(variableDeclarationNode.Value.TypeRef);
         }
         else
         {
-            throw new Exception("Variable must have a type");
+            variableDeclarationNode.SetTypeRef(TypeRef.Unknown(SemanticContext.CurrentScope));
         }
     }
 
@@ -77,6 +77,18 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
     {
         variableAssignmentNode.Name.Accept(this);
         variableAssignmentNode.Value.Accept(this);
+
+        if (variableAssignmentNode.Name.TypeRef.IsUnknown && !variableAssignmentNode.Value.TypeRef.IsUnknown)
+        {
+            variableAssignmentNode.SetTypeRef(variableAssignmentNode.Value.TypeRef);
+        }
+        else if (!variableAssignmentNode.Name.TypeRef.IsUnknown && !variableAssignmentNode.Value.TypeRef.IsUnknown)
+        {
+            if (variableAssignmentNode.Name.TypeRef.TypeId != variableAssignmentNode.Value.TypeRef.TypeId)
+            {
+                throw new Exception("Types are not equal");
+            }
+        }
     }
 
     public void Handle(IfStatementNode ifStatementNode)
@@ -120,7 +132,7 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    private void CreateBaseTypes(ProgramContainerNode ast)
+    private void CreateBaseTypes(BaseNode ast)
     {
         DeclareType(ast.PositionData, "Int", new IntTypeInfo(32));
         DeclareType(ast.PositionData, "Float", new FloatTypeInfo(64));

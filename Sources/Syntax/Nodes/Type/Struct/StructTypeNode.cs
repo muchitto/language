@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Type.Struct;
 
@@ -23,5 +24,10 @@ public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode>
         {
             field.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

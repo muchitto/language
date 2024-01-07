@@ -1,5 +1,6 @@
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Type;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Struct;
 
@@ -37,5 +38,11 @@ public class StructDeclarationNode(
         {
             @interface.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

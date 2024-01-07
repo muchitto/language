@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Type.Function;
 
@@ -27,5 +28,10 @@ public class FunctionTypeNode(PositionData positionData, List<FunctionTypeArgume
         }
 
         ReturnType.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

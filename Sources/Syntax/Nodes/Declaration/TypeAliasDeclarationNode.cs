@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration;
 
@@ -20,5 +21,11 @@ public class TypeAliasDeclarationNode(IdentifierNode name, TypeNode type) : Decl
 
         Name.TypeRefAdded();
         Type.TypeRefAdded();
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

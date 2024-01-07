@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Type.Tuple;
 
@@ -23,5 +24,10 @@ public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> t
         {
             type.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
     }
 }

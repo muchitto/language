@@ -1,4 +1,5 @@
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
@@ -32,5 +33,11 @@ public class EnumDeclarationNode(IdentifierNode name, List<EnumCaseNode> cases, 
         {
             function.TypeRefAdded();
         }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        Name.SetTypeRef(typeRef);
     }
 }

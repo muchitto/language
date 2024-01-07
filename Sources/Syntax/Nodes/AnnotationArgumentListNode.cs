@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
+using TypeInformation;
 
 namespace Syntax.Nodes;
 
@@ -23,6 +24,15 @@ public class AnnotationArgumentListNode(PositionData positionData, List<Annotati
         foreach (var argument in Arguments)
         {
             argument.TypeRefAdded();
+        }
+    }
+
+    public override void SetTypeRef(TypeRef typeRef)
+    {
+        TypeRef = typeRef;
+        foreach (var argument in Arguments)
+        {
+            argument.SetTypeRef(typeRef);
         }
     }
 }
