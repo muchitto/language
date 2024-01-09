@@ -24,4 +24,18 @@ public class EnumCaseNode(
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not EnumCaseNode node)
+        {
+            return false;
+        }
+
+        return AssociatedValues.All(associatedValue =>
+               {
+                   return node.AssociatedValues.Any(x => x.TestEquals(associatedValue));
+               })
+               && node.Name.TestEquals(Name);
+    }
 }

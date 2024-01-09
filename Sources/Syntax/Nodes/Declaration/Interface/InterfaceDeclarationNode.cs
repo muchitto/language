@@ -22,4 +22,20 @@ public class InterfaceDeclarationNode(
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not InterfaceDeclarationNode node)
+        {
+            return false;
+        }
+
+        if (Functions.Any(function => !node.Functions.Any(x => x.TestEquals(function))))
+        {
+            return false;
+        }
+
+        return Fields.All(field => node.Fields.Any(x => x.TestEquals(field)))
+               && node.Name.TestEquals(Name);
+    }
 }

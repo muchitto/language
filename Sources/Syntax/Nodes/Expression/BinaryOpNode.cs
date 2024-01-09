@@ -23,4 +23,16 @@ public class BinaryOpNode(PositionData positionData, BaseNode lhs, BaseNode rhs,
         TypeRef = typeRef;
         Lhs.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not BinaryOpNode node)
+        {
+            return false;
+        }
+
+        return Lhs.TestEquals(node.Lhs)
+               && Rhs.TestEquals(node.Rhs)
+               && Operator == node.Operator;
+    }
 }

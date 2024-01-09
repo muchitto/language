@@ -4,7 +4,7 @@ using Syntax.Nodes.Type;
 using Syntax.Nodes.Type.Struct;
 using Syntax.Nodes.Type.Tuple;
 
-namespace Parsing.Parser;
+namespace Parsing;
 
 public partial class Parser
 {

@@ -20,4 +20,24 @@ public class EnumDeclarationNode(IdentifierNode name, List<EnumCaseNode> cases, 
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not EnumDeclarationNode node)
+        {
+            return false;
+        }
+
+        if (Cases.Any(@case => !node.Cases.Any(x => x.TestEquals(@case))))
+        {
+            return false;
+        }
+
+        if (Functions.Any(function => !node.Functions.Any(x => x.TestEquals(function))))
+        {
+            return false;
+        }
+
+        return node.Name.TestEquals(Name);
+    }
 }

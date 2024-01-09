@@ -2,6 +2,11 @@ namespace ErrorReporting;
 
 public record struct PositionData(string Filename, string SourceCode, int From = 0, int To = 0)
 {
+    public static PositionData Test(string sourceCode = "")
+    {
+        return new PositionData("test", sourceCode);
+    }
+
     public (int Line, int ColumnFrom, int ColumnTo) GetLineAndColumn()
     {
         var line = 1;

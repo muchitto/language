@@ -27,10 +27,6 @@ public class TypeResolution : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(ExpressionNode expressionNode)
-    {
-        throw new NotImplementedException();
-    }
 
     public void Handle(AnnotationNode annotationNode)
     {
@@ -236,6 +232,21 @@ public class TypeResolution : SemanticPass, INodeHandler
     }
 
     public void Handle(FunctionCallArgumentNode functionCallArgumentNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(IfExpressionNode ifExpressionNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(BinaryOpNode binaryOpNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(BodyExpressionNode bodyExpressionNode)
     {
         throw new NotImplementedException();
     }

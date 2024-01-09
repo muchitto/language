@@ -20,4 +20,14 @@ public class FunctionCallArgumentNode(PositionData positionData, IdentifierNode?
         TypeRef = typeRef;
         Name?.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not FunctionCallArgumentNode node)
+        {
+            return false;
+        }
+
+        return !TestEqualsOrBothNull(Name, node.Name) && node.Value.TestEquals(Value);
+    }
 }

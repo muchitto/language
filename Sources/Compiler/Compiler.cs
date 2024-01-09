@@ -1,6 +1,6 @@
 using ErrorReporting;
 using Lexing;
-using Parsing.Parser;
+using Parsing;
 using Semantics;
 
 namespace Language;

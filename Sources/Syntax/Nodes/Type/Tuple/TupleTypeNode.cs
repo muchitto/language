@@ -18,4 +18,14 @@ public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> t
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not TupleTypeNode node)
+        {
+            return false;
+        }
+
+        return node.Types.Count == Types.Count && Types.All(type => type.TestEquals(node));
+    }
 }

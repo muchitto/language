@@ -27,11 +27,6 @@ public class FieldAccessLowering : INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(ExpressionNode expressionNode)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Handle(AnnotationNode annotationNode)
     {
         throw new NotImplementedException();
@@ -228,6 +223,26 @@ public class FieldAccessLowering : INodeHandler
     }
 
     public void Handle(StructVariableNode structVariableNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(IfExpressionNode ifExpressionNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(BinaryOpNode binaryOpNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(BodyExpressionNode bodyExpressionNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(ExpressionNode expressionNode)
     {
         throw new NotImplementedException();
     }

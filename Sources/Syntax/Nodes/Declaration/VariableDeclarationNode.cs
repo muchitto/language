@@ -28,4 +28,18 @@ public class VariableDeclarationNode(
         Name.SetTypeRef(typeRef);
         Type?.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not VariableDeclarationNode node)
+        {
+            return false;
+        }
+
+        return node.IsLet == IsLet
+               && node.IsDynamic == IsDynamic
+               && TestEqualsOrBothNull(Value, node.Value)
+               && TestEqualsOrBothNull(node.Type, Type)
+               && node.Name.TestEquals(Name);
+    }
 }

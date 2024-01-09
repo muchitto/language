@@ -1,17 +1,41 @@
 using ErrorReporting;
-using Lexing;
+using Syntax.Nodes;
+using Syntax.Nodes.Declaration;
+using Syntax.Nodes.Literal;
 
 namespace Compiler.Tests.Parser;
 
 public class ParserTest
 {
     [Fact]
-    public void Parser()
+    public void ParseVariableDeclaration()
     {
-        var posData = new PositionData("test", "test");
-        var parser = new Parsing.Parser.Parser(new Lexer(posData));
-        var ast = parser.Parse();
+        var source = @"
+            var x = 1
+        ";
 
-        Assert.NotNull(ast);
+        var ast = Parsing.Parser.Parse("test", source);
+
+        // Test that the AST is correct
+        // it should be:
+        // ProgramContainerNode:
+        //   - VariableDeclarationNode:
+        //       - IdentifierNode: x
+        //       - IntegerLiteralNode: 1
+
+        // Write the assert
+        Assert.True(ast.TestEquals(
+            new ProgramContainerNode(PositionData.Test(),
+                [
+                    new VariableDeclarationNode(
+                        new IdentifierNode(PositionData.Test(), "x"),
+                        new NumberLiteralNode(PositionData.Test(), "1"),
+                        false,
+                        null,
+                        false
+                    )
+                ]
+            )
+        ));
     }
 }

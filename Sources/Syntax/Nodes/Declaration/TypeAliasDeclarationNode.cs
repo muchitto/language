@@ -17,4 +17,14 @@ public class TypeAliasDeclarationNode(IdentifierNode name, TypeNode type) : Decl
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not TypeAliasDeclarationNode node)
+        {
+            return false;
+        }
+
+        return node.Type.TestEquals(Type) && node.Name.TestEquals(Name);
+    }
 }

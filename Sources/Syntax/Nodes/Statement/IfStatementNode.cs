@@ -25,4 +25,16 @@ public class IfStatementNode(
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not IfStatementNode node)
+        {
+            return false;
+        }
+
+        return TestEqualsOrBothNull(Condition, node.Condition)
+               && BodyContainerNode.TestEquals(node.BodyContainerNode)
+               && TestEqualsOrBothNull(NextIf, node.NextIf);
+    }
 }

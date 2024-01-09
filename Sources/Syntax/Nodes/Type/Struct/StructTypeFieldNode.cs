@@ -20,4 +20,14 @@ public class StructTypeFieldNode(PositionData positionData, string name, TypeNod
         TypeRef = typeRef;
         Type.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StructTypeFieldNode node)
+        {
+            return false;
+        }
+
+        return node.Name == Name && node.Type.TestEquals(Type);
+    }
 }

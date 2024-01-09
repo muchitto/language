@@ -21,4 +21,14 @@ public class AnnotationArgumentNode(PositionData positionData, IdentifierNode na
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not AnnotationArgumentNode node)
+        {
+            return false;
+        }
+
+        return Name.TestEquals(node.Name) && Value.TestEquals(node.Value);
+    }
 }

@@ -18,4 +18,14 @@ public class AssignmentNode(BaseNode name, BaseNode value) : StatementNode(name.
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not AssignmentNode node)
+        {
+            return false;
+        }
+
+        return node.Name.TestEquals(Name) && node.Value.TestEquals(Value);
+    }
 }

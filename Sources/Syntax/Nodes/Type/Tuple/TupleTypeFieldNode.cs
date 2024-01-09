@@ -19,4 +19,14 @@ public class TupleTypeFieldNode(PositionData positionData, string? name, TypeNod
         TypeRef = typeRef;
         Type.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not TupleTypeFieldNode node)
+        {
+            return false;
+        }
+
+        return node.Name == Name && node.Type.TestEquals(Type);
+    }
 }

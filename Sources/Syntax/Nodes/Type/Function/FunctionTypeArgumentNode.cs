@@ -27,4 +27,14 @@ public class FunctionTypeArgumentNode(IdentifierNode? name, TypeNode typeName)
             TypeName.SetTypeRef(typeRef);
         }
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not FunctionTypeArgumentNode node)
+        {
+            return false;
+        }
+
+        return TestEqualsOrBothNull(Name, node.Name) && TestEqualsOrBothNull(TypeName, node.TypeName);
+    }
 }

@@ -3,6 +3,7 @@ using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Declaration.Enum;
 using Syntax.Nodes.Declaration.Interface;
+using Syntax.Nodes.Expression;
 using Syntax.Nodes.Statement;
 using TypeInformation;
 
@@ -26,10 +27,6 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         identifierNode.SetTypeRef(ReferenceVariable(identifierNode.Name));
     }
 
-    public void Handle(ExpressionNode expressionNode)
-    {
-        throw new NotImplementedException();
-    }
 
     public void Handle(AnnotationNode annotationNode)
     {
@@ -149,6 +146,21 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
     }
 
     public void Handle(InterfaceDeclarationNode interfaceDeclarationNodeDeclaration)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(IfExpressionNode ifExpressionNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(BinaryOpNode binaryOpNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(BodyExpressionNode bodyExpressionNode)
     {
         throw new NotImplementedException();
     }

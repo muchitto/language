@@ -24,4 +24,19 @@ public class BodyContainerNode(PositionData positionData, List<BaseNode> stateme
             statement.SetTypeRef(typeRef);
         }
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not BodyContainerNode node)
+        {
+            return false;
+        }
+
+        if (node.CanReturn != CanReturn)
+        {
+            return false;
+        }
+
+        return node.Statements.Count == Statements.Count && Statements.All(statement => statement.TestEquals(node));
+    }
 }

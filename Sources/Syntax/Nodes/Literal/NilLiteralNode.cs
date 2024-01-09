@@ -15,4 +15,9 @@ public class NilLiteralNode(PositionData positionData) : LiteralNode(positionDat
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        return other is NilLiteralNode;
+    }
 }

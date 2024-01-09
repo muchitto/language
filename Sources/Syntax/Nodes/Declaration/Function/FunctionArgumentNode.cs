@@ -29,4 +29,17 @@ public class FunctionArgumentNode(
         Name.SetTypeRef(typeRef);
         TypeName?.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not FunctionArgumentNode node)
+        {
+            return false;
+        }
+
+        return node.IsDynamic == IsDynamic
+               && TestEqualsOrBothNull(node.DefaultValue, DefaultValue)
+               && TestEqualsOrBothNull(node.TypeName, TypeName)
+               && node.Name.TestEquals(Name);
+    }
 }

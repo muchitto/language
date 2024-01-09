@@ -17,4 +17,14 @@ public class StringLiteralNode(PositionData positionData, string value) : Litera
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StringLiteralNode node)
+        {
+            return false;
+        }
+
+        return node.Value == Value;
+    }
 }

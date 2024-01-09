@@ -4,7 +4,7 @@ using Syntax.Nodes.Expression;
 using Syntax.Nodes.Literal;
 using Syntax.Nodes.Statement;
 
-namespace Parsing.Parser;
+namespace Parsing;
 
 public partial class Parser
 {

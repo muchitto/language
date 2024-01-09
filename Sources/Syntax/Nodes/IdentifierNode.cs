@@ -24,4 +24,14 @@ public class IdentifierNode(PositionData positionData, string name)
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not IdentifierNode node)
+        {
+            return false;
+        }
+
+        return node.Name == Name;
+    }
 }

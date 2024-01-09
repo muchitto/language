@@ -3,7 +3,7 @@ using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Struct;
 using Syntax.Nodes.Type;
 
-namespace Parsing.Parser;
+namespace Parsing;
 
 public partial class Parser
 {

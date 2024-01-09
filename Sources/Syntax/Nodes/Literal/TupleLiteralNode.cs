@@ -17,4 +17,14 @@ public class TupleLiteralNode(PositionData positionData, List<BaseNode> values) 
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not TupleLiteralNode node)
+        {
+            return false;
+        }
+
+        return node.Values.Count == Values.Count && Values.All(value => value.TestEquals(node));
+    }
 }

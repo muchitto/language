@@ -17,4 +17,14 @@ public class CharLiteralNode(PositionData positionData, char value) : LiteralNod
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not CharLiteralNode node)
+        {
+            return false;
+        }
+
+        return node.Value == Value;
+    }
 }

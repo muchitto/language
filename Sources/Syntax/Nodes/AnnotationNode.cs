@@ -23,4 +23,19 @@ public class AnnotationNode(
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not AnnotationNode node)
+        {
+            return false;
+        }
+
+        if (!Name.TestEquals(node.Name))
+        {
+            return false;
+        }
+
+        return Arguments.TestEquals(node.Arguments) && AttachedNode.TestEquals(node.AttachedNode);
+    }
 }

@@ -10,8 +10,6 @@ public interface IBasicNodeHandler
 
     public void Handle(IdentifierNode identifierNode);
 
-    public void Handle(ExpressionNode expressionNode);
-
     public void Handle(AnnotationNode annotationNode);
 
     public void Handle(AnnotationArgumentListNode annotationArgumentListNode);

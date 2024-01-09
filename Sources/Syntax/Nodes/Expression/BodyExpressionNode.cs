@@ -18,4 +18,14 @@ public class BodyExpressionNode(PositionData positionData, List<BaseNode> statem
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not BodyExpressionNode node)
+        {
+            return false;
+        }
+
+        return Statements.SequenceEqual(node.Statements);
+    }
 }

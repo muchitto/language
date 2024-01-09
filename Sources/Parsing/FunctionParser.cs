@@ -2,7 +2,7 @@ using Lexing;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Function;
 
-namespace Parsing.Parser;
+namespace Parsing;
 
 public partial class Parser
 {

@@ -21,4 +21,14 @@ public class EnumCaseAssociatedValueNode(PositionData positionData, IdentifierNo
         Name?.SetTypeRef(typeRef);
         Type.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not EnumCaseAssociatedValueNode node)
+        {
+            return false;
+        }
+
+        return TestEqualsOrBothNull(node.Name, Name) && node.Type.TestEquals(Type);
+    }
 }

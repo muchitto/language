@@ -27,4 +27,16 @@ public class IfExpressionNode(
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not IfExpressionNode node)
+        {
+            return false;
+        }
+
+        return TestEqualsOrBothNull(Condition, node.Condition)
+               && TestEqualsOrBothNull(NextIf, node.NextIf)
+               && Body.TestEquals(node.Body);
+    }
 }

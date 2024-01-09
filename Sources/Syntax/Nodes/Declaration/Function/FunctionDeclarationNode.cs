@@ -30,4 +30,23 @@ public class FunctionDeclarationNode(
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not FunctionDeclarationNode node)
+        {
+            return false;
+        }
+
+        if (node.CanThrow != CanThrow
+            || node.IsMethod != IsMethod
+            || !node.Arguments.All(argument => Arguments.Any(x => x.TestEquals(argument)))
+            || !node.BodyContainerNode.TestEquals(BodyContainerNode)
+            || !node.Name.TestEquals(Name))
+        {
+            return false;
+        }
+
+        return TestEqualsOrBothNull(node.ReturnTypeName, ReturnTypeName);
+    }
 }

@@ -1,7 +1,7 @@
 using Lexing;
 using Syntax.Nodes.Declaration.Enum;
 
-namespace Parsing.Parser;
+namespace Parsing;
 
 public partial class Parser
 {

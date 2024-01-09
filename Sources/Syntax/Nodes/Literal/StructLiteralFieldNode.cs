@@ -20,4 +20,14 @@ public class StructLiteralFieldNode(PositionData positionData, IdentifierNode na
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StructLiteralFieldNode node)
+        {
+            return false;
+        }
+
+        return node.Name.TestEquals(Name) && node.Value.TestEquals(Value);
+    }
 }

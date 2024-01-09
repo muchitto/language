@@ -17,4 +17,14 @@ public class BooleanLiteralNode(PositionData positionData, bool value) : Literal
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not BooleanLiteralNode node)
+        {
+            return false;
+        }
+
+        return node.Value == Value;
+    }
 }

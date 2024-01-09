@@ -16,4 +16,27 @@ public class ProgramContainerNode(PositionData positionData, List<BaseNode> stat
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not ProgramContainerNode node)
+        {
+            return false;
+        }
+
+        if (node.Statements.Count != Statements.Count)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < Statements.Count; i++)
+        {
+            if (!Statements[i].TestEquals(node.Statements[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

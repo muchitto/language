@@ -18,4 +18,14 @@ public class StructLiteralNode(PositionData positionData, List<StructLiteralFiel
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StructLiteralNode node)
+        {
+            return false;
+        }
+
+        return node.Fields.Count == Fields.Count && Fields.All(field => field.TestEquals(node));
+    }
 }

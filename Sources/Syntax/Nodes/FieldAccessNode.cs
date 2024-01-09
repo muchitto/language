@@ -18,4 +18,14 @@ public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.Posi
         TypeRef = typeRef;
         Left.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not FieldAccessNode node)
+        {
+            return false;
+        }
+
+        return Left.TestEquals(node.Left) && Right.TestEquals(node.Right);
+    }
 }

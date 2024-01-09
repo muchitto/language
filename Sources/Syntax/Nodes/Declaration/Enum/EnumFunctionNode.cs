@@ -20,4 +20,14 @@ public class EnumFunctionNode(PositionData positionData, FunctionDeclarationNode
         TypeRef = typeRef;
         Function.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not EnumFunctionNode node)
+        {
+            return false;
+        }
+
+        return node.Function.TestEquals(Function);
+    }
 }

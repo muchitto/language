@@ -18,4 +18,14 @@ public class TupleLiteralFieldNode(PositionData positionData, string? name, Base
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not TupleLiteralFieldNode node)
+        {
+            return false;
+        }
+
+        return node.Name == Name && node.Value.TestEquals(Value);
+    }
 }

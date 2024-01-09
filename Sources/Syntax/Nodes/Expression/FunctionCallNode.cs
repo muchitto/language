@@ -19,4 +19,15 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
         TypeRef = typeRef;
         Callee.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not FunctionCallNode node)
+        {
+            return false;
+        }
+
+        return Callee.TestEquals(node.Callee)
+               && Arguments.SequenceEqual(node.Arguments);
+    }
 }

@@ -20,4 +20,14 @@ public class StructFunctionNode(PositionData positionData, string name, Function
         TypeRef = typeRef;
         Function.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StructFunctionNode node)
+        {
+            return false;
+        }
+
+        return node.Function.TestEquals(Function) && node.Name == Name;
+    }
 }

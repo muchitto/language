@@ -20,4 +20,16 @@ public class FunctionTypeNode(PositionData positionData, List<FunctionTypeArgume
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not FunctionTypeNode node)
+        {
+            return false;
+        }
+
+        return node.Parameters.Count == Parameters.Count
+               && Parameters.All(parameter => parameter.TestEquals(node))
+               && node.ReturnType.TestEquals(ReturnType);
+    }
 }

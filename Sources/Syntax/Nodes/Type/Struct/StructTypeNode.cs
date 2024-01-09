@@ -18,4 +18,14 @@ public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode>
     {
         TypeRef = typeRef;
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StructTypeNode node)
+        {
+            return false;
+        }
+
+        return node.Fields.Count == Fields.Count && Fields.All(field => field.TestEquals(node));
+    }
 }

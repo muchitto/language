@@ -22,4 +22,14 @@ public class AnnotationArgumentListNode(PositionData positionData, List<Annotati
             argument.SetTypeRef(typeRef);
         }
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not AnnotationArgumentListNode node)
+        {
+            return false;
+        }
+
+        return node.Arguments.Count == Arguments.Count && Arguments.All(argument => argument.TestEquals(node));
+    }
 }

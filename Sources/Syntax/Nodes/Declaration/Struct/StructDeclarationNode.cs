@@ -30,4 +30,26 @@ public class StructDeclarationNode(
         TypeRef = typeRef;
         Name.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StructDeclarationNode node)
+        {
+            return false;
+        }
+
+        if (Interfaces.Any(interfaceNode => !node.Interfaces.Any(x => x.TestEquals(interfaceNode))))
+        {
+            return false;
+        }
+
+        if (Fields.Any(field => !node.Fields.Any(x => x.TestEquals(field))))
+        {
+            return false;
+        }
+
+        return node.ImplOnly == ImplOnly
+               && TestEqualsOrBothNull(node.Parent, Parent)
+               && node.Name.TestEquals(Name);
+    }
 }

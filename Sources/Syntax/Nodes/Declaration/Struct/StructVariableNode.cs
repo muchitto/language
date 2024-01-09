@@ -20,4 +20,14 @@ public class StructVariableNode(PositionData positionData, string name, Variable
         TypeRef = typeRef;
         Variable.SetTypeRef(typeRef);
     }
+
+    public override bool TestEquals(BaseNode other)
+    {
+        if (other is not StructVariableNode node)
+        {
+            return false;
+        }
+
+        return node.Variable.TestEquals(Variable) && node.Name == Name;
+    }
 }
