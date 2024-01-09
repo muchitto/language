@@ -570,7 +570,7 @@ public partial class Parser
             {
                 everyFieldHasNewline = false;
 
-                if (!usesCommas.Value)
+                if (!usesCommas.Value && !IsNext(TokenType.Symbol, "}"))
                 {
                     throw new ParseError(
                         field.PositionData,
