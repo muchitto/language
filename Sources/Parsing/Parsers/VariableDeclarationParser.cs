@@ -1,5 +1,4 @@
 using Lexing;
-using Parsing.Parsers.Type;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 

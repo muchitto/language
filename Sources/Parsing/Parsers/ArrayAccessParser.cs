@@ -1,7 +1,7 @@
 using Lexing;
 using Syntax.Nodes;
 
-namespace Parsing.Parsers.Array;
+namespace Parsing.Parsers;
 
 public class ArrayAccessParserData
 {

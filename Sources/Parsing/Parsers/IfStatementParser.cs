@@ -4,7 +4,7 @@ using Syntax.Nodes.Expression;
 using Syntax.Nodes.Literal;
 using Syntax.Nodes.Statement;
 
-namespace Parsing.Parsers.Conditional;
+namespace Parsing.Parsers;
 
 public class IfStatementParser(ParsingContext context) : Parser<IfStatementNode>(context)
 {

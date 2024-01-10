@@ -1,7 +1,7 @@
 using Lexing;
 using Syntax.Nodes.Literal;
 
-namespace Parsing.Parsers.Literals;
+namespace Parsing.Parsers;
 
 public class BasicLiteralParser(ParsingContext context)
     : Parser<LiteralNode>(context)

@@ -1,9 +1,8 @@
 using Lexing;
-using Parsing.Parsers.Type;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Function;
 
-namespace Parsing.Parsers.Function;
+namespace Parsing.Parsers;
 
 public struct FunctionDeclarationParserData
 {

@@ -6,7 +6,7 @@ using Syntax.Nodes.Type.Function;
 using Syntax.Nodes.Type.Struct;
 using Syntax.Nodes.Type.Tuple;
 
-namespace Parsing.Parsers.Type;
+namespace Parsing.Parsers;
 
 public class TypeAnnotationDataParser(ParsingContext context) : Parser<TypeNode>(context)
 {

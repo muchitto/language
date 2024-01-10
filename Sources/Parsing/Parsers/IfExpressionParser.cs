@@ -3,7 +3,7 @@ using Syntax.Nodes;
 using Syntax.Nodes.Expression;
 using Syntax.Nodes.Literal;
 
-namespace Parsing.Parsers.Conditional;
+namespace Parsing.Parsers;
 
 public class IfExpressionParser(ParsingContext context) : Parser<IfExpressionNode>(context)
 {

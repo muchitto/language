@@ -1,10 +1,9 @@
 using Lexing;
-using Parsing.Parsers.Function;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Struct;
 using Syntax.Nodes.Type;
 
-namespace Parsing.Parsers.Struct;
+namespace Parsing.Parsers;
 
 public class StructDeclarationParser(ParsingContext context) : Parser<StructDeclarationNode>(context)
 {

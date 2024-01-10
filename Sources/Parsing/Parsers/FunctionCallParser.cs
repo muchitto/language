@@ -2,7 +2,7 @@ using Lexing;
 using Syntax.Nodes;
 using Syntax.Nodes.Expression;
 
-namespace Parsing.Parsers.Function;
+namespace Parsing.Parsers;
 
 public struct FunctionCallParserData
 {
