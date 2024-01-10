@@ -26,6 +26,6 @@ public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> t
             return false;
         }
 
-        return node.Types.Count == Types.Count && Types.All(type => type.TestEquals(node));
+        return node.Types.Count == Types.Count && Types.TestEquals(node.Types);
     }
 }

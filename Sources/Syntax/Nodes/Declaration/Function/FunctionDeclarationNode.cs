@@ -40,13 +40,13 @@ public class FunctionDeclarationNode(
 
         if (node.CanThrow != CanThrow
             || node.IsMethod != IsMethod
-            || !node.Arguments.All(argument => Arguments.Any(x => x.TestEquals(argument)))
+            || !Arguments.TestEquals(node.Arguments)
             || !node.BodyContainerNode.TestEquals(BodyContainerNode)
             || !node.Name.TestEquals(Name))
         {
             return false;
         }
 
-        return TestEqualsOrBothNull(node.ReturnTypeName, ReturnTypeName);
+        return ReturnTypeName.TestEqualsOrBothNull(node.ReturnTypeName);
     }
 }

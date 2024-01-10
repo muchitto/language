@@ -26,6 +26,6 @@ public class StructLiteralNode(PositionData positionData, List<StructLiteralFiel
             return false;
         }
 
-        return node.Fields.Count == Fields.Count && Fields.All(field => field.TestEquals(node));
+        return node.Fields.Count == Fields.Count && Fields.TestEquals(node.Fields);
     }
 }

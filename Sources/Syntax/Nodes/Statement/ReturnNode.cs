@@ -21,11 +21,6 @@ public class ReturnNode(PositionData positionData, BaseNode? value) : StatementN
 
     public override bool TestEquals(BaseNode other)
     {
-        if (other is not ReturnNode node)
-        {
-            return false;
-        }
-
-        return node.Value != null && (Value?.TestEquals(node.Value) ?? node.Value is null);
+        return other is ReturnNode node && Value.TestEqualsOrBothNull(node.Value);
     }
 }

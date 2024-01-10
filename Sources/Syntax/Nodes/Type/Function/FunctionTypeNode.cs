@@ -29,7 +29,7 @@ public class FunctionTypeNode(PositionData positionData, List<FunctionTypeArgume
         }
 
         return node.Parameters.Count == Parameters.Count
-               && Parameters.All(parameter => parameter.TestEquals(node))
+               && Parameters.TestEquals(node.Parameters)
                && node.ReturnType.TestEquals(ReturnType);
     }
 }

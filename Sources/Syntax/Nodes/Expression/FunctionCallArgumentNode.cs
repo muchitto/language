@@ -28,6 +28,6 @@ public class FunctionCallArgumentNode(PositionData positionData, IdentifierNode?
             return false;
         }
 
-        return !TestEqualsOrBothNull(Name, node.Name) && node.Value.TestEquals(Value);
+        return Name.TestEqualsOrBothNull(node.Name) && node.Value.TestEquals(Value);
     }
 }

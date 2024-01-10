@@ -38,8 +38,8 @@ public class FunctionArgumentNode(
         }
 
         return node.IsDynamic == IsDynamic
-               && TestEqualsOrBothNull(node.DefaultValue, DefaultValue)
-               && TestEqualsOrBothNull(node.TypeName, TypeName)
+               && DefaultValue.TestEqualsOrBothNull(node.DefaultValue)
+               && TypeName.TestEqualsOrBothNull(node.TypeName)
                && node.Name.TestEquals(Name);
     }
 }

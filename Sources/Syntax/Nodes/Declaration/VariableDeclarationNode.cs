@@ -38,8 +38,8 @@ public class VariableDeclarationNode(
 
         return node.IsLet == IsLet
                && node.IsDynamic == IsDynamic
-               && TestEqualsOrBothNull(Value, node.Value)
-               && TestEqualsOrBothNull(node.Type, Type)
+               && Value.TestEqualsOrBothNull(node.Value)
+               && Type.TestEqualsOrBothNull(node.Type)
                && node.Name.TestEquals(Name);
     }
 }

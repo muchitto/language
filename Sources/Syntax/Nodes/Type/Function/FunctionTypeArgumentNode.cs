@@ -35,6 +35,6 @@ public class FunctionTypeArgumentNode(IdentifierNode? name, TypeNode typeName)
             return false;
         }
 
-        return TestEqualsOrBothNull(Name, node.Name) && TestEqualsOrBothNull(TypeName, node.TypeName);
+        return Name.TestEqualsOrBothNull(node.Name) && TypeName.TestEqualsOrBothNull(node.TypeName);
     }
 }

@@ -28,6 +28,6 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
         }
 
         return Callee.TestEquals(node.Callee)
-               && Arguments.SequenceEqual(node.Arguments);
+               && Arguments.TestEquals(node.Arguments);
     }
 }

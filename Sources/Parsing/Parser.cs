@@ -542,7 +542,7 @@ public partial class Parser
             {
                 usesCommas = IsNextAndEat(TokenType.Symbol, ",");
             }
-            else if (usesCommas.Value)
+            else if (usesCommas.Value && !IsNext(TokenType.Symbol, "}"))
             {
                 ExpectAndEat(
                     TokenType.Symbol,
@@ -566,11 +566,13 @@ public partial class Parser
                 );
             }
 
-            if (!IsNext(TokenType.Newline))
+            fields.Add(field);
+
+            if (!IsNext(TokenType.Symbol, "}") && !IsNext(TokenType.Newline))
             {
                 everyFieldHasNewline = false;
 
-                if (!usesCommas.Value && !IsNext(TokenType.Symbol, "}"))
+                if (!usesCommas.Value)
                 {
                     throw new ParseError(
                         field.PositionData,

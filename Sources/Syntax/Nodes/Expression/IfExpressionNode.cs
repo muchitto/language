@@ -35,8 +35,8 @@ public class IfExpressionNode(
             return false;
         }
 
-        return TestEqualsOrBothNull(Condition, node.Condition)
-               && TestEqualsOrBothNull(NextIf, node.NextIf)
+        return Condition.TestEqualsOrBothNull(node.Condition)
+               && NextIf.TestEqualsOrBothNull(node.NextIf)
                && Body.TestEquals(node.Body);
     }
 }

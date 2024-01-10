@@ -26,6 +26,6 @@ public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode>
             return false;
         }
 
-        return node.Fields.Count == Fields.Count && Fields.All(field => field.TestEquals(node));
+        return node.Fields.Count == Fields.Count && Fields.TestEquals(node.Fields);
     }
 }

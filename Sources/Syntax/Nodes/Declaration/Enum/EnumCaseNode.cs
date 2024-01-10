@@ -32,10 +32,6 @@ public class EnumCaseNode(
             return false;
         }
 
-        return AssociatedValues.All(associatedValue =>
-               {
-                   return node.AssociatedValues.Any(x => x.TestEquals(associatedValue));
-               })
-               && node.Name.TestEquals(Name);
+        return AssociatedValues.TestEquals(node.AssociatedValues) && node.Name.TestEquals(Name);
     }
 }

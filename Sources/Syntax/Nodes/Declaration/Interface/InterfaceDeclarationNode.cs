@@ -35,7 +35,7 @@ public class InterfaceDeclarationNode(
             return false;
         }
 
-        return Fields.All(field => node.Fields.Any(x => x.TestEquals(field)))
+        return Fields.TestEquals(node.Fields)
                && node.Name.TestEquals(Name);
     }
 }

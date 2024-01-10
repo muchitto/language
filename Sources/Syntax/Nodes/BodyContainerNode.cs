@@ -37,6 +37,6 @@ public class BodyContainerNode(PositionData positionData, List<BaseNode> stateme
             return false;
         }
 
-        return node.Statements.Count == Statements.Count && Statements.All(statement => statement.TestEquals(node));
+        return node.Statements.Count == Statements.Count && Statements.TestEquals(node.Statements);
     }
 }

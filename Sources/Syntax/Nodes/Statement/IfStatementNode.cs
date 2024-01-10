@@ -33,8 +33,8 @@ public class IfStatementNode(
             return false;
         }
 
-        return TestEqualsOrBothNull(Condition, node.Condition)
+        return Condition.TestEqualsOrBothNull(node.Condition)
                && BodyContainerNode.TestEquals(node.BodyContainerNode)
-               && TestEqualsOrBothNull(NextIf, node.NextIf);
+               && nextIf.TestEqualsOrBothNull(node.NextIf);
     }
 }

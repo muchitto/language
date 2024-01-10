@@ -25,6 +25,6 @@ public class TupleLiteralNode(PositionData positionData, List<BaseNode> values) 
             return false;
         }
 
-        return node.Values.Count == Values.Count && Values.All(value => value.TestEquals(node));
+        return node.Values.Count == Values.Count && Values.TestEquals(node.Values);
     }
 }

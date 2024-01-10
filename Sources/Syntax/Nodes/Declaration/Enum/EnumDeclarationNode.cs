@@ -28,16 +28,11 @@ public class EnumDeclarationNode(IdentifierNode name, List<EnumCaseNode> cases, 
             return false;
         }
 
-        if (Cases.Any(@case => !node.Cases.Any(x => x.TestEquals(@case))))
+        if (Cases.TestEquals(node.Cases))
         {
             return false;
         }
 
-        if (Functions.Any(function => !node.Functions.Any(x => x.TestEquals(function))))
-        {
-            return false;
-        }
-
-        return node.Name.TestEquals(Name);
+        return Functions.TestEquals(node.Functions) && node.Name.TestEquals(Name);
     }
 }

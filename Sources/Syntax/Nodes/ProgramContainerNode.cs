@@ -24,19 +24,6 @@ public class ProgramContainerNode(PositionData positionData, List<BaseNode> stat
             return false;
         }
 
-        if (node.Statements.Count != Statements.Count)
-        {
-            return false;
-        }
-
-        for (var i = 0; i < Statements.Count; i++)
-        {
-            if (!Statements[i].TestEquals(node.Statements[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return node.Statements.Count == Statements.Count && Statements.TestEquals(node.Statements);
     }
 }

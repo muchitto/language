@@ -29,6 +29,6 @@ public class EnumCaseAssociatedValueNode(PositionData positionData, IdentifierNo
             return false;
         }
 
-        return TestEqualsOrBothNull(node.Name, Name) && node.Type.TestEquals(Type);
+        return Name.TestEqualsOrBothNull(node.Name) && node.Type.TestEquals(Type);
     }
 }

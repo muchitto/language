@@ -30,6 +30,6 @@ public class AnnotationArgumentListNode(PositionData positionData, List<Annotati
             return false;
         }
 
-        return node.Arguments.Count == Arguments.Count && Arguments.All(argument => argument.TestEquals(node));
+        return node.Arguments.Count == Arguments.Count && Arguments.TestEquals(node.Arguments);
     }
 }

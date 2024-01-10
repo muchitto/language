@@ -26,6 +26,6 @@ public class BodyExpressionNode(PositionData positionData, List<BaseNode> statem
             return false;
         }
 
-        return Statements.SequenceEqual(node.Statements);
+        return Statements.TestEquals(node.Statements);
     }
 }

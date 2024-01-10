@@ -49,7 +49,7 @@ public class StructDeclarationNode(
         }
 
         return node.ImplOnly == ImplOnly
-               && TestEqualsOrBothNull(node.Parent, Parent)
+               && Parent.TestEqualsOrBothNull(node.Parent)
                && node.Name.TestEquals(Name);
     }
 }
