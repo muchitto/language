@@ -42,4 +42,26 @@ public class FunctionArgumentNode(
                && TypeName.TestEqualsOrBothNull(node.TypeName)
                && node.Name.TestEquals(Name);
     }
+
+    public void Test()
+    {
+        var t = new
+        {
+            x = 1,
+            y = 2,
+            Statements = new[]
+            {
+                new
+                {
+                    x = 1,
+                    y = 2
+                },
+                new
+                {
+                    x = 1,
+                    y = 2
+                }
+            }
+        };
+    }
 }

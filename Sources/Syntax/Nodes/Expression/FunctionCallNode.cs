@@ -27,7 +27,6 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
             return false;
         }
 
-        return Callee.TestEquals(node.Callee)
-               && Arguments.TestEquals(node.Arguments);
+        return Callee.TestEquals(node.Callee) && Arguments.TestEquals(node.Arguments);
     }
 }
