@@ -10,7 +10,7 @@ public class IdentifierRelatedParser(ParsingContext context) : Parser<BaseNode>(
     {
         var identifier = ParseIdentifierOrFieldAccess();
 
-        if (IsNext(TokenType.Symbol, "("))
+        if (IsNextPossibleFunctionCall())
         {
             return new FunctionCallParser(Context).Parse(new FunctionCallParserData
             {
@@ -51,5 +51,16 @@ public class IdentifierRelatedParser(ParsingContext context) : Parser<BaseNode>(
             identifier,
             subField
         );
+    }
+
+    private bool IsNextPossibleFunctionCall()
+    {
+        return IsNext(TokenType.Symbol, "(")
+               || IsNext(TokenType.Identifier)
+               || IsNext(TokenType.StringLiteral)
+               || IsNext(TokenType.NumberLiteral)
+               || IsNext(TokenType.Newline)
+               || IsNext(TokenType.Symbol, "{")
+               || IsEnd;
     }
 }

@@ -2,6 +2,7 @@ using Syntax.NodeHandlers;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Declaration.Enum;
+using Syntax.Nodes.Declaration.Function;
 using Syntax.Nodes.Declaration.Interface;
 using Syntax.Nodes.Expression;
 using Syntax.Nodes.Statement;
@@ -161,6 +162,11 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
     }
 
     public void Handle(BodyExpressionNode bodyExpressionNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(ClosureNode closureNode)
     {
         throw new NotImplementedException();
     }

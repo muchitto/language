@@ -8,7 +8,7 @@ namespace Parsing.Tests.Struct;
 public class StructLiteralTest
 {
     [Fact]
-    public void ParseStructLiteralWithoutCommasButOnOneLine()
+    public void Test_Struct_Literal_Without_Commas_On_One_Line()
     {
         const string source = "var t = { x = 1 y = 2 }";
 
@@ -17,7 +17,7 @@ public class StructLiteralTest
     }
 
     [Fact]
-    public void ParseStructLiteralWithCommas()
+    public void Test_Struct_Literal_With_Commas_On_One_Line()
     {
         const string source = "var t = { x = 1, y = 2 }";
 
@@ -53,7 +53,7 @@ public class StructLiteralTest
     }
 
     [Fact]
-    public void ParseStructLiteralMultilineWithCommas()
+    public void Test_Struct_Literal_With_Commas_On_Multiple_Lines()
     {
         const string source = """
                               var t = {
@@ -94,7 +94,7 @@ public class StructLiteralTest
     }
 
     [Fact]
-    public void ParseStructLiteralMultiline()
+    public void Test_Struct_Literal_Without_Commas_On_Multiple_Lines()
     {
         const string source = """
                               var t = {
@@ -135,7 +135,7 @@ public class StructLiteralTest
     }
 
     [Fact]
-    public void ParseStructLiteralOnOneLine()
+    public void Test_Struct_Literal_On_One_Line()
     {
         const string source = "var t = { x = 1 }";
 

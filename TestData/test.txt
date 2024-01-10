@@ -16,7 +16,11 @@ struct Test
     end
 end
 
+map do (i)
+    print i   
+end
+
 struct Haha
     var t Int
-    var p Test
+    var p Test = Test()
 end

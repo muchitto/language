@@ -14,8 +14,18 @@ public class BasicLiteralParser(ParsingContext context)
         {
             TokenType.StringLiteral => ParseStringLiteral(),
             TokenType.NumberLiteral => ParseNumberLiteral(),
+            TokenType.BackTickStringLiteral => ParseBackTickStringLiteral(),
             _ => throw new ParseError(token.PositionData, "expected a string or number literal")
         };
+    }
+
+    private BackTickStringLiteralNode ParseBackTickStringLiteral()
+    {
+        Expect(TokenType.Symbol, "`", "expected back tick string literal");
+
+        var token = GetNextToken();
+
+        return new BackTickStringLiteralNode(token.PositionData, token.Value);
     }
 
     private StringLiteralNode ParseStringLiteral()

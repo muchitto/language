@@ -236,6 +236,11 @@ public class TypeResolution : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
+    public void Handle(ClosureNode closureNode)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Handle(IfExpressionNode ifExpressionNode)
     {
         throw new NotImplementedException();

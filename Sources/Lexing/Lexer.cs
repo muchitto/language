@@ -44,7 +44,7 @@ public class Lexer(PositionData positionData)
     private Token? _lastToken;
     private bool _lastWasNewLine = true;
 
-    public bool IsEnd => positionData.IsEnd();
+    public bool IsEnd => _lastToken == null && positionData.IsEnd();
 
     public Token PeekToken()
     {
@@ -135,6 +135,21 @@ public class Lexer(PositionData positionData)
 
             return new Token(
                 TokenType.StringLiteral,
+                startPosData with { To = startPosData.From + str.Length - 1 },
+                str
+            );
+        }
+
+        if (positionData.PeekChar() == '`')
+        {
+            positionData.GetChar();
+
+            var startPosData = positionData;
+
+            var str = positionData.GetUntil("`", true);
+
+            return new Token(
+                TokenType.BackTickStringLiteral,
                 startPosData with { To = startPosData.From + str.Length - 1 },
                 str
             );

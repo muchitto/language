@@ -4,8 +4,7 @@ using Syntax.Nodes.Declaration;
 
 namespace Parsing.Parsers;
 
-public class VariableDeclarationParser(ParsingContext context)
-    : Parser<VariableDeclarationNode>(context)
+public class VariableDeclarationParser(ParsingContext context) : Parser<VariableDeclarationNode>(context)
 {
     public override VariableDeclarationNode Parse()
     {

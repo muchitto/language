@@ -16,48 +16,26 @@ public class FunctionDeclarationParser(ParsingContext context)
     {
         ExpectAndEat(TokenType.Identifier, "func", "expected func");
 
-        var name = ParseSingleIdentifier();
-
-        ExpectAndEat(TokenType.Symbol, "(", null);
-
-        var arguments = new List<FunctionArgumentNode>();
-
-        while (!IsNext(TokenType.Symbol, ")"))
+        IdentifierNode name;
+        if (IsNext(TokenType.BackTickStringLiteral))
         {
-            var identifier = ParseSingleIdentifier();
+            var token = GetNextToken();
 
-            TypeNode? type = null;
-            var isDynamic = IsNext(TokenType.Symbol, "?");
-
-            if (!IsNextAndEat(TokenType.Symbol, "?"))
-            {
-                type = new TypeAnnotationDataParser(context).Parse();
-            }
-
-            BaseNode? defaultValue = null;
-
-            if (IsNextAndEat(TokenType.Symbol, "="))
-            {
-                defaultValue = new ExpressionParser(context).Parse();
-            }
-
-            arguments.Add(new FunctionArgumentNode(identifier, type, defaultValue, isDynamic));
-
-            if (!IsNextAndEat(TokenType.Symbol, ","))
-            {
-                break;
-            }
+            name = new IdentifierNode(token.PositionData, token.Value);
+        }
+        else
+        {
+            name = ParseSingleIdentifier();
         }
 
-        ExpectAndEat(TokenType.Symbol, ")", "expected an ending parenthesis for the arguments");
-
+        var arguments = ParseArguments();
         var canThrow = IsNextAndEat(TokenType.Identifier, "throws");
 
         var returnType = GetIdentifierIfNext();
 
         ExpectAndEatNewline();
 
-        var body = new BodyParser(context).Parse(new BodyParserData
+        var body = new BodyParser(Context).Parse(new BodyParserData
         {
             IsExpr = false
         });
@@ -70,5 +48,43 @@ public class FunctionDeclarationParser(ParsingContext context)
             parserData.IsMethod,
             returnType
         );
+    }
+
+    private List<FunctionArgumentNode> ParseArguments()
+    {
+        var arguments = new List<FunctionArgumentNode>();
+
+        ExpectAndEat(TokenType.Symbol, "(", "expected an opening parenthesis for the arguments");
+
+        while (!IsNext(TokenType.Symbol, ")"))
+        {
+            var identifier = ParseSingleIdentifier();
+
+            TypeNode? type = null;
+            var isDynamic = IsNext(TokenType.Symbol, "?");
+
+            if (!IsNextAndEat(TokenType.Symbol, "?"))
+            {
+                type = new TypeAnnotationDataParser(Context).Parse();
+            }
+
+            BaseNode? defaultValue = null;
+
+            if (IsNextAndEat(TokenType.Symbol, "="))
+            {
+                defaultValue = new ExpressionParser(Context).Parse();
+            }
+
+            arguments.Add(new FunctionArgumentNode(identifier, type, defaultValue, isDynamic));
+
+            if (!IsNextAndEat(TokenType.Symbol, ","))
+            {
+                break;
+            }
+        }
+
+        ExpectAndEat(TokenType.Symbol, ")", "expected an ending parenthesis for the arguments");
+
+        return arguments;
     }
 }

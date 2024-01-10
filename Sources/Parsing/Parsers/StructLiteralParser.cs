@@ -3,8 +3,7 @@ using Syntax.Nodes.Literal;
 
 namespace Parsing.Parsers;
 
-public class StructLiteralParser(ParsingContext context)
-    : Parser<StructLiteralNode>(context)
+public class StructLiteralParser(ParsingContext context) : Parser<StructLiteralNode>(context)
 {
     public override StructLiteralNode Parse()
     {

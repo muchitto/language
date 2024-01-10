@@ -187,6 +187,11 @@ public class FieldAccessLowering : INodeHandler
         throw new NotImplementedException();
     }
 
+    public void Handle(ClosureNode closureNode)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Handle(EnumDeclarationNode enumDeclarationNodeDeclaration)
     {
         throw new NotImplementedException();

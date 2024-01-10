@@ -7,6 +7,7 @@ public enum TokenType
     Identifier,
     NumberLiteral,
     StringLiteral,
+    BackTickStringLiteral,
     Operator,
     Symbol,
     Newline,

@@ -12,4 +12,6 @@ public interface IFunctionDeclarationNodeHandler
     public void Handle(FunctionCallNode functionCallNode);
 
     public void Handle(FunctionCallArgumentNode functionCallArgumentNode);
+
+    public void Handle(ClosureNode closureNode);
 }
