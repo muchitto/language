@@ -1,12 +1,8 @@
-using Lexing;
 using Syntax.Nodes;
 
 namespace Parsing.Parsers;
 
-public abstract class Parser<T>(Lexer lexer)
-    where T : BaseNode
+public abstract class Parser<T>(ParsingContext context) : BaseParser(context) where T : BaseNode
 {
-    private Lexer Lexer { get; } = lexer;
-
     public abstract T Parse();
 }

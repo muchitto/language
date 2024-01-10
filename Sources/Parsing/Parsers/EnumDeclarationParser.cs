@@ -1,13 +1,14 @@
 using Lexing;
+using Parsing.Parsers.Function;
 using Syntax.Nodes.Declaration.Enum;
 
-namespace Parsing;
+namespace Parsing.Parsers;
 
-public partial class Parser
+public class EnumDeclarationParser(ParsingContext context) : Parser<EnumDeclarationNode>(context)
 {
-    private EnumDeclarationNode ParseEnum(bool isExpr)
+    public override EnumDeclarationNode Parse()
     {
-        var startToken = Lexer.PeekToken();
+        var startToken = PeekToken();
 
         ExpectAndEat(TokenType.Identifier, "enum", "expected enum");
 
@@ -20,10 +21,16 @@ public partial class Parser
 
         while (!IsNextAndEat(TokenType.Identifier, "end"))
         {
-            var token = Lexer.PeekToken();
+            var token = PeekToken();
             if (IsNext(TokenType.Identifier, "func"))
             {
-                funcs.Add(new EnumFunctionNode(token.PositionData, ParseFunctionDeclaration(true)));
+                var functionDeclaration =
+                    new FunctionDeclarationParser(Context).Parse(new FunctionDeclarationParserData
+                    {
+                        IsMethod = true
+                    });
+
+                funcs.Add(new EnumFunctionNode(token.PositionData, functionDeclaration));
 
                 ExpectAndEatNewline();
             }

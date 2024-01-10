@@ -1,13 +1,14 @@
 using Lexing;
+using Parsing.Parsers.Function;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Struct;
 using Syntax.Nodes.Type;
 
-namespace Parsing;
+namespace Parsing.Parsers.Struct;
 
-public partial class Parser
+public class StructDeclarationParser(ParsingContext context) : Parser<StructDeclarationNode>(context)
 {
-    private StructDeclarationNode ParseStructDeclaration()
+    public override StructDeclarationNode Parse()
     {
         ExpectAndEat(TokenType.Identifier, "struct", "expected a struct identifier");
 
@@ -53,13 +54,13 @@ public partial class Parser
 
     private StructFieldNode ParseStructField()
     {
-        var token = Lexer.PeekToken();
+        var token = PeekToken();
 
         switch (token.Type)
         {
             case TokenType.Identifier when token.Value is "var" or "let":
             {
-                var variableDeclaration = ParseVariableDeclaration();
+                var variableDeclaration = new VariableDeclarationParser(Context).Parse();
 
                 var name = variableDeclaration.Name.Name;
 
@@ -67,7 +68,10 @@ public partial class Parser
             }
             case TokenType.Identifier when token.Value == "func":
             {
-                var functionDeclaration = ParseFunctionDeclaration(true);
+                var functionDeclaration = new FunctionDeclarationParser(Context).Parse(new FunctionDeclarationParserData
+                {
+                    IsMethod = true
+                });
 
                 if (functionDeclaration.Name == null)
                 {

@@ -1,5 +1,4 @@
 using ErrorReporting;
-using Lexing;
 using Parsing;
 using Semantics;
 
@@ -14,10 +13,7 @@ public class Compiler
             var filename = "TestData/test.txt";
             var testFile = File.ReadAllText(filename);
 
-            var posData = new PositionData(filename, testFile);
-            var lexer = new Lexer(posData);
-            var parser = new Parser(lexer);
-            var ast = parser.Parse();
+            var ast = Parser.Parse(filename, testFile);
 
             var semanticChecks = new SemanticChecks();
             semanticChecks.RunPass(ast);

@@ -1,22 +1,25 @@
 using Lexing;
+using Parsing.Parsers.Type;
+using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Function;
 
 namespace Parsing.Parsers.Function;
 
-public class FunctionDeclarationParser(Lexer lexer) : Parser<FunctionDeclarationNode>(lexer)
+public struct FunctionDeclarationParserData
 {
-    public override FunctionDeclarationNode Parse()
-    {
-        throw new NotImplementedException();
-    }
-    /*
-    public override FunctionDeclarationNode Parse()
+    public bool IsMethod { get; set; }
+}
+
+public class FunctionDeclarationParser(ParsingContext context)
+    : ParserWithData<FunctionDeclarationNode, FunctionDeclarationParserData>(context)
+{
+    public override FunctionDeclarationNode Parse(FunctionDeclarationParserData parserData)
     {
         ExpectAndEat(TokenType.Identifier, "func", "expected func");
 
         var name = ParseSingleIdentifier();
 
-        var argumentStartToken = Lexer.PeekToken();
+        var argumentStartToken = PeekToken();
 
         ExpectAndEat(TokenType.Symbol, "(", null);
 
@@ -31,14 +34,14 @@ public class FunctionDeclarationParser(Lexer lexer) : Parser<FunctionDeclaration
 
             if (!IsNextAndEat(TokenType.Symbol, "?"))
             {
-                type = ParseTypeAnnotation();
+                type = new TypeAnnotationDataParser(context).Parse();
             }
 
             BaseNode? defaultValue = null;
 
             if (IsNextAndEat(TokenType.Symbol, "="))
             {
-                defaultValue = ParseExpressionPrimary();
+                defaultValue = new ExpressionParser(context).Parse();
             }
 
             arguments.Add(new FunctionArgumentNode(identifier, type, defaultValue, isDynamic));
@@ -57,16 +60,18 @@ public class FunctionDeclarationParser(Lexer lexer) : Parser<FunctionDeclaration
 
         ExpectAndEatNewline();
 
-        var body = ParseBody(true);
+        var body = new BodyParser(context).Parse(new BodyParserData
+        {
+            IsExpr = false
+        });
 
         return new FunctionDeclarationNode(
             name,
             arguments,
             body,
             canThrow,
-            isMethod,
+            parserData.IsMethod,
             returnType
         );
     }
-    */
 }
