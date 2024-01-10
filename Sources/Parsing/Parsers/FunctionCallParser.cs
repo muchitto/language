@@ -48,6 +48,14 @@ public class FunctionCallParser(ParsingContext context)
     {
         var arguments = new List<FunctionCallArgumentNode>();
 
+        if (IsEnd)
+        {
+            return new FunctionCallNode(
+                data.Name,
+                arguments
+            );
+        }
+
         arguments.Add(ParseArgumentWithoutParenthesis());
 
         if (IsNext(TokenType.Identifier, "do"))
