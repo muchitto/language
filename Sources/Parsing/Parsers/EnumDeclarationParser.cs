@@ -17,7 +17,7 @@ public class EnumDeclarationParser(ParsingContext context) : Parser<EnumDeclarat
         ExpectAndEatNewline();
 
         var cases = new List<EnumCaseNode>();
-        var funcs = new List<EnumFunctionNode>();
+        var functions = new List<EnumFunctionNode>();
 
         while (!IsNextAndEat(TokenType.Identifier, "end"))
         {
@@ -30,7 +30,7 @@ public class EnumDeclarationParser(ParsingContext context) : Parser<EnumDeclarat
                         IsMethod = true
                     });
 
-                funcs.Add(new EnumFunctionNode(token.PositionData, functionDeclaration));
+                functions.Add(new EnumFunctionNode(token.PositionData, functionDeclaration));
 
                 ExpectAndEatNewline();
             }
@@ -89,6 +89,6 @@ public class EnumDeclarationParser(ParsingContext context) : Parser<EnumDeclarat
             }
         }
 
-        return new EnumDeclarationNode(name, cases, funcs);
+        return new EnumDeclarationNode(name, cases, functions);
     }
 }

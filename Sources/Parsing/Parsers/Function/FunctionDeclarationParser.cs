@@ -19,8 +19,6 @@ public class FunctionDeclarationParser(ParsingContext context)
 
         var name = ParseSingleIdentifier();
 
-        var argumentStartToken = PeekToken();
-
         ExpectAndEat(TokenType.Symbol, "(", null);
 
         var arguments = new List<FunctionArgumentNode>();

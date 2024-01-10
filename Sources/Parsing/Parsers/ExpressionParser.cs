@@ -42,9 +42,9 @@ public class ExpressionParser(ParsingContext context) : Parser<BaseNode>(context
 
         while (nextToken.IsOperator() && nextToken.ToOperator() is var nextOp)
         {
-            var nextPrec = nextOp.Precedence();
+            var nextPrecedence = nextOp.Precedence();
 
-            if (nextPrec < minPrecedence)
+            if (nextPrecedence < minPrecedence)
             {
                 break;
             }
@@ -57,12 +57,13 @@ public class ExpressionParser(ParsingContext context) : Parser<BaseNode>(context
 
             while (nextToken.ToOperator() is { } peekNextOp)
             {
-                var peekNextPrec = peekNextOp.Precedence();
+                var peekNextPrecedence = peekNextOp.Precedence();
                 var peekNextAssoc = peekNextOp.Associativity();
 
-                if (peekNextPrec > nextPrec || (peekNextPrec == nextPrec && peekNextAssoc == Associativity.Right))
+                if (peekNextPrecedence > nextPrecedence ||
+                    (peekNextPrecedence == nextPrecedence && peekNextAssoc == Associativity.Right))
                 {
-                    rhs = ParseExpression(rhs, peekNextPrec);
+                    rhs = ParseExpression(rhs, peekNextPrecedence);
                     nextToken = PeekToken();
                 }
                 else

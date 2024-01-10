@@ -3,9 +3,9 @@ using Syntax.Nodes;
 
 namespace Parsing.Parsers;
 
-public struct DoBlockParserData
+public record struct DoBlockParserData
 {
-    public bool IsExpr { get; set; }
+    public bool IsExpr;
 }
 
 public class DoBlockParser(ParsingContext context) : ParserWithData<BodyContainerNode, DoBlockParserData>(context)
