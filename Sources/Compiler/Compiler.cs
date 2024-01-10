@@ -10,7 +10,7 @@ public class Compiler
     {
         try
         {
-            var filename = "TestData/test.txt";
+            const string filename = "TestData/test.txt";
             var testFile = File.ReadAllText(filename);
 
             var ast = Parser.Parse(filename, testFile);

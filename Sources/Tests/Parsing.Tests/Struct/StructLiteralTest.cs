@@ -8,6 +8,15 @@ namespace Parsing.Tests.Struct;
 public class StructLiteralTest
 {
     [Fact]
+    public void ParseStructLiteralWithoutCommasButOnOneLine()
+    {
+        const string source = "var t = { x = 1 y = 2 }";
+
+        // This should fail because there are no commas between the fields.
+        Assert.Throws<ParseError>(() => Parser.Parse("test", source));
+    }
+
+    [Fact]
     public void ParseStructLiteralWithCommas()
     {
         const string source = "var t = { x = 1, y = 2 }";

@@ -5,7 +5,7 @@ using Syntax.Nodes.Literal;
 
 namespace Parsing.Tests;
 
-public class ParserTests
+public class VariableTests
 {
     [Fact]
     public void ParseVariableDeclaration()
