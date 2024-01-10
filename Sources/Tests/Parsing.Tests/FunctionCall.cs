@@ -1,6 +1,6 @@
 using ErrorReporting;
 using Syntax.Nodes;
-using Syntax.Nodes.Declaration.Function;
+using Syntax.Nodes.Declaration.Closure;
 using Syntax.Nodes.Expression;
 using Syntax.Nodes.Literal;
 

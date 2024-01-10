@@ -8,7 +8,7 @@ using Syntax.Nodes.Type.Tuple;
 
 namespace Parsing.Parsers;
 
-public class TypeAnnotationDataParser(ParsingContext context) : Parser<TypeNode>(context)
+public class TypeAnnotationParser(ParsingContext context) : Parser<TypeNode>(context)
 {
     private StructTypeNode ParseStructType()
     {
@@ -107,7 +107,7 @@ public class TypeAnnotationDataParser(ParsingContext context) : Parser<TypeNode>
         return new FunctionTypeNode(PeekToken().PositionData, arguments, returnType);
     }
 
-    private TypeNode ParseTypeAnnotation()
+    private TypeNode? ParseTypeAnnotation()
     {
         if (IsNext(TokenType.Identifier, "func"))
         {
@@ -124,6 +124,11 @@ public class TypeAnnotationDataParser(ParsingContext context) : Parser<TypeNode>
             return ParseTupleType();
         }
 
+        if (!IsNext(TokenType.Identifier))
+        {
+            return null;
+        }
+
         ExpectIdentifier("expected type annotation");
 
         return ParseTypeIdentifier();
@@ -131,7 +136,15 @@ public class TypeAnnotationDataParser(ParsingContext context) : Parser<TypeNode>
 
     public override TypeNode Parse()
     {
-        return ParseTypeAnnotation();
+        var token = PeekToken();
+        var typeAnnotation = ParseTypeAnnotation();
+
+        if (typeAnnotation == null)
+        {
+            throw new ParseError(token.PositionData, "expected type annotation");
+        }
+
+        return typeAnnotation;
     }
 
     public struct ArgumentWithOptionalName

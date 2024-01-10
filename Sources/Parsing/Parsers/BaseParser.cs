@@ -27,6 +27,21 @@ public abstract class BaseParser(ParsingContext context)
         );
     }
 
+    protected void ExpectEndOfStatement(string message)
+    {
+        var peekToken = PeekToken();
+
+        if (peekToken.Is(TokenType.Newline) || peekToken.Is(TokenType.EndOfFile))
+        {
+            return;
+        }
+
+        throw new ParseError.UnexpectedToken(
+            peekToken,
+            message
+        );
+    }
+
     protected void Expect(TokenType token, string value, string? message)
     {
         var peekToken = PeekToken();

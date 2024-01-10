@@ -37,10 +37,29 @@ public record struct PositionData(string Filename, string SourceCode, int From =
 
     public string GetErrorLine()
     {
-        // Get the line where the error occurred from the end of the last line to the end of the line
-        var startIndex = SourceCode.LastIndexOf('\n', From) + 1;
-        var length = SourceCode.IndexOf('\n', startIndex) - startIndex;
-        var line = SourceCode.Substring(startIndex, length);
+        // Get the line where the error occurred from the end of the last line to the end of the line or the end of the file
+        // using a loop
+        var line = "";
+
+        for (var i = From; i < SourceCode.Length; i++)
+        {
+            if (SourceCode[i] == '\n')
+            {
+                break;
+            }
+
+            line += SourceCode[i];
+        }
+
+        for (var i = To - 1; i > 0; i--)
+        {
+            if (SourceCode[i] == '\n')
+            {
+                break;
+            }
+
+            line = SourceCode[i] + line;
+        }
 
 
         return line;

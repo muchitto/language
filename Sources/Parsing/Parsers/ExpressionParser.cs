@@ -22,7 +22,7 @@ public class ExpressionParser(ParsingContext context) : Parser<BaseNode>(context
             TokenType.StringLiteral or TokenType.NumberLiteral => new BasicLiteralParser(Context).Parse(),
             TokenType.Symbol when token.Value == "{" => new StructLiteralParser(Context).Parse(),
             TokenType.Identifier when token.Value == "if" => new IfExpressionParser(Context).Parse(),
-            TokenType.Identifier when token.Value == "do" => new DoBlockParser(Context).Parse(new DoBlockParserData
+            TokenType.Identifier when token.Value == "do" => new ClosureParser(Context).Parse(new ClosureParserData
             {
                 IsExpr = true
             }),

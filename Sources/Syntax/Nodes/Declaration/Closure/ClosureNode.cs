@@ -2,14 +2,15 @@ using ErrorReporting;
 using Syntax.NodeHandlers;
 using TypeInformation;
 
-namespace Syntax.Nodes.Declaration.Function;
+namespace Syntax.Nodes.Declaration.Closure;
 
 public class ClosureNode(
     PositionData positionData,
-    List<FunctionArgumentNode> arguments,
-    BodyContainerNode bodyContainerNode) : BaseNode(positionData)
+    List<ClosureArgumentNode> arguments,
+    BodyContainerNode bodyContainerNode
+) : BaseNode(positionData)
 {
-    public List<FunctionArgumentNode> Arguments { get; } = arguments;
+    public List<ClosureArgumentNode> Arguments { get; } = arguments;
     public BodyContainerNode BodyContainerNode { get; } = bodyContainerNode;
 
     public override void Accept(INodeHandler handler)

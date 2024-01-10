@@ -31,7 +31,7 @@ public class VariableDeclarationParser(ParsingContext context) : Parser<Variable
         }
 
         var name = ParseSingleIdentifier();
-        var typeNode = IsNext(TokenType.Identifier) ? new TypeAnnotationDataParser(Context).Parse() : null;
+        var typeNode = IsNext(TokenType.Identifier) ? new TypeAnnotationParser(Context).Parse() : null;
 
         BaseNode? value = null;
         if (IsNextAndEat(TokenType.Symbol, "="))

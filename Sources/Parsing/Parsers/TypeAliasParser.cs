@@ -13,7 +13,7 @@ public class TypeAliasParser(ParsingContext context) : Parser<TypeAliasDeclarati
 
         ExpectAndEat(TokenType.Symbol, "=", "expected an equals sign for the type alias");
 
-        var type = new TypeAnnotationDataParser(Context).Parse();
+        var type = new TypeAnnotationParser(Context).Parse();
 
         return new TypeAliasDeclarationNode(name, type);
     }

@@ -1,6 +1,7 @@
 using Syntax.NodeHandlers;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
+using Syntax.Nodes.Declaration.Closure;
 using Syntax.Nodes.Declaration.Enum;
 using Syntax.Nodes.Declaration.Function;
 using Syntax.Nodes.Declaration.Interface;
@@ -228,6 +229,11 @@ public class TypeCheck : SemanticPass, INodeHandler
     }
 
     public void Handle(ClosureNode closureNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(ClosureArgumentNode closureArgumentNode)
     {
         throw new NotImplementedException();
     }

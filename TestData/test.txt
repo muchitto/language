@@ -1,26 +1,5 @@
-var a
-
-a = "gheahea"
-
-func test(var1 Test)
-    var1.test()
-    var1.a = 1
+func test(test string, function func() string) 
 end
 
-struct Test
-    var a Int
-    var b Haha
-
-    func test()
-        b.t = 1
-    end
-end
-
-map do (i)
-    print i   
-end
-
-struct Haha
-    var t Int
-    var p Test = Test()
+test "what" do
 end

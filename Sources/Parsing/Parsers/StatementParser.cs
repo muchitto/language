@@ -32,7 +32,7 @@ public class StatementParser(ParsingContext context) : Parser<BaseNode>(context)
             case TokenType.Identifier when token.Value == "interface":
                 return new InterfaceDeclarationParser(Context).Parse();
             case TokenType.Identifier when token.Value == "do":
-                return new DoBlockParser(Context).Parse(new DoBlockParserData
+                return new ClosureParser(Context).Parse(new ClosureParserData
                 {
                     IsExpr = false
                 });

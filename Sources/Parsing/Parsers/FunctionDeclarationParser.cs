@@ -65,7 +65,7 @@ public class FunctionDeclarationParser(ParsingContext context)
 
             if (!IsNextAndEat(TokenType.Symbol, "?"))
             {
-                type = new TypeAnnotationDataParser(Context).Parse();
+                type = new TypeAnnotationParser(Context).Parse();
             }
 
             BaseNode? defaultValue = null;

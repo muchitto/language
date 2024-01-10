@@ -60,15 +60,15 @@ public class FunctionCallParser(ParsingContext context)
 
         if (IsNext(TokenType.Identifier, "do"))
         {
-            var doBlock = new DoBlockParser(Context).Parse(new DoBlockParserData
+            var closureBlock = new ClosureParser(Context).Parse(new ClosureParserData
             {
                 IsExpr = true
             });
 
-            arguments.Add(new FunctionCallArgumentNode(doBlock.PositionData, null, doBlock));
+            arguments.Add(new FunctionCallArgumentNode(closureBlock.PositionData, null, closureBlock));
         }
 
-        Expect(TokenType.Newline, "expected a newline after the function call");
+        ExpectEndOfStatement("expected a newline or end of file after the function call");
 
         return new FunctionCallNode(
             data.Name,
