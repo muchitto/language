@@ -1,5 +1,1 @@
-func test(test string, function func() string) 
-end
-
-test "what" do
-end
+foo "test" do (bar, thing) print "hah" end

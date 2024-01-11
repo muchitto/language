@@ -1,4 +1,3 @@
-using ErrorReporting;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Closure;
 using Syntax.Nodes.Expression;
@@ -15,10 +14,10 @@ public class FunctionCall : ParserTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new FunctionCallNode(
-                        new IdentifierNode(PositionData.Test(), "foo"),
+                        new IdentifierNode(Pos, "foo"),
                         new List<FunctionCallArgumentNode>()
                     )
                 ]
@@ -33,10 +32,10 @@ public class FunctionCall : ParserTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new FunctionCallNode(
-                        new IdentifierNode(PositionData.Test(), "foo"),
+                        new IdentifierNode(Pos, "foo"),
                         new List<FunctionCallArgumentNode>()
                     )
                 ]
@@ -51,15 +50,15 @@ public class FunctionCall : ParserTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new FunctionCallNode(
-                        new IdentifierNode(PositionData.Test(), "foo"),
+                        new IdentifierNode(Pos, "foo"),
                         [
                             new FunctionCallArgumentNode(
-                                PositionData.Test(),
+                                Pos,
                                 null,
-                                new StringLiteralNode(PositionData.Test(), "test")
+                                new StringLiteralNode(Pos, "test")
                             )
                         ]
                     )
@@ -78,25 +77,144 @@ public class FunctionCall : ParserTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new FunctionCallNode(
-                        new IdentifierNode(PositionData.Test(), "foo"),
+                        new IdentifierNode(Pos, "foo"),
                         [
                             new FunctionCallArgumentNode(
-                                PositionData.Test(),
+                                Pos,
                                 null,
-                                new StringLiteralNode(PositionData.Test(), "test")
+                                new StringLiteralNode(Pos, "test")
                             ),
                             new FunctionCallArgumentNode(
-                                PositionData.Test(),
+                                Pos,
                                 null,
                                 new ClosureNode(
-                                    PositionData.Test(),
+                                    Pos,
                                     [],
-                                    new BodyContainerNode(PositionData.Test(),
+                                    new BodyContainerNode(Pos,
                                         [
-                                            new NumberLiteralNode(PositionData.Test(), "1")
+                                            new NumberLiteralNode(Pos, "1")
+                                        ],
+                                        false
+                                    )
+                                )
+                            )
+                        ]
+                    )
+                ]
+            )
+        ));
+    }
+
+    [Fact]
+    public void Test_Function_Call_Without_Parenthesis_And_A_Closure_With_Arguments()
+    {
+        var source = """
+                        foo "test" do (bar, thing)
+                            print "hah"
+                        end
+                     """;
+
+        var ast = Parser.Parse("test", source);
+
+        Assert.True(ast.TestEquals(
+            new ProgramContainerNode(Pos,
+                [
+                    new FunctionCallNode(
+                        new IdentifierNode(Pos, "foo"),
+                        [
+                            new FunctionCallArgumentNode(
+                                Pos,
+                                null,
+                                new StringLiteralNode(Pos, "test")
+                            ),
+                            new FunctionCallArgumentNode(
+                                Pos,
+                                null,
+                                new ClosureNode(
+                                    Pos,
+                                    [
+                                        new ClosureArgumentNode(
+                                            new IdentifierNode(Pos, "bar"),
+                                            null
+                                        ),
+                                        new ClosureArgumentNode(
+                                            new IdentifierNode(Pos, "thing"),
+                                            null
+                                        )
+                                    ],
+                                    new BodyContainerNode(Pos,
+                                        [
+                                            new FunctionCallNode(
+                                                new IdentifierNode(Pos, "print"),
+                                                [
+                                                    new FunctionCallArgumentNode(
+                                                        Pos,
+                                                        null,
+                                                        new StringLiteralNode(Pos, "hah")
+                                                    )
+                                                ]
+                                            )
+                                        ],
+                                        false
+                                    )
+                                )
+                            )
+                        ]
+                    )
+                ]
+            )
+        ));
+    }
+
+    [Fact]
+    public void Test_Function_Call_With_Parenthesis_And_A_Closure_With_Arguments_On_The_Same_Line()
+    {
+        const string source = """
+                                 foo "test" do (bar, thing) print "hah" end
+                              """;
+        var ast = Parser.Parse("test", source);
+
+        Assert.True(ast.TestEquals(
+            new ProgramContainerNode(Pos,
+                [
+                    new FunctionCallNode(
+                        new IdentifierNode(Pos, "foo"),
+                        [
+                            new FunctionCallArgumentNode(
+                                Pos,
+                                null,
+                                new StringLiteralNode(Pos, "test")
+                            ),
+                            new FunctionCallArgumentNode(
+                                Pos,
+                                null,
+                                new ClosureNode(
+                                    Pos,
+                                    [
+                                        new ClosureArgumentNode(
+                                            new IdentifierNode(Pos, "bar"),
+                                            null
+                                        ),
+                                        new ClosureArgumentNode(
+                                            new IdentifierNode(Pos, "thing"),
+                                            null
+                                        )
+                                    ],
+                                    new BodyContainerNode(Pos,
+                                        [
+                                            new FunctionCallNode(
+                                                new IdentifierNode(Pos, "print"),
+                                                [
+                                                    new FunctionCallArgumentNode(
+                                                        Pos,
+                                                        null,
+                                                        new StringLiteralNode(Pos, "hah")
+                                                    )
+                                                ]
+                                            )
                                         ],
                                         false
                                     )

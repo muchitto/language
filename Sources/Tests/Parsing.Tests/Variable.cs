@@ -1,4 +1,3 @@
-using ErrorReporting;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Literal;
@@ -6,7 +5,7 @@ using Syntax.Nodes.Type;
 
 namespace Parsing.Tests;
 
-public class Variable
+public class Variable : ParserTest
 {
     [Fact]
     public void Test_Variable_Declaration_With_Type()
@@ -16,13 +15,13 @@ public class Variable
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(PositionData.Test(), "x"),
+                        new IdentifierNode(Pos, "x"),
                         null,
                         false,
-                        new IdentifierTypeNode(PositionData.Test(), "string"),
+                        new IdentifierTypeNode(Pos, "string"),
                         false
                     )
                 ]
@@ -38,10 +37,10 @@ public class Variable
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(PositionData.Test(), "x"),
+                        new IdentifierNode(Pos, "x"),
                         null,
                         false,
                         null,
@@ -60,11 +59,11 @@ public class Variable
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(PositionData.Test(), "x"),
-                        new NumberLiteralNode(PositionData.Test(), "1"),
+                        new IdentifierNode(Pos, "x"),
+                        new NumberLiteralNode(Pos, "1"),
                         false,
                         null,
                         false

@@ -1,11 +1,10 @@
-using ErrorReporting;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Literal;
 
 namespace Parsing.Tests.Struct;
 
-public class StructLiteralTest
+public class StructLiteralTest : ParserTest
 {
     [Fact]
     public void Test_Struct_Literal_Without_Commas_On_One_Line()
@@ -24,22 +23,22 @@ public class StructLiteralTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(PositionData.Test(), "t"),
+                        new IdentifierNode(Pos, "t"),
                         new StructLiteralNode(
-                            PositionData.Test(),
+                            Pos,
                             [
                                 new StructLiteralFieldNode(
-                                    PositionData.Test(),
-                                    new IdentifierNode(PositionData.Test(), "x"),
-                                    new NumberLiteralNode(PositionData.Test(), "1")
+                                    Pos,
+                                    new IdentifierNode(Pos, "x"),
+                                    new NumberLiteralNode(Pos, "1")
                                 ),
                                 new StructLiteralFieldNode(
-                                    PositionData.Test(),
-                                    new IdentifierNode(PositionData.Test(), "y"),
-                                    new NumberLiteralNode(PositionData.Test(), "2")
+                                    Pos,
+                                    new IdentifierNode(Pos, "y"),
+                                    new NumberLiteralNode(Pos, "2")
                                 )
                             ]
                         ),
@@ -65,22 +64,22 @@ public class StructLiteralTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(PositionData.Test(), "t"),
+                        new IdentifierNode(Pos, "t"),
                         new StructLiteralNode(
-                            PositionData.Test(),
+                            Pos,
                             [
                                 new StructLiteralFieldNode(
-                                    PositionData.Test(),
-                                    new IdentifierNode(PositionData.Test(), "x"),
-                                    new NumberLiteralNode(PositionData.Test(), "1")
+                                    Pos,
+                                    new IdentifierNode(Pos, "x"),
+                                    new NumberLiteralNode(Pos, "1")
                                 ),
                                 new StructLiteralFieldNode(
-                                    PositionData.Test(),
-                                    new IdentifierNode(PositionData.Test(), "y"),
-                                    new NumberLiteralNode(PositionData.Test(), "2")
+                                    Pos,
+                                    new IdentifierNode(Pos, "y"),
+                                    new NumberLiteralNode(Pos, "2")
                                 )
                             ]
                         ),
@@ -106,22 +105,22 @@ public class StructLiteralTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(PositionData.Test(), "t"),
+                        new IdentifierNode(Pos, "t"),
                         new StructLiteralNode(
-                            PositionData.Test(),
+                            Pos,
                             [
                                 new StructLiteralFieldNode(
-                                    PositionData.Test(),
-                                    new IdentifierNode(PositionData.Test(), "x"),
-                                    new NumberLiteralNode(PositionData.Test(), "1")
+                                    Pos,
+                                    new IdentifierNode(Pos, "x"),
+                                    new NumberLiteralNode(Pos, "1")
                                 ),
                                 new StructLiteralFieldNode(
-                                    PositionData.Test(),
-                                    new IdentifierNode(PositionData.Test(), "y"),
-                                    new NumberLiteralNode(PositionData.Test(), "2")
+                                    Pos,
+                                    new IdentifierNode(Pos, "y"),
+                                    new NumberLiteralNode(Pos, "2")
                                 )
                             ]
                         ),
@@ -142,17 +141,17 @@ public class StructLiteralTest
         var ast = Parser.Parse("test", source);
 
         Assert.True(ast.TestEquals(
-            new ProgramContainerNode(PositionData.Test(),
+            new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(PositionData.Test(), "t"),
+                        new IdentifierNode(Pos, "t"),
                         new StructLiteralNode(
-                            PositionData.Test(),
+                            Pos,
                             [
                                 new StructLiteralFieldNode(
-                                    PositionData.Test(),
-                                    new IdentifierNode(PositionData.Test(), "x"),
-                                    new NumberLiteralNode(PositionData.Test(), "1")
+                                    Pos,
+                                    new IdentifierNode(Pos, "x"),
+                                    new NumberLiteralNode(Pos, "1")
                                 )
                             ]
                         ),

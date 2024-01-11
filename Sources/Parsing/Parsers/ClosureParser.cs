@@ -17,9 +17,20 @@ public class ClosureParser(ParsingContext context) : ParserWithData<ClosureNode,
 
         var positionData = PeekToken().PositionData;
 
-        var arguments = ParseArguments();
+        var argumentData = ParseArguments();
 
         var onTheSameLine = !IsNextAndEat(TokenType.Newline);
+
+        if (!argumentData.IsUsingParenthesis
+            && onTheSameLine
+            && !IsNext(TokenType.Identifier, "end")
+            && !IsNext(TokenType.Newline))
+        {
+            throw new ParseError(
+                PeekToken().PositionData,
+                "must use parenthesis on the arguments when declaring statements on the same line as the arguments"
+            );
+        }
 
         BodyContainerNode bodyContainerNode;
         if (onTheSameLine)
@@ -34,7 +45,11 @@ public class ClosureParser(ParsingContext context) : ParserWithData<ClosureNode,
                 false
             );
 
-            ExpectAndEat(TokenType.Identifier, "end", "expected an end");
+            ExpectAndEat(
+                TokenType.Identifier,
+                "end",
+                "expected an end after the statement if it's all on the same line"
+            );
         }
         else
         {
@@ -44,10 +59,10 @@ public class ClosureParser(ParsingContext context) : ParserWithData<ClosureNode,
             });
         }
 
-        return new ClosureNode(positionData, arguments, bodyContainerNode);
+        return new ClosureNode(positionData, argumentData.Arguments, bodyContainerNode);
     }
 
-    private List<ClosureArgumentNode> ParseArguments()
+    private ArgumentListData ParseArguments()
     {
         var arguments = new List<ClosureArgumentNode>();
 
@@ -79,6 +94,16 @@ public class ClosureParser(ParsingContext context) : ParserWithData<ClosureNode,
             }
         }
 
-        return arguments;
+        return new ArgumentListData
+        {
+            IsUsingParenthesis = isUsingParenthesis,
+            Arguments = arguments
+        };
+    }
+
+    private struct ArgumentListData
+    {
+        public bool IsUsingParenthesis;
+        public List<ClosureArgumentNode> Arguments;
     }
 }

@@ -58,17 +58,20 @@ public class FunctionCallParser(ParsingContext context)
 
         arguments.Add(ParseArgumentWithoutParenthesis());
 
-        if (IsNext(TokenType.Identifier, "do"))
+        if (!IsNext(TokenType.Identifier, "do"))
         {
-            var closureBlock = new ClosureParser(Context).Parse(new ClosureParserData
-            {
-                IsExpr = true
-            });
-
-            arguments.Add(new FunctionCallArgumentNode(closureBlock.PositionData, null, closureBlock));
+            return new FunctionCallNode(
+                data.Name,
+                arguments
+            );
         }
 
-        ExpectEndOfStatement("expected a newline or end of file after the function call");
+        var closureBlock = new ClosureParser(Context).Parse(new ClosureParserData
+        {
+            IsExpr = true
+        });
+
+        arguments.Add(new FunctionCallArgumentNode(closureBlock.PositionData, null, closureBlock));
 
         return new FunctionCallNode(
             data.Name,
@@ -82,20 +85,23 @@ public class FunctionCallParser(ParsingContext context)
 
         IdentifierNode? argumentName = null;
 
-        if (IsNextAndEat(TokenType.Symbol, ":"))
+        // TODO: decide if we are using : or = for named arguments
+        if (!IsNextAndEat(TokenType.Symbol, ":"))
         {
-            if (argumentValue is IdentifierNode argumentValueIdentifier)
-            {
-                argumentName = argumentValueIdentifier;
-                argumentValue = new ExpressionParser(Context).Parse();
-            }
-            else
-            {
-                throw new ParseError(
-                    argumentValue.PositionData,
-                    "argument name needs to be an identifier"
-                );
-            }
+            return new FunctionCallArgumentNode(argumentValue.PositionData, argumentName, argumentValue);
+        }
+
+        if (argumentValue is IdentifierNode argumentValueIdentifier)
+        {
+            argumentName = argumentValueIdentifier;
+            argumentValue = new ExpressionParser(Context).Parse();
+        }
+        else
+        {
+            throw new ParseError(
+                argumentValue.PositionData,
+                "argument name needs to be an identifier"
+            );
         }
 
         return new FunctionCallArgumentNode(argumentValue.PositionData, argumentName, argumentValue);
