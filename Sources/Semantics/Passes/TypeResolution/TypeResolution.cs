@@ -34,7 +34,7 @@ public class TypeResolution : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(AnnotationArgumentListNode annotationArgumentListNode)
+    public void Handle(AnnotationsNode annotationsNode)
     {
         throw new NotImplementedException();
     }

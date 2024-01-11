@@ -10,10 +10,11 @@ public abstract class BaseNode(PositionData positionData)
 
     public TypeRef TypeRef { get; protected set; }
 
+    public AnnotationsNode? Annotations { get; set; } = null;
+
     public abstract void Accept(INodeHandler handler);
 
     public abstract void SetTypeRef(TypeRef typeRef);
 
     public abstract bool TestEquals(BaseNode other);
-
 }

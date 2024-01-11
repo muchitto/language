@@ -5,13 +5,12 @@ namespace Syntax.Nodes;
 
 public class AnnotationNode(
     IdentifierNode name,
-    AnnotationArgumentListNode arguments,
-    BaseNode attachedNode)
+    List<AnnotationArgumentNode> arguments
+)
     : BaseNode(name.PositionData)
 {
     public IdentifierNode Name { get; set; } = name;
-    public AnnotationArgumentListNode Arguments { get; set; } = arguments;
-    public BaseNode AttachedNode { get; set; } = attachedNode;
+    public List<AnnotationArgumentNode> Arguments { get; set; } = arguments;
 
     public override void Accept(INodeHandler handler)
     {
@@ -36,6 +35,6 @@ public class AnnotationNode(
             return false;
         }
 
-        return Arguments.TestEquals(node.Arguments) && AttachedNode.TestEquals(node.AttachedNode);
+        return Arguments.TestEquals(node.Arguments);
     }
 }

@@ -12,7 +12,7 @@ public interface IBasicNodeHandler
 
     public void Handle(AnnotationNode annotationNode);
 
-    public void Handle(AnnotationArgumentListNode annotationArgumentListNode);
+    public void Handle(AnnotationsNode annotationsNode);
 
     public void Handle(AnnotationArgumentNode annotationArgumentNode);
 

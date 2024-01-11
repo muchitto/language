@@ -13,7 +13,13 @@ public class StatementParser(ParsingContext context) : Parser<BaseNode>(context)
         switch (token.Type)
         {
             case TokenType.Symbol when token.Value == "@":
-                return new AnnotationParser(Context).Parse();
+                var annotations = new AnnotationsParser(Context).Parse();
+
+                var nextNode = Parse();
+
+                nextNode.Annotations = annotations;
+
+                return nextNode;
             case TokenType.Identifier when token.Value == "func":
                 return new FunctionDeclarationParser(Context).Parse(new FunctionDeclarationParserData
                 {
