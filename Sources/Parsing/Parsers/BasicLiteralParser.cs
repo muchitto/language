@@ -15,8 +15,22 @@ public class BasicLiteralParser(ParsingContext context)
             TokenType.StringLiteral => ParseStringLiteral(),
             TokenType.NumberLiteral => ParseNumberLiteral(),
             TokenType.BackTickStringLiteral => ParseBackTickStringLiteral(),
-            _ => throw new ParseError(token.PositionData, "expected a string or number literal")
+            TokenType.Identifier when token.Value == "nil" => ParseNilLiteral(),
+            TokenType.Identifier when token.Value is "true" or "false" => ParseBooleanLiteral(),
+            _ => throw new ParseError(
+                token.PositionData,
+                "was trying to parse a basic literal, but got something else"
+            )
         };
+    }
+
+    private BooleanLiteralNode ParseBooleanLiteral()
+    {
+        Expect(TokenType.Identifier, "expected boolean literal");
+
+        var token = GetNextToken();
+
+        return new BooleanLiteralNode(token.PositionData, token.Value == "true");
     }
 
     private BackTickStringLiteralNode ParseBackTickStringLiteral()
@@ -26,6 +40,15 @@ public class BasicLiteralParser(ParsingContext context)
         var token = GetNextToken();
 
         return new BackTickStringLiteralNode(token.PositionData, token.Value);
+    }
+
+    private NilLiteralNode ParseNilLiteral()
+    {
+        Expect(TokenType.Symbol, "nil", "expected nil literal");
+
+        var token = GetNextToken();
+
+        return new NilLiteralNode(token.PositionData);
     }
 
     private StringLiteralNode ParseStringLiteral()
