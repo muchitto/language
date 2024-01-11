@@ -15,10 +15,10 @@ public class StructFunctionNode(PositionData positionData, string name, Function
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Function.SetTypeRef(typeRef);
+        Function.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

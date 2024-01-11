@@ -14,7 +14,7 @@ public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode>
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }
@@ -27,5 +27,10 @@ public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode>
         }
 
         return node.Fields.Count == Fields.Count && Fields.TestEquals(node.Fields);
+    }
+
+    public override TypeRef ResultingType()
+    {
+        return TypeRef;
     }
 }

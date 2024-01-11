@@ -18,10 +18,10 @@ public class BinaryOpNode(PositionData positionData, BaseNode lhs, BaseNode rhs,
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Lhs.SetTypeRef(typeRef);
+        Lhs.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

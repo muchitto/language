@@ -14,10 +14,10 @@ public class FunctionCallNode(BaseNode callee, List<FunctionCallArgumentNode> ar
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Callee.SetTypeRef(typeRef);
+        Callee.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

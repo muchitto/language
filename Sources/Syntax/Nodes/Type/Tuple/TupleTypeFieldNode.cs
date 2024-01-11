@@ -14,10 +14,10 @@ public class TupleTypeFieldNode(PositionData positionData, string? name, TypeNod
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Type.SetTypeRef(typeRef);
+        Type.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)
@@ -28,5 +28,10 @@ public class TupleTypeFieldNode(PositionData positionData, string? name, TypeNod
         }
 
         return node.Name == Name && node.Type.TestEquals(Type);
+    }
+
+    public override TypeRef ResultingType()
+    {
+        return TypeRef;
     }
 }

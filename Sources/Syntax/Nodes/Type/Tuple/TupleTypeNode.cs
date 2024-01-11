@@ -13,8 +13,7 @@ public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> t
         handler.Handle(this);
     }
 
-
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }
@@ -27,5 +26,10 @@ public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> t
         }
 
         return node.Types.Count == Types.Count && Types.TestEquals(node.Types);
+    }
+
+    public override TypeRef ResultingType()
+    {
+        return TypeRef;
     }
 }

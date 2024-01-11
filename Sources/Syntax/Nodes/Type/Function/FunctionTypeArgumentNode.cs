@@ -14,18 +14,12 @@ public class FunctionTypeArgumentNode(IdentifierNode? name, TypeNode typeName)
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
 
-        if (Name != null)
-        {
-            Name.SetTypeRef(typeRef);
-        }
-        else
-        {
-            TypeName.SetTypeRef(typeRef);
-        }
+        Name?.PropagateTypeRef(typeRef);
+        TypeName.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)
@@ -36,5 +30,10 @@ public class FunctionTypeArgumentNode(IdentifierNode? name, TypeNode typeName)
         }
 
         return Name.TestEqualsOrBothNull(node.Name) && TypeName.TestEqualsOrBothNull(node.TypeName);
+    }
+
+    public override TypeRef ResultingType()
+    {
+        return TypeRef;
     }
 }

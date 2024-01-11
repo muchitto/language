@@ -19,7 +19,7 @@ public class FunctionTypeNode(
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }
@@ -34,5 +34,10 @@ public class FunctionTypeNode(
         return node.Parameters.Count == Parameters.Count
                && Parameters.TestEquals(node.Parameters)
                && node.ReturnType.TestEquals(ReturnType);
+    }
+
+    public override TypeRef ResultingType()
+    {
+        return ReturnType?.TypeRef ?? TypeInformation.TypeRef.Void();
     }
 }

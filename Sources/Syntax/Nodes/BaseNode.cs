@@ -14,7 +14,7 @@ public abstract class BaseNode(PositionData positionData)
 
     public abstract void Accept(INodeHandler handler);
 
-    public abstract void SetTypeRef(TypeRef typeRef);
+    public abstract void PropagateTypeRef(TypeRef typeRef);
 
     public abstract bool TestEquals(BaseNode other);
 }

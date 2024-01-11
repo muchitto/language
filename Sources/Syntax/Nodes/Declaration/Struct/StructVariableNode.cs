@@ -15,10 +15,10 @@ public class StructVariableNode(PositionData positionData, string name, Variable
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Variable.SetTypeRef(typeRef);
+        Variable.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

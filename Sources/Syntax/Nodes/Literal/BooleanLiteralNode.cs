@@ -13,7 +13,7 @@ public class BooleanLiteralNode(PositionData positionData, bool value) : Literal
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

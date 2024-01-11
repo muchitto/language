@@ -1,4 +1,3 @@
-using Syntax.Nodes;
 using Syntax.Nodes.Type;
 using Syntax.Nodes.Type.Function;
 using Syntax.Nodes.Type.Struct;
@@ -8,8 +7,6 @@ namespace Syntax.NodeHandlers;
 
 public interface ITypeNodeHandler
 {
-    public void Handle(TypeNode typeNode);
-
     public void Handle(StructTypeNode structTypeNode);
 
     public void Handle(StructTypeFieldNode structTypeFieldNode);

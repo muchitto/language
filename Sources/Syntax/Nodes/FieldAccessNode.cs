@@ -13,10 +13,10 @@ public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.Posi
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Left.SetTypeRef(typeRef);
+        Left.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

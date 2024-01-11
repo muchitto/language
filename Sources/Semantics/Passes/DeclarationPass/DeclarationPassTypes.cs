@@ -8,11 +8,6 @@ namespace Semantics.Passes.DeclarationPass;
 
 partial class DeclarationPass
 {
-    public void Handle(TypeNode typeNode)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Handle(StructTypeNode structTypeNode)
     {
         throw new NotImplementedException();
@@ -42,10 +37,15 @@ partial class DeclarationPass
     {
         AddNodeToScope(identifierTypeNode);
 
-        identifierTypeNode.SetTypeRef(ReferenceType(identifierTypeNode.Name));
+        identifierTypeNode.PropagateTypeRef(ReferenceType(identifierTypeNode.Name));
     }
 
     public void Handle(FunctionTypeArgumentNode functionTypeArgumentNode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Handle(TypeNode typeNode)
     {
         throw new NotImplementedException();
     }

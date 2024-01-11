@@ -13,10 +13,10 @@ public class ReturnNode(PositionData positionData, BaseNode? value) : StatementN
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Value?.SetTypeRef(typeRef);
+        Value?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

@@ -11,7 +11,7 @@ public class NilLiteralNode(PositionData positionData) : LiteralNode(positionDat
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

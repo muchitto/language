@@ -18,7 +18,7 @@ public partial class DeclarationPass
     {
         AddNodeToScope(stringLiteralNode);
 
-        stringLiteralNode.SetTypeRef(SemanticContext.StringType());
+        stringLiteralNode.PropagateTypeRef(SemanticContext.StringType());
     }
 
     public void Handle(NilLiteralNode nullLiteralNode)
@@ -35,7 +35,7 @@ public partial class DeclarationPass
     {
         AddNodeToScope(numberLiteralNode);
 
-        numberLiteralNode.SetTypeRef(
+        numberLiteralNode.PropagateTypeRef(
             numberLiteralNode.Value.Contains('.')
                 ? SemanticContext.FloatType()
                 : SemanticContext.IntType()

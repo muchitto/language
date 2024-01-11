@@ -13,10 +13,10 @@ public class ArrayAccessNode(BaseNode array, BaseNode access) : BaseNode(array.P
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Array.SetTypeRef(typeRef);
+        Array.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

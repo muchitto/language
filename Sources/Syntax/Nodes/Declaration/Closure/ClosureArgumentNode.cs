@@ -14,11 +14,11 @@ public class ClosureArgumentNode(IdentifierNode name, TypeNode? typeNode)
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
 
-        TypeNode?.SetTypeRef(typeRef);
+        TypeNode?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

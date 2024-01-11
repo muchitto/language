@@ -23,11 +23,11 @@ public class FunctionArgumentNode(
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeRef(typeRef);
-        TypeName?.SetTypeRef(typeRef);
+        Name.PropagateTypeRef(typeRef);
+        TypeName?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

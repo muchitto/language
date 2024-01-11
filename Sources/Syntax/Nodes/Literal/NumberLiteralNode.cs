@@ -13,7 +13,7 @@ public class NumberLiteralNode(PositionData positionData, string value) : Litera
         handler.Handle(this);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

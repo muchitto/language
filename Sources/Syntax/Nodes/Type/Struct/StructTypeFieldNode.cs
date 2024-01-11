@@ -4,7 +4,7 @@ using TypeInformation;
 
 namespace Syntax.Nodes.Type.Struct;
 
-public class StructTypeFieldNode(PositionData positionData, string name, TypeNode type) : BaseNode(positionData)
+public class StructTypeFieldNode(PositionData positionData, string name, TypeNode type) : TypeNode(positionData)
 {
     public string Name { get; set; } = name;
     public TypeNode Type { get; set; } = type;
@@ -15,10 +15,10 @@ public class StructTypeFieldNode(PositionData positionData, string name, TypeNod
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Type.SetTypeRef(typeRef);
+        Type.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)
@@ -29,5 +29,10 @@ public class StructTypeFieldNode(PositionData positionData, string name, TypeNod
         }
 
         return node.Name == Name && node.Type.TestEquals(Type);
+    }
+
+    public override TypeRef ResultingType()
+    {
+        return TypeRef;
     }
 }

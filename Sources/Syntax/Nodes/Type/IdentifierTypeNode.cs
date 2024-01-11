@@ -18,7 +18,7 @@ public class IdentifierTypeNode(PositionData positionData, string name) : TypeNo
         return new IdentifierTypeNode(node.PositionData, node.Name);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }
@@ -31,5 +31,10 @@ public class IdentifierTypeNode(PositionData positionData, string name) : TypeNo
         }
 
         return node.Name == Name;
+    }
+
+    public override TypeRef ResultingType()
+    {
+        return TypeRef;
     }
 }

@@ -14,7 +14,7 @@ public class BodyExpressionNode(PositionData positionData, List<BaseNode> statem
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }

@@ -25,10 +25,10 @@ public class FunctionDeclarationNode(
     }
 
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
-        Name.SetTypeRef(typeRef);
+        Name.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

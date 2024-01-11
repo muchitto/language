@@ -20,7 +20,7 @@ public class IdentifierNode(PositionData positionData, string name)
         return new IdentifierNode(node.PositionData, node.Name);
     }
 
-    public override void SetTypeRef(TypeRef typeRef)
+    public override void PropagateTypeRef(TypeRef typeRef)
     {
         TypeRef = typeRef;
     }
