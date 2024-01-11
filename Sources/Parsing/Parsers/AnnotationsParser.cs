@@ -12,6 +12,8 @@ public class AnnotationsParser(ParsingContext context) : Parser<AnnotationsNode>
         while (IsNextAndEat(TokenType.Symbol, "@"))
         {
             annotations.Add(ParseAnnotation());
+
+            Optional(TokenType.Newline);
         }
 
         return new AnnotationsNode(start, annotations);

@@ -15,6 +15,8 @@ public class StatementParser(ParsingContext context) : Parser<BaseNode>(context)
             case TokenType.Symbol when token.Value == "@":
                 var annotations = new AnnotationsParser(Context).Parse();
 
+                Optional(TokenType.Newline);
+
                 var nextNode = Parse();
 
                 nextNode.Annotations = annotations;
