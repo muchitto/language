@@ -1,5 +1,5 @@
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration;
 
@@ -10,23 +10,16 @@ public class VariableDeclarationNode(
     TypeNode? typeNode,
     bool isDynamic
 )
-    : DeclarationNode(name)
+    : DeclarationNode(name), INodeAcceptor<IVariableDeclarationHandler>
 {
     public BaseNode? Value { get; set; } = value;
     public bool IsLet { get; set; } = isLet;
     public TypeNode? Type { get; set; } = typeNode;
     public bool IsDynamic { get; set; } = isDynamic;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IVariableDeclarationHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name.PropagateTypeRef(typeRef);
-        Type?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

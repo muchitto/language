@@ -1,25 +1,21 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
-public class EnumCaseAssociatedValueNode(PositionData positionData, IdentifierNode? name, IdentifierNode type)
-    : BaseNode(positionData)
+public class EnumCaseAssociatedValueNode(
+    PositionData positionData,
+    IdentifierNode? name,
+    IdentifierNode type)
+    : BaseNode(positionData), INodeAcceptor<IEnumDeclarationNodeHandler>
 {
     public IdentifierNode? Name { get; set; } = name;
     public IdentifierNode Type { get; set; } = type;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IEnumDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name?.PropagateTypeRef(typeRef);
-        Type.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

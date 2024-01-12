@@ -1,21 +1,16 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Literal;
 
-public class TupleLiteralNode(PositionData positionData, List<BaseNode> values) : LiteralNode(positionData)
+public class TupleLiteralNode(PositionData positionData, List<BaseNode> values)
+    : LiteralNode(positionData), INodeAcceptor<ILiteralNodeHandler>
 {
     public List<BaseNode> Values { get; set; } = values;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(ILiteralNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)

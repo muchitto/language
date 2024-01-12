@@ -1,24 +1,17 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Expression;
 
 public class FunctionCallArgumentNode(PositionData positionData, IdentifierNode? name, BaseNode value)
-    : BaseNode(positionData)
+    : BaseNode(positionData), INodeAcceptor<IExpressionNodeHandler>
 {
     public IdentifierNode? Name { get; set; } = name;
     public BaseNode Value { get; set; } = value;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IExpressionNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

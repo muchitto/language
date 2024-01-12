@@ -61,9 +61,9 @@ public class StructDeclarationParser(ParsingContext context) : Parser<StructDecl
             {
                 var variableDeclaration = new VariableDeclarationParser(Context).Parse();
 
-                var name = variableDeclaration.Name.Name;
+                var name = variableDeclaration.Name;
 
-                return new StructVariableNode(token.PositionData, name, variableDeclaration);
+                return new StructVariableNode(name, variableDeclaration);
             }
             case TokenType.Identifier when token.Value == "func":
             {
@@ -80,9 +80,9 @@ public class StructDeclarationParser(ParsingContext context) : Parser<StructDecl
                     );
                 }
 
-                var name = functionDeclaration.Name?.Name ?? "";
+                var name = functionDeclaration.Name;
 
-                return new StructFunctionNode(token.PositionData, name, functionDeclaration);
+                return new StructFunctionNode(name, functionDeclaration);
             }
             default:
                 throw new ParseError.UnexpectedToken(

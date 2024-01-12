@@ -1,22 +1,16 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Type.Struct;
 
-public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode> fields) : TypeNode(positionData)
+public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode> fields)
+    : TypeNode(positionData), INodeAcceptor<ITypeNodeHandler>
 {
     public List<StructTypeFieldNode> Fields { get; set; } = fields;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(ITypeNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)
@@ -27,10 +21,5 @@ public class StructTypeNode(PositionData positionData, List<StructTypeFieldNode>
         }
 
         return node.Fields.Count == Fields.Count && Fields.TestEquals(node.Fields);
-    }
-
-    public override TypeRef ResultingType()
-    {
-        return TypeRef;
     }
 }

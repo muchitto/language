@@ -47,7 +47,10 @@ public class StatementParser(ParsingContext context) : Parser<BaseNode>(context)
             case TokenType.Identifier when token.Value == "type":
                 return new TypeAliasParser(Context).Parse();
             case TokenType.Identifier:
-                var identifier = new IdentifierRelatedParser(Context).Parse();
+                var identifier = new IdentifierRelatedParser(Context).Parse(new IdentifierRelatedParserData
+                {
+                    IsExpression = false
+                });
 
                 if (identifier is IdentifierNode)
                 {

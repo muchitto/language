@@ -1,21 +1,16 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Literal;
 
-public class CharLiteralNode(PositionData positionData, char value) : LiteralNode(positionData)
+public class CharLiteralNode(PositionData positionData, char value)
+    : LiteralNode(positionData), INodeAcceptor<ILiteralNodeHandler>
 {
     public char Value { get; set; } = value;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(ILiteralNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)

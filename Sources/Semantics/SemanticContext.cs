@@ -1,28 +1,22 @@
+using Semantics.SymbolResolving;
 using Syntax.Nodes;
-using TypeInformation;
 
 namespace Semantics;
 
 public class SemanticContext
 {
-    public readonly List<Scope> AllScopes = [];
+    public Dictionary<IdentifierNode, Symbol> IdentifierToSymbol = new();
     public Dictionary<BaseNode, Scope> NodeToScope = new();
+    public Scope CurrentScope { get; set; }
 
-    public Scope CurrentScope { get; private set; }
-
-    public Scope TopScope => CurrentScope.TopScope;
-
-    public bool IsCurrentScopeTopScope => CurrentScope == TopScope;
-
-    public Scope StartScope(ScopeType scopeType)
+    public void StartScope()
     {
-        var newScope = new Scope(CurrentScope, scopeType);
+        var scope = new Scope([])
+        {
+            Parent = CurrentScope
+        };
 
-        AllScopes.Add(newScope);
-
-        CurrentScope = newScope;
-
-        return newScope;
+        CurrentScope = scope;
     }
 
     public void EndScope()
@@ -33,80 +27,13 @@ public class SemanticContext
         }
     }
 
-    public void SetCurrentScope(Scope scope)
+    public Symbol? GetSymbol(IdentifierNode identifierNode)
     {
-        CurrentScope = scope;
+        return IdentifierToSymbol.GetValueOrDefault(identifierNode);
     }
 
-    public TypeRef VoidType()
+    public Symbol? SetSymbol(IdentifierNode identifierNode, Symbol symbol)
     {
-        var result = CurrentScope.LookupSymbol("Void");
-
-        if (result == null)
-        {
-            throw new Exception("Void type not found");
-        }
-
-        return result.TypeRef;
-    }
-
-    public TypeRef DynamicType()
-    {
-        var result = CurrentScope.LookupSymbol("Dynamic");
-
-        if (result == null)
-        {
-            throw new Exception("Dynamic type not found");
-        }
-
-        return result.TypeRef;
-    }
-
-    public TypeRef BoolType()
-    {
-        var result = CurrentScope.LookupSymbol("Bool");
-
-        if (result == null)
-        {
-            throw new Exception("Bool type not found");
-        }
-
-        return result.TypeRef;
-    }
-
-    public TypeRef IntType()
-    {
-        var result = CurrentScope.LookupSymbol("Int");
-
-        if (result == null)
-        {
-            throw new Exception("Int type not found");
-        }
-
-        return result.TypeRef;
-    }
-
-    public TypeRef FloatType()
-    {
-        var result = CurrentScope.LookupSymbol("Float");
-
-        if (result == null)
-        {
-            throw new Exception("Float type not found");
-        }
-
-        return result.TypeRef;
-    }
-
-    public TypeRef StringType()
-    {
-        var result = CurrentScope.LookupSymbol("String");
-
-        if (result == null)
-        {
-            throw new Exception("String type not found");
-        }
-
-        return result.TypeRef;
+        return IdentifierToSymbol[identifierNode] = symbol;
     }
 }

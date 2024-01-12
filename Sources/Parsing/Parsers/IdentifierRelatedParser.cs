@@ -4,13 +4,19 @@ using Syntax.Nodes.Statement;
 
 namespace Parsing.Parsers;
 
-public class IdentifierRelatedParser(ParsingContext context) : Parser<BaseNode>(context)
+public record struct IdentifierRelatedParserData
 {
-    public override BaseNode Parse()
-    {
-        var identifier = ParseIdentifierOrFieldAccess();
+    public bool IsExpression;
+}
 
-        if (IsNextPossibleFunctionCall())
+public class IdentifierRelatedParser(ParsingContext context)
+    : ParserWithData<BaseNode, IdentifierRelatedParserData>(context)
+{
+    public override BaseNode Parse(IdentifierRelatedParserData data)
+    {
+        var identifier = ParseIdentifierOrFieldAccess(data);
+
+        if (IsNextPossibleFunctionCall(data))
         {
             return new FunctionCallParser(Context).Parse(new FunctionCallParserData
             {
@@ -36,7 +42,7 @@ public class IdentifierRelatedParser(ParsingContext context) : Parser<BaseNode>(
         return identifier;
     }
 
-    private BaseNode ParseIdentifierOrFieldAccess()
+    private BaseNode ParseIdentifierOrFieldAccess(IdentifierRelatedParserData data)
     {
         var identifier = ParseSingleIdentifier();
 
@@ -45,7 +51,7 @@ public class IdentifierRelatedParser(ParsingContext context) : Parser<BaseNode>(
             return identifier;
         }
 
-        var subField = Parse();
+        var subField = Parse(data);
 
         return new FieldAccessNode(
             identifier,
@@ -53,14 +59,15 @@ public class IdentifierRelatedParser(ParsingContext context) : Parser<BaseNode>(
         );
     }
 
-    private bool IsNextPossibleFunctionCall()
+    private bool IsNextPossibleFunctionCall(IdentifierRelatedParserData data)
     {
-        return IsNext(TokenType.Symbol, "(")
-               || IsNext(TokenType.Identifier)
-               || IsNext(TokenType.StringLiteral)
-               || IsNext(TokenType.NumberLiteral)
-               || IsNext(TokenType.Newline)
-               || IsNext(TokenType.Symbol, "{")
-               || IsEnd;
+        return !data.IsExpression
+               && (IsNext(TokenType.Symbol, "(")
+                   || IsNext(TokenType.Identifier)
+                   || IsNext(TokenType.StringLiteral)
+                   || IsNext(TokenType.NumberLiteral)
+                   || IsNext(TokenType.Newline)
+                   || IsNext(TokenType.Symbol, "{")
+                   || IsEnd);
     }
 }

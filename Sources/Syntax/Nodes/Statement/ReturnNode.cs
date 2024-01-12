@@ -1,22 +1,16 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Statement;
 
-public class ReturnNode(PositionData positionData, BaseNode? value) : StatementNode(positionData)
+public class ReturnNode(PositionData positionData, BaseNode? value)
+    : StatementNode(positionData), INodeAcceptor<IStatementNodeHandler>
 {
     public BaseNode? Value { get; set; } = value;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IStatementNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Value?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

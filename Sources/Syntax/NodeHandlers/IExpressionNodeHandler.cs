@@ -9,4 +9,8 @@ public interface IExpressionNodeHandler
     public void Handle(BinaryOpNode binaryOpNode);
 
     public void Handle(BodyExpressionNode bodyExpressionNode);
+
+    public void Handle(FunctionCallNode functionCallNode);
+
+    public void Handle(FunctionCallArgumentNode functionCallArgumentNode);
 }

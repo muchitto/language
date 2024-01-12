@@ -1,22 +1,16 @@
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes;
 
-public class FieldAccessNode(BaseNode left, BaseNode right) : BaseNode(left.PositionData)
+public class FieldAccessNode(BaseNode left, BaseNode right)
+    : BaseNode(left.PositionData), INodeAcceptor<IBasicNodeHandler>
 {
     public BaseNode Left { get; set; } = left;
     public BaseNode Right { get; set; } = right;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IBasicNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Left.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

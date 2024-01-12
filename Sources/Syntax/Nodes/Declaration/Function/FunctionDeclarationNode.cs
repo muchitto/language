@@ -1,5 +1,5 @@
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration.Function;
 
@@ -10,7 +10,7 @@ public class FunctionDeclarationNode(
     bool canThrow,
     bool isMethod,
     IdentifierNode? returnTypeName)
-    : DeclarationNode(name)
+    : DeclarationNode(name), INodeAcceptor<IFunctionDeclarationNodeHandler>
 {
     public List<FunctionArgumentNode> Arguments { get; set; } = arguments;
     public BodyContainerNode BodyContainerNode { get; set; } = bodyContainerNode;
@@ -19,16 +19,9 @@ public class FunctionDeclarationNode(
     public bool IsMethod { get; set; } = isMethod;
     public IdentifierNode? ReturnTypeName { get; set; } = returnTypeName;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IFunctionDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

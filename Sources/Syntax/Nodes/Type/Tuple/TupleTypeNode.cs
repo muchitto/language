@@ -1,21 +1,16 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Type.Tuple;
 
-public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> types) : TypeNode(positionData)
+public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> types)
+    : TypeNode(positionData), INodeAcceptor<ITypeNodeHandler>
 {
     public List<TupleTypeFieldNode> Types { get; set; } = types;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(ITypeNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)
@@ -26,10 +21,5 @@ public class TupleTypeNode(PositionData positionData, List<TupleTypeFieldNode> t
         }
 
         return node.Types.Count == Types.Count && Types.TestEquals(node.Types);
-    }
-
-    public override TypeRef ResultingType()
-    {
-        return TypeRef;
     }
 }

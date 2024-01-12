@@ -1,6 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration.Closure;
 
@@ -8,19 +8,14 @@ public class ClosureNode(
     PositionData positionData,
     List<ClosureArgumentNode> arguments,
     BodyContainerNode bodyContainerNode
-) : BaseNode(positionData)
+) : BaseNode(positionData), INodeAcceptor<IClosureDeclarationNodeHandler>
 {
     public List<ClosureArgumentNode> Arguments { get; } = arguments;
     public BodyContainerNode BodyContainerNode { get; } = bodyContainerNode;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IClosureDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)

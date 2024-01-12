@@ -1,28 +1,17 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes;
 
 public class BodyContainerNode(PositionData positionData, List<BaseNode> statements, bool canReturn)
-    : StatementListContainerNode(positionData, statements)
+    : CodeBlockNode(positionData, statements), INodeAcceptor<IStatementListNodeHandler>
 {
     public bool CanReturn { get; set; } = canReturn;
 
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IStatementListNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-
-        foreach (var statement in Statements)
-        {
-            statement.PropagateTypeRef(typeRef);
-        }
     }
 
     public override bool TestEquals(BaseNode other)

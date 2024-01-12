@@ -1,14 +1,14 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Type;
 
-public class IdentifierTypeNode(PositionData positionData, string name) : TypeNode(positionData)
+public class IdentifierTypeNode(PositionData positionData, string name)
+    : TypeNode(positionData), INodeAcceptor<ITypeNodeHandler>
 {
     public string Name { get; set; } = name;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(ITypeNodeHandler handler)
     {
         handler.Handle(this);
     }
@@ -16,11 +16,6 @@ public class IdentifierTypeNode(PositionData positionData, string name) : TypeNo
     public static explicit operator IdentifierTypeNode(IdentifierNode node)
     {
         return new IdentifierTypeNode(node.PositionData, node.Name);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)
@@ -31,10 +26,5 @@ public class IdentifierTypeNode(PositionData positionData, string name) : TypeNo
         }
 
         return node.Name == Name;
-    }
-
-    public override TypeRef ResultingType()
-    {
-        return TypeRef;
     }
 }

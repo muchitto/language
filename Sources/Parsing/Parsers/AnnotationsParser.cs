@@ -59,7 +59,13 @@ public class AnnotationsParser(ParsingContext context) : Parser<AnnotationsNode>
                 );
             }
 
-            annotationArguments.Add(new AnnotationArgumentNode(token.PositionData, null, expressionNode));
+            var annotationArgument = new AnnotationArgumentNode(
+                token.PositionData,
+                null,
+                expressionNode
+            );
+
+            annotationArguments.Add(annotationArgument);
         }
 
         ExpectAndEat(TokenType.Symbol, ")", "expected an ending parenthesis for the annotation");

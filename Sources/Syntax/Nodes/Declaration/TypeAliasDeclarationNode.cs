@@ -1,21 +1,16 @@
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration;
 
-public class TypeAliasDeclarationNode(IdentifierNode name, TypeNode type) : DeclarationNode(name)
+public class TypeAliasDeclarationNode(IdentifierNode name, TypeNode type)
+    : DeclarationNode(name), INodeAcceptor<ITypeAliasDeclaration>
 {
     public TypeNode Type { get; set; } = type;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(ITypeAliasDeclaration handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

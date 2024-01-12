@@ -1,24 +1,17 @@
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration.Closure;
 
 public class ClosureArgumentNode(IdentifierNode name, TypeNode? typeNode)
-    : BaseNode(name.PositionData)
+    : BaseNode(name.PositionData), INodeAcceptor<IClosureDeclarationNodeHandler>
 {
     public IdentifierNode Name { get; } = name;
     public TypeNode? TypeNode { get; } = typeNode;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IClosureDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-
-        TypeNode?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

@@ -1,7 +1,6 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
 using Syntax.Nodes.Expression;
-using TypeInformation;
 
 namespace Syntax.Nodes.Statement;
 
@@ -10,20 +9,15 @@ public class IfStatementNode(
     BinaryOpNode? condition,
     BodyContainerNode bodyContainerNode,
     IfStatementNode? nextIf = null)
-    : StatementNode(positionData)
+    : StatementNode(positionData), INodeAcceptor<IStatementNodeHandler>
 {
     public BinaryOpNode? Condition { get; set; } = condition;
     public BodyContainerNode BodyContainerNode { get; set; } = bodyContainerNode;
     public IfStatementNode? NextIf { get; set; } = nextIf;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IStatementNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)

@@ -1,6 +1,5 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Expression;
 
@@ -9,7 +8,7 @@ public class IfExpressionNode(
     BinaryOpNode? condition,
     ExpressionNode body,
     IfExpressionNode nextIf)
-    : ExpressionNode(positionData)
+    : ExpressionNode(positionData), INodeAcceptor<IExpressionNodeHandler>
 {
     public BinaryOpNode? Condition { get; set; } = condition;
 
@@ -17,15 +16,9 @@ public class IfExpressionNode(
 
     public IfExpressionNode? NextIf { get; set; } = nextIf;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IExpressionNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)

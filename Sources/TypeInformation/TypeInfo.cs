@@ -26,16 +26,16 @@ public class FloatTypeInfo(int size) : TypeInfo
     public int Size { get; } = size;
 }
 
-public class FunctionTypeInfo(TypeRef? returnType, Dictionary<string, TypeRef> parameterTypes, bool canThrow)
+public class FunctionTypeInfo(TypeInfo? returnType, Dictionary<string, TypeInfo> parameterTypes, bool canThrow)
     : TypeInfo
 {
-    public TypeRef? ReturnType { get; } = returnType;
-    public Dictionary<string, TypeRef> ParameterTypes { get; } = parameterTypes;
+    public TypeInfo? ReturnType { get; } = returnType;
+    public Dictionary<string, TypeInfo> ParameterTypes { get; } = parameterTypes;
 
     public bool CanThrow { get; set; } = canThrow;
 }
 
-public class StructTypeInfo(Dictionary<string, TypeRef> fields) : TypeInfo
+public class StructTypeInfo(Dictionary<string, TypeInfo> fields) : TypeInfo
 {
-    public Dictionary<string, TypeRef> Fields { get; } = fields;
+    public Dictionary<string, TypeInfo> Fields { get; } = fields;
 }

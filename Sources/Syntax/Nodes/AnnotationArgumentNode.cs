@@ -1,25 +1,20 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes;
 
-public class AnnotationArgumentNode(PositionData positionData, IdentifierNode name, ExpressionNode value)
-    : BaseNode(positionData)
+public class AnnotationArgumentNode(
+    PositionData positionData,
+    IdentifierNode name,
+    ExpressionNode value)
+    : BaseNode(positionData), INodeAcceptor<IAnnotationNodeHandler>
 {
     public IdentifierNode Name { get; set; } = name;
     public ExpressionNode Value { get; set; } = value;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IAnnotationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

@@ -9,7 +9,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Parsing\Parsing.csproj"/>
         <ProjectReference Include="..\Syntax\Syntax.csproj"/>
-        <ProjectReference Include="..\TypeInformation\TypeInformation.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -26,10 +26,13 @@ public class ExpressionParser(ParsingContext context) : Parser<BaseNode>(context
             {
                 IsExpr = true
             }),
-            TokenType.Identifier => new IdentifierRelatedParser(Context).Parse(),
+            TokenType.Identifier => new IdentifierRelatedParser(Context).Parse(new IdentifierRelatedParserData
+            {
+                IsExpression = true
+            }),
             _ => throw new ParseError.UnexpectedToken(
                 token,
-                "expected expression"
+                "expected an expression"
             )
         };
     }

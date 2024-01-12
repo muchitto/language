@@ -1,24 +1,21 @@
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
-public class EnumDeclarationNode(IdentifierNode name, List<EnumCaseNode> cases, List<EnumFunctionNode> functions)
-    : DeclarationNode(name)
+public class EnumDeclarationNode(
+    IdentifierNode name,
+    List<EnumCaseNode> cases,
+    List<EnumFunctionNode> functions)
+    : DeclarationNode(name), INodeAcceptor<IEnumDeclarationNodeHandler>
 {
     public List<EnumCaseNode> Cases { get; set; } = cases;
 
     public List<EnumFunctionNode> Functions { get; set; } = functions;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IEnumDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

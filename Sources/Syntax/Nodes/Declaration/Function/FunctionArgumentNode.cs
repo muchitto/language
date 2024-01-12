@@ -1,5 +1,5 @@
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration.Function;
 
@@ -8,7 +8,7 @@ public class FunctionArgumentNode(
     TypeNode? typeName,
     BaseNode? defaultValue,
     bool isDynamic)
-    : BaseNode(name.PositionData)
+    : BaseNode(name.PositionData), INodeAcceptor<IFunctionDeclarationNodeHandler>
 {
     public IdentifierNode Name { get; set; } = name;
     public TypeNode? TypeName { get; set; } = typeName;
@@ -17,17 +17,9 @@ public class FunctionArgumentNode(
 
     public bool IsDynamic { get; set; } = isDynamic;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IFunctionDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name.PropagateTypeRef(typeRef);
-        TypeName?.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)
@@ -41,27 +33,5 @@ public class FunctionArgumentNode(
                && DefaultValue.TestEqualsOrBothNull(node.DefaultValue)
                && TypeName.TestEqualsOrBothNull(node.TypeName)
                && node.Name.TestEquals(Name);
-    }
-
-    public void Test()
-    {
-        var t = new
-        {
-            x = 1,
-            y = 2,
-            Statements = new[]
-            {
-                new
-                {
-                    x = 1,
-                    y = 2
-                },
-                new
-                {
-                    x = 1,
-                    y = 2
-                }
-            }
-        };
     }
 }

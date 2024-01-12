@@ -1,24 +1,16 @@
-using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
+using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration.Struct;
 
-public class StructVariableNode(PositionData positionData, string name, VariableDeclarationNode variable)
-    : StructFieldNode(positionData, name)
+public class StructVariableNode(IdentifierNode name, VariableDeclarationNode variable)
+    : StructFieldNode(name), INodeAcceptor<IStructDeclarationNodeHandler>
 {
     public VariableDeclarationNode Variable { get; set; } = variable;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IStructDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Variable.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

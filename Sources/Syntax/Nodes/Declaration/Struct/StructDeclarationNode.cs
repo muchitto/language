@@ -1,6 +1,6 @@
 using Syntax.NodeHandlers;
+using Syntax.NodeHandlers.Declarations;
 using Syntax.Nodes.Type;
-using TypeInformation;
 
 namespace Syntax.Nodes.Declaration.Struct;
 
@@ -10,7 +10,7 @@ public class StructDeclarationNode(
     IdentifierNode? parent,
     List<IdentifierTypeNode> interfaces,
     bool implOnly)
-    : DeclarationNode(name)
+    : DeclarationNode(name), INodeAcceptor<IStructDeclarationNodeHandler>
 {
     public List<StructFieldNode> Fields { get; set; } = fields;
 
@@ -20,15 +20,9 @@ public class StructDeclarationNode(
 
     public bool ImplOnly { get; set; } = implOnly;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IStructDeclarationNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Name.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

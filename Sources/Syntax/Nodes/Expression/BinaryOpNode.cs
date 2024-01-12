@@ -1,27 +1,19 @@
 using ErrorReporting;
 using Lexing;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Expression;
 
 public class BinaryOpNode(PositionData positionData, BaseNode lhs, BaseNode rhs, Operator @operator)
-    : ExpressionNode(positionData)
+    : ExpressionNode(positionData), INodeAcceptor<IExpressionNodeHandler>
 {
     public BaseNode Lhs { get; set; } = lhs;
     public BaseNode Rhs { get; set; } = rhs;
     public Operator Operator { get; set; } = @operator;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IExpressionNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
-        Lhs.PropagateTypeRef(typeRef);
     }
 
     public override bool TestEquals(BaseNode other)

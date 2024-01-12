@@ -1,25 +1,25 @@
+using Semantics.SymbolResolving;
 using Syntax.Nodes;
-using TypeInformation;
 
 namespace Semantics;
 
-public abstract class SemanticPass
+public abstract class SemanticPass(SemanticContext semanticContext)
 {
-    protected SemanticContext SemanticContext;
+    protected SemanticContext SemanticContext { get; } = semanticContext;
 
-    public Scope CurrentScope => SemanticContext.CurrentScope;
+    protected Scope CurrentScope => SemanticContext.CurrentScope;
 
-    public void AddNodeToScope(BaseNode node)
+    protected void AddNodeToScope(BaseNode node)
     {
         SemanticContext.NodeToScope.Add(node, CurrentScope);
     }
 
-    public void SetCurrentScope(Scope scope)
+    private void SetCurrentScope(Scope scope)
     {
-        SemanticContext.SetCurrentScope(scope);
+        SemanticContext.CurrentScope = scope;
     }
 
-    public void StartScopeFromNode(BaseNode node)
+    protected void StartScopeFromNode(BaseNode node)
     {
         if (!SemanticContext.NodeToScope.TryGetValue(node, out var value))
         {
@@ -29,9 +29,9 @@ public abstract class SemanticPass
         SetCurrentScope(value);
     }
 
-    protected void StartScope(ScopeType scopeType)
+    protected void StartScope()
     {
-        SemanticContext.StartScope(scopeType);
+        SemanticContext.StartScope();
     }
 
     protected void EndScope()
@@ -39,5 +39,5 @@ public abstract class SemanticPass
         SemanticContext.EndScope();
     }
 
-    public abstract void Run(ProgramContainerNode ast, SemanticContext semanticContext);
+    public abstract void Run(ProgramContainerNode ast);
 }

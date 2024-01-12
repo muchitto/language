@@ -1,127 +1,34 @@
 using Syntax.NodeHandlers;
+using Syntax.NodeHandlers.Declarations;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Declaration.Closure;
 using Syntax.Nodes.Declaration.Enum;
+using Syntax.Nodes.Declaration.Function;
 using Syntax.Nodes.Declaration.Interface;
-using Syntax.Nodes.Expression;
-using Syntax.Nodes.Statement;
-using TypeInformation;
+using Syntax.Nodes.Declaration.Struct;
 
 namespace Semantics.Passes.DeclarationPass;
 
-/*
- * Just go through the top level declarations and add them to the symbol table as unknowns
- * so in the next pass, we can fetch them and add them to the symbol table as knowns
- */
-public partial class DeclarationPass : SemanticPass, INodeHandler
+public class DeclarationPass(SemanticContext semanticContext)
+    : SemanticPass(semanticContext), IDeclarationNodeHandler, IStatementListNodeHandler
 {
-    public void Handle(ReturnNode returnNode)
+    public void Handle(StructDeclarationNode structDeclarationNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(IdentifierNode identifierNode)
-    {
-        AddNodeToScope(identifierNode);
-
-        identifierNode.PropagateTypeRef(ReferenceVariable(identifierNode.Name));
-    }
-
-
-    public void Handle(AnnotationNode annotationNode)
+    public void Handle(StructFunctionNode structFunctionNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(AnnotationsNode annotationsNode)
+    public void Handle(StructVariableNode structVariableNode)
     {
         throw new NotImplementedException();
     }
 
-    public void Handle(AnnotationArgumentNode annotationArgumentNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(TypeAliasDeclarationNode typeAliasDeclarationNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(VariableDeclarationNode variableDeclarationNode)
-    {
-        AddNodeToScope(variableDeclarationNode);
-
-        TypeRef? typeRef = null;
-        if (variableDeclarationNode.Type != null)
-        {
-            variableDeclarationNode.Type.Accept(this);
-
-            typeRef = variableDeclarationNode.Type.TypeRef;
-        }
-        else if (variableDeclarationNode.IsDynamic)
-        {
-            typeRef = SemanticContext.DynamicType();
-        }
-        else if (variableDeclarationNode.Value != null)
-        {
-            variableDeclarationNode.Value.Accept(this);
-
-            typeRef = variableDeclarationNode.Value.TypeRef;
-        }
-        else
-        {
-            typeRef = TypeRef.Unknown(SemanticContext.CurrentScope);
-        }
-
-        variableDeclarationNode.PropagateTypeRef(typeRef);
-
-        DeclareVariable(
-            variableDeclarationNode.PositionData,
-            variableDeclarationNode.Name.Name,
-            typeRef
-        );
-    }
-
-    public void Handle(AssignmentNode variableAssignmentNode)
-    {
-        AddNodeToScope(variableAssignmentNode);
-
-        variableAssignmentNode.Name.Accept(this);
-        variableAssignmentNode.Value.Accept(this);
-
-        variableAssignmentNode.PropagateTypeRef(variableAssignmentNode.Name.TypeRef);
-
-        if (variableAssignmentNode.Name.TypeRef.IsUnknown && !variableAssignmentNode.Value.TypeRef.IsUnknown)
-        {
-            variableAssignmentNode.TypeRef.TypeInfo = variableAssignmentNode.Value.TypeRef.TypeInfo;
-        }
-        else if (!variableAssignmentNode.Name.TypeRef.IsUnknown && !variableAssignmentNode.Value.TypeRef.IsUnknown)
-        {
-            if (variableAssignmentNode.Name.TypeRef.TypeId != variableAssignmentNode.Value.TypeRef.TypeId)
-            {
-                throw new Exception("Types are not equal");
-            }
-        }
-    }
-
-    public void Handle(IfStatementNode ifStatementNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(FieldAccessNode fieldAccessNode)
-    {
-        AddNodeToScope(fieldAccessNode);
-
-        fieldAccessNode.Left.Accept(this);
-        fieldAccessNode.Right.Accept(this);
-
-        fieldAccessNode.PropagateTypeRef(fieldAccessNode.Right.TypeRef);
-    }
-
-    public void Handle(ArrayAccessNode arrayAccessNode)
+    public void Handle(InterfaceDeclarationNode interfaceDeclarationNodeDeclaration)
     {
         throw new NotImplementedException();
     }
@@ -146,22 +53,14 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    public void Handle(InterfaceDeclarationNode interfaceDeclarationNodeDeclaration)
+    public void Handle(FunctionDeclarationNode functionDeclarationNode)
     {
-        throw new NotImplementedException();
+        CurrentScope.LookupSymbol(functionDeclarationNode.Name.Name);
+
+        functionDeclarationNode.BodyContainerNode.Accept(this);
     }
 
-    public void Handle(IfExpressionNode ifExpressionNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(BinaryOpNode binaryOpNode)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Handle(BodyExpressionNode bodyExpressionNode)
+    public void Handle(FunctionArgumentNode functionArgumentNode)
     {
         throw new NotImplementedException();
     }
@@ -176,30 +75,48 @@ public partial class DeclarationPass : SemanticPass, INodeHandler
         throw new NotImplementedException();
     }
 
-    private void CreateBaseTypes(BaseNode ast)
+    public void Handle(VariableDeclarationNode variableDeclarationNode)
     {
-        DeclareType(ast.PositionData, "Int", new IntTypeInfo(32));
-        DeclareType(ast.PositionData, "Float", new FloatTypeInfo(64));
-        DeclareType(ast.PositionData, "Bool", new BoolTypeInfo());
-        DeclareType(ast.PositionData, "String", new StringTypeInfo());
-        DeclareType(ast.PositionData, "Char", new CharTypeInfo());
-        DeclareType(ast.PositionData, "Void", new VoidTypeInfo());
-        DeclareType(ast.PositionData, "Nil", new NilTypeInfo());
-        DeclareType(ast.PositionData, "Dynamic", new DynamicTypeInfo());
-
-        DeclareType(ast.PositionData, "Int8", new IntTypeInfo(8));
-        DeclareType(ast.PositionData, "Int16", new IntTypeInfo(16));
-        DeclareType(ast.PositionData, "Int32", new IntTypeInfo(32));
-        DeclareType(ast.PositionData, "Int64", new IntTypeInfo(64));
-
-        DeclareType(ast.PositionData, "Float32", new FloatTypeInfo(32));
-        DeclareType(ast.PositionData, "Float64", new FloatTypeInfo(64));
+        throw new NotImplementedException();
     }
 
-    public override void Run(ProgramContainerNode ast, SemanticContext semanticContext)
+    public void Handle(TypeAliasDeclarationNode typeAliasDeclarationNode)
     {
-        SemanticContext = semanticContext;
+        throw new NotImplementedException();
+    }
 
+    public void Handle(BodyContainerNode bodyContainerDeclarationNode)
+    {
+        BlockHandler(bodyContainerDeclarationNode);
+    }
+
+    public void Handle(ProgramContainerNode programContainerNode)
+    {
+        BlockHandler(programContainerNode);
+    }
+
+    private void BlockHandler(CodeBlockNode codeBlockNode)
+    {
+        StartScope();
+
+        foreach (var node in codeBlockNode.Statements)
+        {
+            switch (node)
+            {
+                case INodeAcceptor<IStructDeclarationNodeHandler> statementListNode:
+                    statementListNode.Accept(this);
+                    break;
+                case INodeAcceptor<IFunctionDeclarationNodeHandler> statementListNode:
+                    statementListNode.Accept(this);
+                    break;
+            }
+        }
+
+        EndScope();
+    }
+
+    public override void Run(ProgramContainerNode ast)
+    {
         ast.Accept(this);
     }
 }

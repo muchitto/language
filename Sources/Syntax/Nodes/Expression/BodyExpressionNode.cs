@@ -1,22 +1,16 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using TypeInformation;
 
 namespace Syntax.Nodes.Expression;
 
-public class BodyExpressionNode(PositionData positionData, List<BaseNode> statements) : ExpressionNode(positionData)
+public class BodyExpressionNode(PositionData positionData, List<BaseNode> statements)
+    : ExpressionNode(positionData), INodeAcceptor<IExpressionNodeHandler>
 {
     public List<BaseNode> Statements { get; set; } = statements;
 
-    public override void Accept(INodeHandler handler)
+    public void Accept(IExpressionNodeHandler handler)
     {
         handler.Handle(this);
-    }
-
-
-    public override void PropagateTypeRef(TypeRef typeRef)
-    {
-        TypeRef = typeRef;
     }
 
     public override bool TestEquals(BaseNode other)

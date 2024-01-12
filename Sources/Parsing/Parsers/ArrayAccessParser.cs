@@ -8,7 +8,8 @@ public class ArrayAccessParserData
     public BaseNode Left { get; set; }
 }
 
-public class ArrayAccessParser(ParsingContext context) : ParserWithData<ArrayAccessNode, ArrayAccessParserData>(context)
+public class ArrayAccessParser(ParsingContext context)
+    : ParserWithData<ArrayAccessNode, ArrayAccessParserData>(context)
 {
     public override ArrayAccessNode Parse(ArrayAccessParserData data)
     {
