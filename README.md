@@ -1,4 +1,6 @@
-# Language
+# Toy Language
+
+A toy language I am working on to learn about building compilers.
 
 Language is an optionally typed language (though it is by default a statically typed language). It will compile to C and Javascript (and maybe in the future CIL).
 
