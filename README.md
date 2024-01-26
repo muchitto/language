@@ -1,6 +1,6 @@
 # Language
 
-Language is an optionally typed language (though it is by default a statically typed language). It can compile to C and Javascript (and maybe in the future CIL).
+Language is an optionally typed language (though it is by default a statically typed language). It will compile to C and Javascript (and maybe in the future CIL).
 
 ## Constructs
 
@@ -28,7 +28,7 @@ Constants are declared by using the `let` keyword.
 
 Functions are declared using the `func` keyword and ended with the `end` keyword.
 
-    func name(arg1, arg2, arg3)
+    func name(arg1?, arg2?, arg3?)
         // ...
     end
 
