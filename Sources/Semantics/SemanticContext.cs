@@ -1,5 +1,7 @@
 using Semantics.SymbolResolving;
 using Syntax.Nodes;
+using Syntax.Nodes.Declaration;
+using TypeInformation;
 
 namespace Semantics;
 
@@ -35,5 +37,18 @@ public class SemanticContext
     public Symbol? SetSymbol(IdentifierNode identifierNode, Symbol symbol)
     {
         return IdentifierToSymbol[identifierNode] = symbol;
+    }
+
+    public Symbol? Declaration(DeclarationNameNode identifierNode)
+    {
+        if (IdentifierToSymbol.TryGetValue(identifierNode, out var symbol))
+        {
+            return symbol;
+        }
+
+        return IdentifierToSymbol[identifierNode] = new Symbol(
+            identifierNode.Name,
+            new UnknownTypeInfo()
+        );
     }
 }

@@ -1,16 +1,16 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Struct;
 using Syntax.Nodes.Type;
 
 namespace Syntax.Nodes.Declaration.Struct;
 
 public class StructDeclarationNode(
-    IdentifierNode name,
+    DeclarationNameNode name,
     List<StructFieldNode> fields,
     IdentifierNode? parent,
     List<IdentifierTypeNode> interfaces,
     bool implOnly)
-    : DeclarationNode(name), INodeAcceptor<IStructDeclarationNodeHandler>
+    : NamedDeclarationNode(name), INodeAcceptor<IStructDeclarationNodeHandler>
 {
     public List<StructFieldNode> Fields { get; set; } = fields;
 

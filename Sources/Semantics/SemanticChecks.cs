@@ -1,4 +1,5 @@
 using Semantics.Passes.DeclarationPass;
+using Semantics.Passes.TypeResolutionPass;
 using Syntax.Nodes;
 
 namespace Semantics;
@@ -11,7 +12,8 @@ public class SemanticChecks
 
         List<SemanticPass> passes =
         [
-            new DeclarationPass(semanticInfo)
+            new DeclarationPass(semanticInfo),
+            new TypeResolutionPass(semanticInfo)
         ];
 
         foreach (var pass in passes)

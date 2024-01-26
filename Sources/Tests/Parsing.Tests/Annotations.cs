@@ -1,4 +1,5 @@
 using Syntax.Nodes;
+using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Declaration.Function;
 
 namespace Parsing.Tests;
@@ -20,7 +21,7 @@ public class Annotations : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new FunctionDeclarationNode(
-                        new IdentifierNode(Pos, "main"),
+                        new DeclarationNameNode(Pos, "main"),
                         [],
                         new BodyContainerNode(Pos, [], false),
                         false,
@@ -57,7 +58,7 @@ public class Annotations : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new FunctionDeclarationNode(
-                        new IdentifierNode(Pos, "main"),
+                        new DeclarationNameNode(Pos, "main"),
                         [],
                         new BodyContainerNode(Pos, [], false),
                         false,

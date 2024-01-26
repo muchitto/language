@@ -1,19 +1,19 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Enum;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
 public class EnumCaseAssociatedValueNode(
     PositionData positionData,
-    IdentifierNode? name,
-    IdentifierNode type)
-    : BaseNode(positionData), INodeAcceptor<IEnumDeclarationNodeHandler>
+    Nodes.IdentifierNode? name,
+    Nodes.IdentifierNode type)
+    : BaseNode(positionData), INodeAcceptor<IEnumChildNodeHandler>
 {
-    public IdentifierNode? Name { get; set; } = name;
-    public IdentifierNode Type { get; set; } = type;
+    public Nodes.IdentifierNode? Name { get; set; } = name;
+    public Nodes.IdentifierNode Type { get; set; } = type;
 
-    public void Accept(IEnumDeclarationNodeHandler handler)
+    public void Accept(IEnumChildNodeHandler handler)
     {
         handler.Handle(this);
     }

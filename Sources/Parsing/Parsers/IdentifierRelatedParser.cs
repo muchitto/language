@@ -1,4 +1,5 @@
 using Lexing;
+using Parsing.Parsers.Base;
 using Syntax.Nodes;
 using Syntax.Nodes.Statement;
 
@@ -15,6 +16,11 @@ public class IdentifierRelatedParser(ParsingContext context)
     public override BaseNode Parse(IdentifierRelatedParserData data)
     {
         var identifier = ParseIdentifierOrFieldAccess(data);
+
+        if (identifier is FieldAccessNode or ArrayAccessNode)
+        {
+            return identifier;
+        }
 
         if (IsNextPossibleFunctionCall(data))
         {

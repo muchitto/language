@@ -1,23 +1,23 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Function;
 
 namespace Syntax.Nodes.Declaration.Function;
 
 public class FunctionArgumentNode(
-    IdentifierNode name,
+    DeclarationNameNode name,
     TypeNode? typeName,
     BaseNode? defaultValue,
     bool isDynamic)
-    : BaseNode(name.PositionData), INodeAcceptor<IFunctionDeclarationNodeHandler>
+    : BaseNode(name.PositionData), INodeAcceptor<IFunctionChildNodeHandler>
 {
-    public IdentifierNode Name { get; set; } = name;
+    public DeclarationNameNode Name { get; set; } = name;
     public TypeNode? TypeName { get; set; } = typeName;
 
     public BaseNode? DefaultValue { get; set; } = defaultValue;
 
     public bool IsDynamic { get; set; } = isDynamic;
 
-    public void Accept(IFunctionDeclarationNodeHandler handler)
+    public void Accept(IFunctionChildNodeHandler handler)
     {
         handler.Handle(this);
     }

@@ -1,15 +1,15 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Struct;
 using Syntax.Nodes.Declaration.Function;
 
 namespace Syntax.Nodes.Declaration.Struct;
 
-public class StructFunctionNode(IdentifierNode name, FunctionDeclarationNode function)
-    : StructFieldNode(name), INodeAcceptor<IStructDeclarationNodeHandler>
+public class StructFunctionNode(DeclarationNameNode name, FunctionDeclarationNode function)
+    : StructFieldNode(name), INodeAcceptor<IStructChildNodeHandler>
 {
     public FunctionDeclarationNode Function { get; set; } = function;
 
-    public void Accept(IStructDeclarationNodeHandler handler)
+    public void Accept(IStructChildNodeHandler handler)
     {
         handler.Handle(this);
     }

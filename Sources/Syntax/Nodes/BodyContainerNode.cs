@@ -4,12 +4,12 @@ using Syntax.NodeHandlers;
 namespace Syntax.Nodes;
 
 public class BodyContainerNode(PositionData positionData, List<BaseNode> statements, bool canReturn)
-    : CodeBlockNode(positionData, statements), INodeAcceptor<IStatementListNodeHandler>
+    : CodeBlockNode(positionData, statements), INodeAcceptor<ICodeBlockNodeHandler>
 {
     public bool CanReturn { get; set; } = canReturn;
 
 
-    public void Accept(IStatementListNodeHandler handler)
+    public void Accept(ICodeBlockNodeHandler handler)
     {
         handler.Handle(this);
     }

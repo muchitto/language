@@ -1,7 +1,7 @@
 using Lexing;
 using Syntax.Nodes;
 
-namespace Parsing.Parsers;
+namespace Parsing.Parsers.Base;
 
 public abstract class BaseParser(ParsingContext context)
 {

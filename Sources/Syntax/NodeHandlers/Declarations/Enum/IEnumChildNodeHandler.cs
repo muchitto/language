@@ -1,11 +1,9 @@
 using Syntax.Nodes.Declaration.Enum;
 
-namespace Syntax.NodeHandlers.Declarations;
+namespace Syntax.NodeHandlers.Declarations.Enum;
 
-public interface IEnumDeclarationNodeHandler
+public interface IEnumChildNodeHandler
 {
-    public void Handle(EnumDeclarationNode enumDeclarationNodeDeclaration);
-
     public void Handle(EnumFunctionNode enumFunctionNode);
 
     public void Handle(EnumCaseAssociatedValueNode enumCaseAssociatedValueNode);

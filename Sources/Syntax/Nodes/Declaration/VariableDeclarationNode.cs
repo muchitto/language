@@ -4,13 +4,13 @@ using Syntax.NodeHandlers.Declarations;
 namespace Syntax.Nodes.Declaration;
 
 public class VariableDeclarationNode(
-    IdentifierNode name,
+    DeclarationNameNode name,
     BaseNode? value,
     bool isLet,
     TypeNode? typeNode,
     bool isDynamic
 )
-    : DeclarationNode(name), INodeAcceptor<IVariableDeclarationHandler>
+    : NamedDeclarationNode(name), INodeAcceptor<IVariableDeclarationHandler>
 {
     public BaseNode? Value { get; set; } = value;
     public bool IsLet { get; set; } = isLet;

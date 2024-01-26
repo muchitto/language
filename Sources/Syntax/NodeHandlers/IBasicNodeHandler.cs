@@ -2,7 +2,7 @@ using Syntax.Nodes;
 
 namespace Syntax.NodeHandlers;
 
-public interface IBasicNodeHandler : IStatementListNodeHandler, IAnnotationNodeHandler
+public interface IBasicNodeHandler
 {
     public void Handle(IdentifierNode identifierNode);
 

@@ -1,6 +1,7 @@
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Literal;
+using IdentifierNode = Syntax.Nodes.IdentifierNode;
 
 namespace Parsing.Tests.Struct;
 
@@ -26,7 +27,7 @@ public class StructLiteralTest : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(Pos, "t"),
+                        new DeclarationNameNode(Pos, "t"),
                         new StructLiteralNode(
                             Pos,
                             [
@@ -67,7 +68,7 @@ public class StructLiteralTest : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(Pos, "t"),
+                        new DeclarationNameNode(Pos, "t"),
                         new StructLiteralNode(
                             Pos,
                             [
@@ -108,7 +109,7 @@ public class StructLiteralTest : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(Pos, "t"),
+                        new DeclarationNameNode(Pos, "t"),
                         new StructLiteralNode(
                             Pos,
                             [
@@ -144,7 +145,7 @@ public class StructLiteralTest : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(Pos, "t"),
+                        new DeclarationNameNode(Pos, "t"),
                         new StructLiteralNode(
                             Pos,
                             [

@@ -1,4 +1,5 @@
 using Lexing;
+using Parsing.Parsers.Base;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Closure;
 
@@ -9,9 +10,10 @@ public record struct ClosureParserData
     public bool IsExpr;
 }
 
-public class ClosureParser(ParsingContext context) : ParserWithData<ClosureNode, ClosureParserData>(context)
+public class ClosureParser(ParsingContext context)
+    : DeclarationParserWithData<ClosureDeclarationNode, ClosureParserData>(context)
 {
-    public override ClosureNode Parse(ClosureParserData data)
+    public override ClosureDeclarationNode Parse(ClosureParserData data)
     {
         ExpectAndEat(TokenType.Identifier, "do", "expected do");
 
@@ -59,7 +61,7 @@ public class ClosureParser(ParsingContext context) : ParserWithData<ClosureNode,
             });
         }
 
-        return new ClosureNode(positionData, argumentData.Arguments, bodyContainerNode);
+        return new ClosureDeclarationNode(positionData, argumentData.Arguments, bodyContainerNode);
     }
 
     private ArgumentListData ParseArguments()

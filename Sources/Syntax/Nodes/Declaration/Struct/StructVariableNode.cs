@@ -1,14 +1,14 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Struct;
 
 namespace Syntax.Nodes.Declaration.Struct;
 
-public class StructVariableNode(IdentifierNode name, VariableDeclarationNode variable)
-    : StructFieldNode(name), INodeAcceptor<IStructDeclarationNodeHandler>
+public class StructVariableNode(DeclarationNameNode name, VariableDeclarationNode variable)
+    : StructFieldNode(name), INodeAcceptor<IStructChildNodeHandler>
 {
-    public VariableDeclarationNode Variable { get; set; } = variable;
+    public VariableDeclarationNode Variable { get; } = variable;
 
-    public void Accept(IStructDeclarationNodeHandler handler)
+    public void Accept(IStructChildNodeHandler handler)
     {
         handler.Handle(this);
     }

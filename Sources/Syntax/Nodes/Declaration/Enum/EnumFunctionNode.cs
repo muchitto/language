@@ -1,16 +1,16 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Enum;
 using Syntax.Nodes.Declaration.Function;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
 public class EnumFunctionNode(PositionData positionData, FunctionDeclarationNode function)
-    : BaseNode(positionData), INodeAcceptor<IEnumDeclarationNodeHandler>
+    : BaseNode(positionData), INodeAcceptor<IEnumChildNodeHandler>
 {
     public FunctionDeclarationNode Function { get; set; } = function;
 
-    public void Accept(IEnumDeclarationNodeHandler handler)
+    public void Accept(IEnumChildNodeHandler handler)
     {
         handler.Handle(this);
     }

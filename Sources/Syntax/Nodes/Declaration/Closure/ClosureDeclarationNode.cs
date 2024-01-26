@@ -1,14 +1,14 @@
 using ErrorReporting;
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Function.Closure;
 
 namespace Syntax.Nodes.Declaration.Closure;
 
-public class ClosureNode(
+public class ClosureDeclarationNode(
     PositionData positionData,
     List<ClosureArgumentNode> arguments,
     BodyContainerNode bodyContainerNode
-) : BaseNode(positionData), INodeAcceptor<IClosureDeclarationNodeHandler>
+) : DeclarationNode(positionData), INodeAcceptor<IClosureDeclarationNodeHandler>
 {
     public List<ClosureArgumentNode> Arguments { get; } = arguments;
     public BodyContainerNode BodyContainerNode { get; } = bodyContainerNode;
@@ -20,6 +20,6 @@ public class ClosureNode(
 
     public override bool TestEquals(BaseNode other)
     {
-        return other is ClosureNode node && Arguments.TestEquals(node.Arguments);
+        return other is ClosureDeclarationNode node && Arguments.TestEquals(node.Arguments);
     }
 }

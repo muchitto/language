@@ -1,13 +1,13 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Enum;
 
 namespace Syntax.Nodes.Declaration.Enum;
 
 public class EnumDeclarationNode(
-    IdentifierNode name,
+    DeclarationNameNode name,
     List<EnumCaseNode> cases,
     List<EnumFunctionNode> functions)
-    : DeclarationNode(name), INodeAcceptor<IEnumDeclarationNodeHandler>
+    : NamedDeclarationNode(name), INodeAcceptor<IEnumDeclarationNodeHandler>
 {
     public List<EnumCaseNode> Cases { get; set; } = cases;
 

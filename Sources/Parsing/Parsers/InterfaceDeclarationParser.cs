@@ -1,3 +1,4 @@
+using Parsing.Parsers.Base;
 using Syntax.Nodes.Declaration.Interface;
 
 namespace Parsing.Parsers;

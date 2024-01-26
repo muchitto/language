@@ -4,9 +4,9 @@ using Syntax.NodeHandlers;
 namespace Syntax.Nodes;
 
 public class ProgramContainerNode(PositionData positionData, List<BaseNode> statements)
-    : CodeBlockNode(positionData, statements), INodeAcceptor<IStatementListNodeHandler>
+    : CodeBlockNode(positionData, statements), INodeAcceptor<ICodeBlockNodeHandler>
 {
-    public void Accept(IStatementListNodeHandler handler)
+    public void Accept(ICodeBlockNodeHandler handler)
     {
         handler.Handle(this);
     }

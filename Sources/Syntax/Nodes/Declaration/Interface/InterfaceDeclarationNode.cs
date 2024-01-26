@@ -1,14 +1,14 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Interface;
 using Syntax.Nodes.Declaration.Function;
 
 namespace Syntax.Nodes.Declaration.Interface;
 
 public class InterfaceDeclarationNode(
-    IdentifierNode name,
+    DeclarationNameNode name,
     List<FunctionDeclarationNode> functions,
     List<VariableDeclarationNode> fields)
-    : DeclarationNode(name), INodeAcceptor<IInterfaceDeclarationNodeHandler>
+    : NamedDeclarationNode(name), INodeAcceptor<IInterfaceDeclarationNodeHandler>
 {
     public List<FunctionDeclarationNode> Functions { get; set; } = functions;
     public List<VariableDeclarationNode> Fields { get; set; } = fields;

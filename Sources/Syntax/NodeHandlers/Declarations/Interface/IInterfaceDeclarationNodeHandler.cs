@@ -1,6 +1,6 @@
 using Syntax.Nodes.Declaration.Interface;
 
-namespace Syntax.NodeHandlers.Declarations;
+namespace Syntax.NodeHandlers.Declarations.Interface;
 
 public interface IInterfaceDeclarationNodeHandler
 {

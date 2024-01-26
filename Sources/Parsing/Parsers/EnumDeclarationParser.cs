@@ -1,9 +1,10 @@
 using Lexing;
+using Parsing.Parsers.Base;
 using Syntax.Nodes.Declaration.Enum;
 
 namespace Parsing.Parsers;
 
-public class EnumDeclarationParser(ParsingContext context) : Parser<EnumDeclarationNode>(context)
+public class EnumDeclarationParser(ParsingContext context) : DeclarationParser<EnumDeclarationNode>(context)
 {
     public override EnumDeclarationNode Parse()
     {
@@ -11,7 +12,7 @@ public class EnumDeclarationParser(ParsingContext context) : Parser<EnumDeclarat
 
         ExpectAndEat(TokenType.Identifier, "enum", "expected enum");
 
-        var name = ParseSingleIdentifier();
+        var name = ParseDeclarationName();
 
         ExpectAndEatNewline();
 

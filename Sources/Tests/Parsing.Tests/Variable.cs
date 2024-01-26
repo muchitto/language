@@ -18,7 +18,7 @@ public class Variable : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(Pos, "x"),
+                        new DeclarationNameNode(Pos, "x"),
                         null,
                         false,
                         new IdentifierTypeNode(Pos, "string"),
@@ -40,7 +40,7 @@ public class Variable : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(Pos, "x"),
+                        new DeclarationNameNode(Pos, "x"),
                         null,
                         false,
                         null,
@@ -62,7 +62,7 @@ public class Variable : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new VariableDeclarationNode(
-                        new IdentifierNode(Pos, "x"),
+                        new DeclarationNameNode(Pos, "x"),
                         new NumberLiteralNode(Pos, "1"),
                         false,
                         null,

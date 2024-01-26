@@ -1,17 +1,18 @@
 using Lexing;
+using Parsing.Parsers.Base;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration.Struct;
 using Syntax.Nodes.Type;
 
 namespace Parsing.Parsers;
 
-public class StructDeclarationParser(ParsingContext context) : Parser<StructDeclarationNode>(context)
+public class StructDeclarationParser(ParsingContext context) : DeclarationParser<StructDeclarationNode>(context)
 {
     public override StructDeclarationNode Parse()
     {
         ExpectAndEat(TokenType.Identifier, "struct", "expected a struct identifier");
 
-        var name = ParseSingleIdentifier();
+        var name = ParseDeclarationName();
 
         IdentifierNode? parent = null;
 

@@ -1,5 +1,6 @@
 using ErrorReporting;
 using Lexing;
+using Parsing.Parsers.Base;
 using Syntax.Nodes;
 using Syntax.Nodes.Type;
 using Syntax.Nodes.Type.Function;

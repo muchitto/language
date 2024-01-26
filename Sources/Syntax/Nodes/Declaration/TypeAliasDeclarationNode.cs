@@ -3,8 +3,8 @@ using Syntax.NodeHandlers.Declarations;
 
 namespace Syntax.Nodes.Declaration;
 
-public class TypeAliasDeclarationNode(IdentifierNode name, TypeNode type)
-    : DeclarationNode(name), INodeAcceptor<ITypeAliasDeclaration>
+public class TypeAliasDeclarationNode(DeclarationNameNode name, TypeNode type)
+    : NamedDeclarationNode(name), INodeAcceptor<ITypeAliasDeclaration>
 {
     public TypeNode Type { get; set; } = type;
 

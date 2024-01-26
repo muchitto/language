@@ -1,5 +1,6 @@
 using Semantics.SymbolResolving;
 using Syntax.Nodes;
+using Syntax.Nodes.Declaration;
 
 namespace Semantics;
 
@@ -19,19 +20,25 @@ public abstract class SemanticPass(SemanticContext semanticContext)
         SemanticContext.CurrentScope = scope;
     }
 
-    protected void StartScopeFromNode(BaseNode node)
-    {
-        if (!SemanticContext.NodeToScope.TryGetValue(node, out var value))
-        {
-            throw new Exception("Node not found in scope");
-        }
-
-        SetCurrentScope(value);
-    }
-
-    protected void StartScope()
+    protected void StartDeclarationScope(DeclarationNameNode node)
     {
         SemanticContext.StartScope();
+
+        if (SemanticContext.NodeToScope.TryGetValue(node, out var value))
+        {
+            SetCurrentScope(value);
+        }
+        else
+        {
+            AddNodeToScope(node);
+        }
+    }
+
+    protected void StartCodeBlockScope(CodeBlockNode node)
+    {
+        SemanticContext.StartScope();
+
+        AddNodeToScope(node);
     }
 
     protected void EndScope()

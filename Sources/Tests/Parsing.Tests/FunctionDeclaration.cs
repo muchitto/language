@@ -2,6 +2,7 @@ using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 using Syntax.Nodes.Declaration.Function;
 using Syntax.Nodes.Type;
+using DeclarationName = Syntax.Nodes.IdentifierNode;
 
 namespace Parsing.Tests;
 
@@ -28,10 +29,10 @@ public class FunctionDeclaration : ParserTest
             new ProgramContainerNode(Pos,
                 [
                     new FunctionDeclarationNode(
-                        new IdentifierNode(Pos, "test"),
+                        new DeclarationNameNode(Pos, "test"),
                         [
                             new FunctionArgumentNode(
-                                new IdentifierNode(Pos, "t"),
+                                new DeclarationNameNode(Pos, "t"),
                                 new IdentifierTypeNode(Pos, "int"),
                                 null,
                                 false
@@ -39,8 +40,8 @@ public class FunctionDeclaration : ParserTest
                         ],
                         new BodyContainerNode(Pos, [
                                 new VariableDeclarationNode(
-                                    new IdentifierNode(Pos, "i"),
-                                    new IdentifierNode(Pos, "t"),
+                                    new DeclarationNameNode(Pos, "i"),
+                                    new DeclarationName(Pos, "t"),
                                     false,
                                     null,
                                     false

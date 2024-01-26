@@ -1,15 +1,15 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Function.Closure;
 
 namespace Syntax.Nodes.Declaration.Closure;
 
 public class ClosureArgumentNode(IdentifierNode name, TypeNode? typeNode)
-    : BaseNode(name.PositionData), INodeAcceptor<IClosureDeclarationNodeHandler>
+    : BaseNode(name.PositionData), INodeAcceptor<IClosureChildNodeHandler>
 {
     public IdentifierNode Name { get; } = name;
     public TypeNode? TypeNode { get; } = typeNode;
 
-    public void Accept(IClosureDeclarationNodeHandler handler)
+    public void Accept(IClosureChildNodeHandler handler)
     {
         handler.Handle(this);
     }

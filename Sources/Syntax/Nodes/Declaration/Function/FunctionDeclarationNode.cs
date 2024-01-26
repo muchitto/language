@@ -1,19 +1,19 @@
 using Syntax.NodeHandlers;
-using Syntax.NodeHandlers.Declarations;
+using Syntax.NodeHandlers.Declarations.Function;
 
 namespace Syntax.Nodes.Declaration.Function;
 
 public class FunctionDeclarationNode(
-    IdentifierNode name,
+    DeclarationNameNode name,
     List<FunctionArgumentNode> arguments,
-    BodyContainerNode bodyContainerNode,
+    BodyContainerNode body,
     bool canThrow,
     bool isMethod,
     IdentifierNode? returnTypeName)
-    : DeclarationNode(name), INodeAcceptor<IFunctionDeclarationNodeHandler>
+    : NamedDeclarationNode(name), INodeAcceptor<IFunctionDeclarationNodeHandler>
 {
     public List<FunctionArgumentNode> Arguments { get; set; } = arguments;
-    public BodyContainerNode BodyContainerNode { get; set; } = bodyContainerNode;
+    public BodyContainerNode Body { get; set; } = body;
 
     public bool CanThrow { get; set; } = canThrow;
     public bool IsMethod { get; set; } = isMethod;
@@ -34,7 +34,7 @@ public class FunctionDeclarationNode(
         if (node.CanThrow != CanThrow
             || node.IsMethod != IsMethod
             || !Arguments.TestEquals(node.Arguments)
-            || !node.BodyContainerNode.TestEquals(BodyContainerNode)
+            || !node.Body.TestEquals(Body)
             || !node.Name.TestEquals(Name))
         {
             return false;

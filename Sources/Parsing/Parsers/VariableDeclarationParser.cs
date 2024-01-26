@@ -1,10 +1,12 @@
 using Lexing;
+using Parsing.Parsers.Base;
 using Syntax.Nodes;
 using Syntax.Nodes.Declaration;
 
 namespace Parsing.Parsers;
 
-public class VariableDeclarationParser(ParsingContext context) : Parser<VariableDeclarationNode>(context)
+public class VariableDeclarationParser(ParsingContext context)
+    : DeclarationParser<VariableDeclarationNode>(context)
 {
     public override VariableDeclarationNode Parse()
     {
@@ -30,7 +32,7 @@ public class VariableDeclarationParser(ParsingContext context) : Parser<Variable
             isDynamic = true;
         }
 
-        var name = ParseSingleIdentifier();
+        var name = ParseDeclarationName();
         var typeNode = IsNext(TokenType.Identifier) ? new TypeAnnotationParser(Context).Parse() : null;
 
         BaseNode? value = null;

@@ -90,7 +90,7 @@ public class FunctionCall : ParserTest
                             new FunctionCallArgumentNode(
                                 Pos,
                                 null,
-                                new ClosureNode(
+                                new ClosureDeclarationNode(
                                     Pos,
                                     [],
                                     new BodyContainerNode(Pos,
@@ -133,7 +133,7 @@ public class FunctionCall : ParserTest
                             new FunctionCallArgumentNode(
                                 Pos,
                                 null,
-                                new ClosureNode(
+                                new ClosureDeclarationNode(
                                     Pos,
                                     [
                                         new ClosureArgumentNode(
@@ -191,7 +191,7 @@ public class FunctionCall : ParserTest
                             new FunctionCallArgumentNode(
                                 Pos,
                                 null,
-                                new ClosureNode(
+                                new ClosureDeclarationNode(
                                     Pos,
                                     [
                                         new ClosureArgumentNode(
