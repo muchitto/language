@@ -9,9 +9,7 @@ public class ExpressionParser(ParsingContext context) : Parser<BaseNode>(context
 {
     public override BaseNode Parse()
     {
-        var lhs = ParseExpressionPrimary();
-
-        return ParseExpression(lhs, 0);
+        return ParseExpression(0);
     }
 
     private BaseNode ParseExpressionPrimary()
@@ -38,46 +36,54 @@ public class ExpressionParser(ParsingContext context) : Parser<BaseNode>(context
         };
     }
 
-    private BaseNode ParseExpression(BaseNode lhs, int minPrecedence)
+    private BaseNode ParseExpressionContinue(BaseNode lhs, int minPrecedence)
     {
         var nextToken = PeekToken();
 
-        while (nextToken.IsOperator() && nextToken.ToOperator() is var nextOp)
+        if (!nextToken.IsOperator())
         {
-            var nextPrecedence = nextOp.Precedence();
+            return lhs;
+        }
 
-            if (nextPrecedence < minPrecedence)
+        var op = nextToken.ToOperator();
+        var precedence = op.Precedence();
+
+        if (precedence <= minPrecedence)
+        {
+            return lhs;
+        }
+
+        GetNextToken();
+
+        var rhs = ParseExpression(precedence);
+
+        return new BinaryOpNode(
+            lhs.PositionData,
+            lhs,
+            op,
+            rhs
+        );
+    }
+
+    private BaseNode ParseExpression(int minPrecedence)
+    {
+        var lhs = ParseExpressionPrimary();
+
+        if (!IsNext(TokenType.Operator))
+        {
+            return lhs;
+        }
+
+        while (true)
+        {
+            var node = ParseExpressionContinue(lhs, minPrecedence);
+
+            if (node == lhs)
             {
                 break;
             }
 
-            GetNextToken();
-
-            var rhs = ParseExpressionPrimary();
-
-            nextToken = PeekToken();
-
-            while (nextToken.ToOperator() is { } peekNextOp)
-            {
-                var peekNextPrecedence = peekNextOp.Precedence();
-                var peekNextAssoc = peekNextOp.Associativity();
-
-                if (peekNextPrecedence > nextPrecedence ||
-                    (peekNextPrecedence == nextPrecedence && peekNextAssoc == Associativity.Right))
-                {
-                    rhs = ParseExpression(rhs, peekNextPrecedence);
-                    nextToken = PeekToken();
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            var posData = lhs.PositionData;
-
-            lhs = new BinaryOpNode(posData, lhs, rhs, nextOp);
-            nextToken = PeekToken();
+            lhs = node;
         }
 
         return lhs;

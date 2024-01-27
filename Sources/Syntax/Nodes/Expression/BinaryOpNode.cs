@@ -4,12 +4,12 @@ using Syntax.NodeHandlers;
 
 namespace Syntax.Nodes.Expression;
 
-public class BinaryOpNode(PositionData positionData, BaseNode lhs, BaseNode rhs, Operator @operator)
+public class BinaryOpNode(PositionData positionData, BaseNode lhs, Operator @operator, BaseNode rhs)
     : ExpressionNode(positionData), INodeAcceptor<IExpressionNodeHandler>
 {
     public BaseNode Lhs { get; set; } = lhs;
-    public BaseNode Rhs { get; set; } = rhs;
     public Operator Operator { get; set; } = @operator;
+    public BaseNode Rhs { get; set; } = rhs;
 
     public void Accept(IExpressionNodeHandler handler)
     {

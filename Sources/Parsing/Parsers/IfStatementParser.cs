@@ -30,8 +30,8 @@ public class IfStatementParser(ParsingContext context) : Parser<IfStatementNode>
             condition = new BinaryOpNode(
                 condition.PositionData,
                 condition,
-                new BooleanLiteralNode(condition.PositionData, true),
-                Operator.Equal
+                Operator.Equal,
+                new BooleanLiteralNode(condition.PositionData, true)
             );
         }
 
